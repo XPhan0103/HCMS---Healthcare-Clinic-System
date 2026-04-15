@@ -1,1 +1,317 @@
-xxx
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Personas - HCMS Project (Pediatrics)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #0284c7;
+            --doctor-color: #0ea5e9;
+            --reception-color: #6366f1;
+            --parent-color: #f43f5e;
+            --bg: #f1f5f9;
+            --text-main: #334155;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .personas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .persona-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+            transition: transform 0.2s;
+        }
+
+        .persona-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .p-header {
+            padding: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .p-doctor {
+            background: linear-gradient(135deg, var(--doctor-color), #0369a1);
+        }
+
+        .p-reception {
+            background: linear-gradient(135deg, var(--reception-color), #4338ca);
+        }
+
+        .p-parent {
+            background: linear-gradient(135deg, var(--parent-color), #be123c);
+        }
+
+        .avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .p-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .p-role {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .p-body {
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title:first-child {
+            margin-top: 0;
+        }
+
+        ul {
+            padding-left: 1.25rem;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #475569;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .tech-savvy {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .bar {
+            flex-grow: 1;
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .fill {
+            background: var(--secondary);
+            height: 100%;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #334155;
+            display: inline-block;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Hồ sơ Người dùng (User Personas)</h1>
+            <p>Dựa trên Stakeholder Matrix của dự án HCMS. Đây là tài liệu định hướng trải nghiệm người dùng cho hệ
+                thống quản trị phòng khám nhi khoa tinh gọn.</p>
+        </div>
+
+        <div class="personas-grid">
+            <div class="persona-card">
+                <div class="p-header p-doctor">
+                    <div class="avatar-placeholder">👨‍⚕️</div>
+                    <h2 class="p-name">BS. Minh - "Chuyên Môn"</h2>
+                    <p class="p-role">Sponsor / Decider | Bác sĩ Trưởng</p>
+                </div>
+                <div class="p-body">
+                    <div class="quote">"Tôi cần truy xuất lịch sử bệnh nhi ngay lập tức để đưa ra chẩn đoán chính xác mà
+                        không cần lật từng tờ sổ khám."</div>
+
+                    <h3 class="section-title">Hành vi & Tích cách</h3>
+                    <p style="font-size: 0.95rem;">Ưu tiên sự chính xác và nhanh chóng. Không thích các thao tác nhập
+                        liệu rườm rà. Thường sử dụng máy tính bảng để ghi chú lâm sàng khi đang thăm khám.</p>
+
+                    <h3 class="section-title">Nỗi Đau (Pain-Points)</h3>
+                    <ul>
+                        <li>Mất thời gian tìm kiếm sổ y bạ giấy của bệnh nhân cũ.</li>
+                        <li>Khó khăn trong việc theo dõi tiền sử dị ứng thuốc nếu phụ huynh quên mang sổ.</li>
+                        <li>Áp lực khi phải viết tay đơn thuốc và dặn dò liên tục nhiều ca/ngày.</li>
+                    </ul>
+
+                    <h3 class="section-title">Mục tiêu từ HCMS</h3>
+                    <ul>
+                        <li><span class="badge">100% EMR</span> Số hóa toàn bộ hồ sơ bệnh án, truy xuất theo SĐT.</li>
+                        <li><span class="badge">Autocomplete</span> Gợi ý đơn thuốc và chẩn đoán mẫu để giảm thời gian
+                            gõ máy.</li>
+                    </ul>
+
+                    <div class="tech-savvy">
+                        <span style="font-size: 0.85rem; font-weight: 600; width: 100px;">Tech Savvy:</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 85%; background: var(--doctor-color);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="persona-card">
+                <div class="p-header p-reception">
+                    <div class="avatar-placeholder">👩‍💼</div>
+                    <h2 class="p-name">Chị Lan - "Điều Phối"</h2>
+                    <p class="p-role">Key User | Lễ tân (Receptionist)</p>
+                </div>
+                <div class="p-body">
+                    <div class="quote">"Điện thoại reo liên tục lúc cao điểm khiến tôi không kịp xử lý thanh toán cho
+                        bệnh nhân đang đợi tại quầy."</div>
+
+                    <h3 class="section-title">Hành vi & Tích cách</h3>
+                    <p style="font-size: 0.95rem;">Thân thiện nhưng luôn trong trạng thái quá tải. Phải xử lý nhiều việc
+                        cùng lúc: nghe điện thoại, đón khách, thu tiền và in hóa đơn.</p>
+
+                    <h3 class="section-title">Nỗi Đau (Pain-Points)</h3>
+                    <ul>
+                        <li>Điểm nghẽn hành chính khi phải đặt lịch thủ công qua điện thoại.</li>
+                        <li>Dễ sai sót khi tính toán chi phí khám và thuốc bằng tay hoặc Excel rời rạc.</li>
+                        <li>Khó theo dõi trạng thái bệnh nhân đã khám xong hay chưa để gọi số.</li>
+                    </ul>
+
+                    <h3 class="section-title">Mục tiêu từ HCMS</h3>
+                    <ul>
+                        <li><span class="badge">Self-service</span> Phụ huynh tự đặt lịch, hệ thống tự đồng bộ vào
+                            Dashbord.</li>
+                        <li><span class="badge">1-Click Billing</span> Xuất hóa đơn nhanh với trạng thái Paid/Unpaid rõ
+                            ràng.</li>
+                    </ul>
+
+                    <div class="tech-savvy">
+                        <span style="font-size: 0.85rem; font-weight: 600; width: 100px;">Tech Savvy:</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 75%; background: var(--reception-color);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="persona-card">
+                <div class="p-header p-parent">
+                    <div class="avatar-placeholder">🤱</div>
+                    <h2 class="p-name">Chị Vy - "Lo Lắng"</h2>
+                    <p class="p-role">External User | Phụ huynh (Parents)</p>
+                </div>
+                <div class="p-body">
+                    <div class="quote">"Con ốm đã rất mệt rồi, tôi không muốn phải xếp hàng chờ đợi chỉ để lấy một cái
+                        số thứ tự khám."</div>
+
+                    <h3 class="section-title">Hành vi & Tích cách</h3>
+                    <p style="font-size: 0.95rem;">Thường xuyên sử dụng Smartphone. Muốn sự minh bạch về thời gian khám
+                        và có thể chủ động sắp xếp công việc để đưa con đi khám.</p>
+
+                    <h3 class="section-title">Nỗi Đau (Pain-Points)</h3>
+                    <ul>
+                        <li>Gọi điện đặt lịch thường xuyên bị máy bận hoặc không ai nhấc máy.</li>
+                        <li>Không nhớ chính xác lần trước bác sĩ chẩn đoán con bị gì hoặc uống thuốc nào.</li>
+                        <li>Mất thời gian chờ đợi tại phòng khám do lịch hẹn không rõ ràng.</li>
+                    </ul>
+
+                    <h3 class="section-title">Mục tiêu từ HCMS</h3>
+                    <ul>
+                        <li><span class="badge">Frictionless</span> Đặt lịch online mọi lúc mọi nơi trên điện thoại.
+                        </li>
+                        <li><span class="badge">Transparency</span> Xem lại được ghi chú dặn dò của bác sĩ sau khi khám
+                            xong.</li>
+                    </ul>
+
+                    <div class="tech-savvy">
+                        <span style="font-size: 0.85rem; font-weight: 600; width: 100px;">Tech Savvy:</span>
+                        <div class="bar">
+                            <div class="fill" style="width: 95%; background: var(--parent-color);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
