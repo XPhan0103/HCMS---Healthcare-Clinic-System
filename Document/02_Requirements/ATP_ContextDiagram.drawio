@@ -1,0 +1,95 @@
+<mxfile host="Electron" modified="2024-04-14T00:00:00.000Z" agent="Mozilla/5.0" version="21.6.8" type="device">
+  <diagram id="ATS_Context_UML" name="UML Context Diagram">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- CENTRAL SYSTEM (UML Component/System Style) -->
+        <mxCell id="sys_ats" value="&amp;lt;&amp;lt;system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Applicant Tracking System&lt;/b&gt;&lt;br&gt;(Core ATS Platform)" style="html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;verticalAlign=top;paddingTop=20;fontSize=14;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="280" width="250" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- EXTERNAL SYSTEMS -->
+        <!-- Email Gateway -->
+        <mxCell id="ext_email" value="&amp;lt;&amp;lt;external system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Email/SMS Gateway&lt;/b&gt;&lt;br&gt;(SendGrid, AWS SES)" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="80" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_email" value="Send Trigger Emails" style="endArrow=classic;html=1;dashed=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys_ats" target="ext_email">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Google Meet -->
+        <mxCell id="ext_meet" value="&amp;lt;&amp;lt;external system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Google Workspace&lt;/b&gt;&lt;br&gt;(Meet API)" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="680" y="650" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_meet" value="Generate Meet Links" style="endArrow=classic;startArrow=classic;html=1;dashed=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys_ats" target="ext_meet">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- AI CV Parser -->
+        <mxCell id="ext_ai" value="&amp;lt;&amp;lt;external system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;AI CV Parser API&lt;/b&gt;" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="650" width="180" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_ai" value="Raw CV / Extracted JSON" style="endArrow=classic;startArrow=classic;html=1;dashed=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys_ats" target="ext_ai">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Active Directory -->
+        <mxCell id="ext_ad" value="&amp;lt;&amp;lt;external system&amp;gt;&amp;gt;&lt;br&gt;&lt;b&gt;Windows Active Directory&lt;/b&gt;&lt;br&gt;(AD/LDAP)" style="html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="700" width="200" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_ad" value="SSO Auth Tokens" style="endArrow=classic;startArrow=classic;html=1;dashed=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="sys_ats" target="ext_ad">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+
+        <!-- PRIMARY ACTORS (UML Stickmans) -->
+        <!-- Candidate -->
+        <mxCell id="act_cand" value="Candidate" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="240" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_cand" value="Submit CV / View Apply Hub" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_cand" target="sys_ats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- HR Recruiter -->
+        <mxCell id="act_hr" value="HR Recruiter" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="470" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_hr" value="Manage Pipeline / Post Jobs" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_hr" target="sys_ats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Hiring Manager -->
+        <mxCell id="act_hm" value="Hiring Manager" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="240" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_hm_email" value="Actionable&#xa;Email (1-click)" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_hm" target="ext_email">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_hm_sys" value="Review Summaries (Portal)" style="endArrow=classic;startArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_hm" target="sys_ats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+
+        <!-- HR Director -->
+        <mxCell id="act_dir" value="HR Director" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="420" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_dir" value="View KPIs &amp;amp; ROI Dashboards" style="endArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_dir" target="sys_ats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- IT Admin -->
+        <mxCell id="act_admin" value="IT Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
+          <mxGeometry x="900" y="580" width="40" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_admin" value="Manage Security Params" style="endArrow=classic;html=1;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="act_admin" target="sys_ats">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
