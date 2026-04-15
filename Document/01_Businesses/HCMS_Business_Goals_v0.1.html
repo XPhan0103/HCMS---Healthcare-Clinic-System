@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Goals - HCMS Project (Pediatrics)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0284c7; /* Medical Blue accent */
+            --text-main: #334155;
+            --border: #e2e8f0;
+            --text-vi: #64748b;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.6; padding: 2rem; }
+        .doc-container { max-width: 900px; margin: 0 auto; background: white; padding: 4rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-top: 6px solid var(--accent); border-radius: 8px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        .title { font-size: 2.2rem; margin: 0 0 0.5rem 0; color: var(--primary); }
+        .sub-title { color: #64748b; font-size: 1.1rem; }
+        .status-draft { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd;}
+        h2 { color: var(--primary); font-size: 1.4rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-top: 2.5rem; }
+        .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+        .card { border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; background: #f8fafc; }
+        .card h3 { color: #0369a1; margin-top: 0; display: flex; flex-direction: column; gap: 0.2rem;}
+        .card h3 span.vi { font-size: 0.9rem; color: #475569; font-weight: normal; }
+        .metric-badge { background: #f0f9ff; color: #075985; padding: 0.3rem 0.6rem; border-radius: 4px; font-weight: bold; font-size: 1.2rem; display: inline-block; margin-bottom: 1rem; border: 1px solid #bae6fd;}
+        ul { padding-left: 1.5rem; margin-bottom: 0;}
+        .vi-text { font-size: 0.9rem; color: var(--text-vi); display: block; margin-top: 0.2rem; }
+        .main-text { font-weight: 500; color: #334155; margin-bottom: 0.2rem; }
+        .list-item { margin-bottom: 1rem; }
+        .oath-box { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 1.5rem; margin-top: 2.5rem; }
+        .code-box { background: #1e293b; color: #f8fafc; padding: 1.5rem; border-radius: 6px; font-family: monospace; font-size: 0.95rem; margin-top: 1rem; line-height: 1.7; overflow-x: auto; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); border-left: 4px solid #0ea5e9;}
+        .full-width { grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <div class="doc-container">
+        <div class="header">
+            <div>
+                <h1 class="title">Business Goals & Scope (Pediatrics)</h1>
+                <div class="vi-text" style="font-size: 1.2rem;">Mục tiêu Kinh doanh & Phạm vi Hệ thống (Phòng khám Nhi khoa)</div>
+                <div class="sub-title" style="margin-top: 0.7rem;">HCMS Project (Healthcare Clinic Management System)</div>
+                <div class="vi-text">Quy mô hệ thống: 1-2 Bác sĩ, 1 Lễ tân, 10-20 Chuyên khoa/lượt khám/ngày, 1 Chi nhánh, Không Tích hợp Bảo hiểm</div>
+            </div>
+            <div>
+                <span class="status-draft">Version: v0.2 (MVP Scoped)</span>
+            </div>
+        </div>
+
+        <h2>1. Context & Scope Limitations <br><span class="vi-text" style="font-size: 1rem; font-weight: normal;">Bối cảnh Đầu tư & Giới hạn Phạm vi Sản phẩm (MVP)</span></h2>
+        <p class="main-text">This system is specifically designed for a newly established private Pediatrics Clinic. Given the lean operational scale (1-2 doctors, 10-20 patients/day), complex enterprise features such as Health Insurance integration and advanced Pharmacy Inventory Management are explicitly scoped out of the MVP. The primary objective is to streamline the appointment booking process for parents and centralize essential electronic medical records (EMR).</p>
+        <p class="vi-text" style="margin-bottom: 1rem;">Hệ thống được thiết kế chuyên biệt cho một phòng khám Nhi khoa tư nhân mới thành lập. Với quy mô vận hành tinh gọn (1-2 bác sĩ, 10-20 lượt khám/ngày), các tính năng phức tạp cấp độ doanh nghiệp như Tích hợp Bảo hiểm Y tế và Quản trị Kho thuốc chuyên sâu được loại trừ hoàn toàn khỏi phạm vi của MVP. Yêu cầu trọng tâm của giai đoạn này là tối ưu hóa quy trình đặt lịch hẹn cho Phụ huynh và tập trung hóa dòng luân chuyển Hồ sơ bệnh án điện tử (EMR) cơ bản.</p>
+        
+        <h2>2. SMART Business Goals <br><span class="vi-text" style="font-size: 1rem; font-weight: normal;">Mục tiêu Kinh doanh Cốt lõi</span></h2>
+        
+        <div class="grid-cards">
+            <!-- G1 -->
+            <div class="card full-width">
+                <h3>1. Self-Service Booking Portal<span class="vi">Số hóa và Tự động hóa Giao tiếp Đặt lịch</span></h3>
+                <div class="metric-badge">Eliminate Admin Bottlenecks</div>
+                <p class="vi-text" style="margin-bottom: 1rem;">Triệt tiêu Điểm nghẽn Hành chính</p>
+                <p class="main-text">Implement a seamless self-service booking portal to enhance parent experience and reduce operational friction.</p>
+                <p class="vi-text" style="margin-bottom: 1rem;">Triển khai cổng thông tin đặt lịch hẹn trực tuyến thuận tiện, cho phép Phụ huynh chủ động tra cứu lịch trống và đăng ký mà không cần sự can thiệp thủ công từ Lễ tân.</p>
+                <ul>
+                    <li class="list-item">
+                        <strong>Goal:</strong> Redirect the appointment scheduling workload from the clinic's receptionist to a self-service platform, minimizing administrative delays and wait times during peak hours.<br>
+                        <span class="vi-text"><strong>Mục tiêu:</strong> Giảm tải công tác tiếp nhận lịch hẹn thủ công qua điện thoại cho bộ phận Lễ tân, qua đó tối ưu hóa nguồn lực và giảm thiểu áp lực trong những khung giờ tiếp khám cao điểm.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- G2 -->
+            <div class="card">
+                <h3>2. Digitize Pediatric EMR<span class="vi">Số hóa Hồ sơ Bệnh án Điện tử (EMR)</span></h3>
+                <div class="metric-badge">100% EMR Traceability</div>
+                <p class="vi-text" style="margin-bottom: 1rem;">100% Khả năng Truy xuất Dữ liệu</p>
+                <p class="main-text">Securely centralize and digitize patient medical histories.</p>
+                <p class="vi-text" style="margin-bottom: 1rem;">Tập trung hóa và bảo mật toàn bộ dữ liệu lịch sử khám chữa bệnh.</p>
+                <ul>
+                    <li class="list-item">
+                        <strong>Goal:</strong> Digitally integrate patient demographics with clinical notes to completely eliminate the reliance on paper-based medical records and prevent data loss.<br>
+                        <span class="vi-text"><strong>Mục tiêu:</strong> Đồng bộ hóa dòng dữ liệu hành chính của Bệnh nhi với các chẩn đoán lâm sàng, chấm dứt hoàn toàn tình trạng thất lạc sổ y bạ truyền thống.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- G3 -->
+            <div class="card">
+                <h3>3. Streamlined Checkout<span class="vi">Tối ưu Quy trình Thanh toán Điện tử</span></h3>
+                <div class="metric-badge">Optimized Financial Ops</div>
+                <p class="vi-text" style="margin-bottom: 1rem;">Tối giản hóa Vận hành Tài chính</p>
+                <p class="main-text">Facilitate instant, transparent, and accurate billing generation.</p>
+                <p class="vi-text" style="margin-bottom: 1rem;">Khởi tạo hóa đơn chi phí khám chữa bệnh minh bạch và tức thời.</p>
+                <ul>
+                    <li class="list-item">
+                        <strong>Goal:</strong> Streamline billing process to a 1-click operation covering essential out-of-pocket costs with clear Paid/Unpaid statuses, explicitly bypassing external health insurance reconciliations.<br>
+                        <span class="vi-text"><strong>Mục tiêu:</strong> Rút ngắn quy trình thanh toán thành thao tác 1 chạm đối với các khoản thu thiết yếu, thể hiện chính xác tình trạng Thanh toán/Chưa thanh toán và không bao gồm nghiệp vụ đối soát Bảo hiểm Y tế phức tạp.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. MVP System Entities (Data Scope)<br><span class="vi-text" style="font-size: 1rem; font-weight: normal;">Phạm vi Dữ liệu (Giới hạn kiến trúc 5 Thực thể)</span></h2>
+        <p class="main-text">To guarantee swift production deployment corresponding to the hyper-lean business constraints, the underlying database architecture is engineered and rigidly restricted to these 5 operational schema components:</p>
+        <p class="vi-text">Nhằm đảm bảo tiến độ triển khai linh hoạt và đáp ứng đúng các giới hạn kinh doanh, cấu trúc cơ sở dữ liệu (Database) sẽ được quy hoạch chuyên biệt và chốt giới hạn ở 5 thực thể chính yếu sau:</p>
+
+        <div class="code-box">
+<span style="color: #60a5fa;">// 1. PATIENT (Hồ sơ Bệnh nhi)</span>
+- Tên (Name)
+- Ngày sinh (Date of Birth)
+- SĐT Phụ huynh (Parent Contact Phone)
+- Tiền sử Bệnh lý Cơ bản (Basic Medical History)
+
+<span style="color: #60a5fa;">// 2. APPOINTMENT (Lịch hẹn / Lịch khám)</span>
+- Ngày giờ & Khung giờ (Date & Time Slot)
+- Bác sĩ phụ trách (Assigned Physician)
+- Trạng thái hẹn khám (Status: Pending, Confirmed, Completed, Cancelled)
+
+<span style="color: #60a5fa;">// 3. VISIT / CONSULTATION (Hồ sơ Lâm sàng)</span>
+- Triệu chứng lâm sàng (Symptoms)
+- Chẩn đoán y khoa (Diagnosis)
+- Căn dặn / Ghi chú (Clinical Notes)
+
+<span style="color: #60a5fa;">// 4. PRESCRIPTION (Đơn thuốc Điện tử)</span>
+- Tên thuốc (Medicine Name)
+- Liều lượng (Dosage Instruction)
+- Số ngày chỉ định (Duration)
+
+<span style="color: #60a5fa;">// 5. BILLING (Hóa đơn / Chi phí khám)</span>
+- Phí dịch vụ (Consultation Fee)
+- Tổng thanh toán (Total Amount)
+- Trạng thái thanh toán (Payment Status: Paid / Unpaid)
+        </div>
+
+        <div class="oath-box">
+            <p style="margin: 0; color: #075985; line-height: 1.6;">
+                <strong>Project Oath:</strong> "The HCMS (Pediatrics) scope actively refuses systemic bloatware. It is a streamlined 5-entity engine built explicitly to empower Parents with self-service booking, equip our Solo Practitioners with instant digital patient histories, and consciously omit all unnecessary hospital-level insurance complexities." - <i>BA Leader / Project Manager</i>
+                <br><br>
+                <span class="vi-text"><strong>Tuyên ngôn Dự án:</strong> "Dự án HCMS (Nhi khoa) kiên quyết không thỏa hiệp với các tính năng thừa. Đây là một nền tảng vận hành tập trung vào 5 thực thể cốt lõi duy nhất, được xây dựng với sứ mệnh: hỗ trợ Phụ huynh chủ động đặt hẹn, trang bị Hồ sơ điện tử giúp Bác sĩ truy xuất tức thời, và loại bỏ hoàn toàn các luồng nghiệp vụ Bảo hiểm Y tế phức tạp ở cấp độ bệnh viện." - <i>BA Leader / Project Manager</i></span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

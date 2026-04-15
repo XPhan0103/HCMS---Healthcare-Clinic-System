@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stakeholder Matrix - HCMS Project</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --text-main: #334155;
+            --border: #e2e8f0;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: var(--text-main); line-height: 1.6; padding: 2rem; }
+        .doc-container { max-width: 1000px; margin: 0 auto; background: white; padding: 4rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-top: 6px solid #0284c7; border-radius: 8px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        .title { font-size: 2.2rem; margin: 0 0 0.5rem 0; color: var(--primary); }
+        .status-draft { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bae6fd;}
+        table { width: 100%; border-collapse: collapse; margin-top: 2rem;}
+        th, td { border: 1px solid var(--border); padding: 1rem; text-align: left; }
+        th { background: #f8fafc; color: var(--primary); font-weight: 600; position: sticky; top: 0;}
+        h2 { color: var(--primary); font-size: 1.4rem; margin-top: 0; }
+        .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; text-align: center; width: 60px; }
+        .high { background: #fee2e2; color: #991b1b; }
+        .medium { background: #fef3c7; color: #92400e; }
+        .low { background: #dcfce7; color: #166534; }
+        .role { background: #e0f2fe; color: #0369a1; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 0.5rem;}
+    </style>
+</head>
+<body>
+    <div class="doc-container">
+        <div class="header">
+            <div>
+                <h1 class="title">Stakeholder Matrix</h1>
+                <div style="color: #64748b; font-size: 1.1rem;">Survey & Analysis of HCMS Project Stakeholders (Pediatrics)</div>
+            </div>
+            <div>
+                <span class="status-draft">Version: v0.1</span>
+            </div>
+        </div>
+
+        <h2>Power/Interest Grid Analysis</h2>
+        <p>Mapping the involvement of individuals and external users interacting with the lean clinic management system (MVP Scope).</p>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%">Stakeholder / Role</th>
+                    <th width="10%">Power</th>
+                    <th width="10%">Interest</th>
+                    <th width="30%">Objectives & Expectations</th>
+                    <th width="30%">BA Management Strategy</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="role">Sponsor / Decider</span><br/>
+                        <b>Lead Doctor (Chủ PM)</b>
+                    </td>
+                    <td><span class="tag high">High</span></td>
+                    <td><span class="tag high">High</span></td>
+                    <td>Requires 100% digital Pediatric EMR tracking without paper. Needs a straightforward billing solution for out-of-pocket costs without complex insurance flows.</td>
+                    <td><strong>Manage Closely:</strong> Provide them with the core 5-entity database architectural plan. Keep them completely isolated from bloatware and complex features.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="role">Key User</span><br/>
+                        <b>Receptionist (Lễ tân)</b>
+                    </td>
+                    <td><span class="tag medium">Med</span></td>
+                    <td><span class="tag high">High</span></td>
+                    <td>Requires relief from overwhelming phone appointment bookings during peak hours. Needs a system that displays clear Paid/Unpaid billing statuses.</td>
+                    <td><strong>Keep Satisfied:</strong> Demonstrate how the self-service booking portal intercepts and handles traffic. Validate the checkout UI with them for maximum speed.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="role">External User</span><br/>
+                        <b>Parents (Phụ huynh)</b>
+                    </td>
+                    <td><span class="tag low">Low</span></td>
+                    <td><span class="tag high">High</span></td>
+                    <td>Expects to securely and effortlessly book pediatric consultations online anytime, tracking the child's medical notes directly.</td>
+                    <td><strong>Monitor (Design Focus):</strong> The booking portal UX must be completely frictionless on mobile browsers. Must prevent dropped requests or slow loading.</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="role">Consultant / IT</span><br/>
+                        <b>BA Leader / PM</b>
+                    </td>
+                    <td><span class="tag high">High</span></td>
+                    <td><span class="tag medium">Med</span></td>
+                    <td>Committed to maintaining the strict project oath - an MVP with strictly 5 tables (Patient, Appointment, Visit, Prescription, Billing) to ensure swift go-live.</td>
+                    <td><strong>Keep Informed:</strong> Track scope discipline weekly. Ensure absolutely no accidental inclusion of Health Insurance or Advanced Pharmacy logic.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="background: #f0f9ff; border-left: 4px solid #0284c7; padding: 1.5rem; margin-top: 2rem;">
+            <p style="margin: 0;"><strong>📝 BA Note:</strong> Since the clinic operates on a very lean model (1 Receptionist, 1-2 Doctors), any system complexity creates an immediate bottleneck. The UX must focus on minimum click paths (1-click checkout) and zero-maintenance self-service for parents.</p>
+        </div>
+    </div>
+</body>
+</html>

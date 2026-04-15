@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Charter - HCMS Project</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #4a4a4a;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #e9ecef;
+        }
+        .document-wrapper {
+            background: #fff;
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 60px 80px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-sizing: border-box;
+            border-top: 6px solid #0284c7;
+            border-radius: 8px;
+        }
+        h1 {
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 2.6em;
+            font-weight: 400;
+            color: #0f172a;
+            margin-bottom: 25px;
+            margin-top: 0;
+        }
+        .header-divider {
+            border-bottom: 2px solid #bae6fd;
+            margin-bottom: 35px;
+        }
+        h2 {
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 400;
+            font-size: 1.8em;
+            color: #0284c7;
+            margin-top: 35px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 400;
+            font-size: 1.35em;
+            color: #0369a1;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        p {
+            margin-bottom: 18px;
+            font-size: 14.5px;
+            text-align: justify;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            font-size: 14.5px;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e1;
+        }
+        th, td {
+            padding: 10px 15px;
+        }
+        th {
+            font-weight: 600;
+            background: #f8fafc;
+            color: #075985;
+            text-align: center;
+        }
+        td {
+            color: #334155;
+        }
+        .overview-table td:first-child {
+            color: #0369a1;
+            font-weight: 500;
+            text-align: left;
+            width: 35%;
+            background: #f8fafc;
+        }
+        .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        .signature-block {
+            width: 45%;
+        }
+        .signature-line {
+            border-bottom: 1px solid #4a4a4a;
+            margin-bottom: 8px;
+            height: 40px;
+        }
+        .signature-name {
+            font-size: 14.5px;
+            color: #4a4a4a;
+        }
+        .page-break {
+            margin-top: 60px;
+        }
+        @media print {
+            body { background: #fff; }
+            .document-wrapper { box-shadow: none; margin: 0; padding: 20px; border-top: none; }
+            .page-break { page-break-before: always; margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="document-wrapper">
+    <!-- Header -->
+    <h1>Project Charter</h1>
+    <div class="header-divider"></div>
+
+    <!-- Overview Section -->
+    <h2>Project Overview</h2>
+    
+    <table class="overview-table">
+        <tbody>
+            <tr>
+                <td>Project Name:</td>
+                <td>Hệ thống Quản trị Phòng khám Nhi khoa (HCMS - Healthcare Clinic Management System)</td>
+            </tr>
+            <tr>
+                <td>Project Sponsor:</td>
+                <td>Bác sĩ Trưởng / Chủ Phòng khám (Lead Doctor)</td>
+            </tr>
+            <tr>
+                <td>Project Manager (PM):</td>
+                <td>Business Analyst / PM Lead</td>
+            </tr>
+            <tr>
+                <td>PM Email Address:</td>
+                <td>pm.lead@clinic.com</td>
+            </tr>
+            <tr>
+                <td>PM Phone Number:</td>
+                <td>09xx.xxx.xxx</td>
+            </tr>
+            <tr>
+                <td>Business Unit:</td>
+                <td>Vận hành Chuyên môn & Hành chính Phòng khám</td>
+            </tr>
+            <tr>
+                <td>Expected Start Date:</td>
+                <td>15/05/2026</td>
+            </tr>
+            <tr>
+                <td>Expected Completion Date:</td>
+                <td>15/06/2026 (Triển khai hệ thống MVP)</td>
+            </tr>
+            <tr>
+                <td>Estimated Budget:</td>
+                <td>Ngân sách nội bộ (Phát triển MVP quy mô siêu tinh gọn)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Description Section -->
+    <h2>Project Description</h2>
+    
+    <h3>Purpose</h3>
+    <p>Dự án HCMS được thiết lập cho Phòng khám Nhi khoa tư nhân mới hoạt động (quy mô 1 lễ tân, 1-2 bác sĩ). Mục đích trực tiếp là cung cấp công cụ tự phục vụ (Self-service Portal) cho cha mẹ bệnh nhi đặt lịch khám để giảm áp lực cho Lễ tân, tích hợp luồng Hồ sơ Bệnh án Điện tử (EMR) không giấy tờ để bác sĩ truy xuất, và xử lý thanh toán tinh gọn chỉ bằng "1 chạm".</p>
+
+    <h3>Scope</h3>
+    <p><strong>Bao gồm (In-scope):</strong> Cổng thông tin mở cho Phụ huynh tự đặt lịch khám; Cấu trúc CSDL 5 thực thể cốt lõi (Patient, Appointment, Visit/Consultation, Prescription, Billing); Trình quản lý Hồ sơ lâm sàng; Tính năng xác nhận thanh toán/chưa thanh toán.</p>
+    <p><strong>Không bao gồm (Out-of-scope) trong MVP:</strong> Module đối soát và Tích hợp Bảo hiểm y tế (Health Insurance); Hệ thống Quản trị kho thuốc chuyên sâu (Advanced Pharmacy Inventory); Theo dõi đa khoa bệnh viện.</p>
+
+    <!-- Page Break Simulation -->
+    <div class="page-break"></div>
+
+    <!-- Deliverables Section -->
+    <h3>Key Deliverables</h3>
+    <p>1. Ứng dụng/Cổng đặt trực tuyến khám cho Phụ huynh.<br>
+       2. Bảng điều khiển (Dashboard) cho Lễ tân xem lịch hẹn và xử lý thanh toán tinh gọn.<br>
+       3. Web app quản trị Hồ sơ Y khoa Điện tử (EMR module) phục vụ bác sĩ kê đơn.</p>
+
+    <!-- Resources Section -->
+    <h3>Resources</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Team Members</th>
+                <th>Facilities</th>
+                <th>Equipment</th>
+                <th>Other Resources</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1 PM / BA</td>
+                <td>Văn phòng phát triển</td>
+                <td>Server / Cloud Hosting</td>
+                <td>Thư viện y khoa cơ bản</td>
+            </tr>
+            <tr>
+                <td>1 UI/UX, 1 QA</td>
+                <td>Figma Workspace</td>
+                <td>Môi trường Git</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2 Fullstack Devs</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Schedule Section -->
+    <h3>Schedule (MVP)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Key Milestone</th>
+                <th>Start Date</th>
+                <th>Completion Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Thiết kế UX/UI Booking Portal & Cấu trúc 5 Thực thể DB</td>
+                <td>15/05/2026</td>
+                <td>25/05/2026</td>
+            </tr>
+            <tr>
+                <td>Phát triển chức năng Admin EMR và Billing</td>
+                <td>26/05/2026</td>
+                <td>08/06/2026</td>
+            </tr>
+            <tr>
+                <td>Testing/UAT với Bác sĩ/Lễ tân & Bàn giao Go-live</td>
+                <td>09/06/2026</td>
+                <td>15/06/2026</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Risks Section -->
+    <h3>Risks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Potential Risk</th>
+                <th>Perceived Impact</th>
+                <th>Proposed Mitigation Strategy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Yêu cầu phát sinh (Scope Creep) liên quan đến phần báo cáo bảo hiểm</td>
+                <td>Cao (High)</td>
+                <td>Cương quyết áp dụng Nguyên tắc Dự án (Project Oath), từ chối và đẩy yêu cầu này vào Product Backlog cho Phase 2 (nếu có).</td>
+            </tr>
+            <tr>
+                <td>Phụ huynh điền sai thông tin khi Booking trực tuyến</td>
+                <td>Trung bình (Medium)</td>
+                <td>Giao diện Form phải bắt buộc có validation, xác nhận bảo mật và chống span booking.</td>
+            </tr>
+            <tr>
+                <td>Bác sĩ phàn nàn thao tác gõ máy tính lâu hơn viết sổ khám bệnh</td>
+                <td>Cao (High)</td>
+                <td>UX thiết kế chuyên biệt cho Tablet, giao diện cực kỳ tinh gọn, có template gợi ý chẩn đoán/thuốc tự động (Autocomplete models).</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Approval Section -->
+    <h2>Approval and Signatures</h2>
+    <div class="signatures">
+        <div class="signature-block">
+            <div class="signature-line"></div>
+            <div class="signature-name">Lead Doctor / Project Sponsor</div>
+        </div>
+        <div class="signature-block">
+            <div class="signature-line"></div>
+            <div class="signature-name">PM / BA Leader</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
