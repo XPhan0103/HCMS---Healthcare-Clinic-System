@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HCMS – Screen Flow Diagram</title>
+  <style>
+    /* ─── Reset & Base ───────────────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #ffffff;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 32px 24px 64px;
+    }
+
+    /* ─── Page Header ────────────────────────────────────────────────────── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      margin-top: 8px;
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .page-header .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .badge.parents {
+      background: #14532d;
+      color: #86efac;
+      border: 1px solid #166534;
+    }
+
+    .badge.recep {
+      background: #431407;
+      color: #fdba74;
+      border: 1px solid #7c2d12;
+    }
+
+    .badge.doctor {
+      background: #2e1065;
+      color: #c4b5fd;
+      border: 1px solid #4c1d95;
+    }
+
+    .badge.system {
+      background: #1e3a5f;
+      color: #7dd3fc;
+      border: 1px solid #1e40af;
+    }
+
+    /* ─── Section (per Actor) ────────────────────────────────────────────── */
+    .section {
+      background: #1e293b;
+      border-radius: 16px;
+      border: 1px solid #334155;
+      padding: 32px 28px 40px;
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #334155;
+    }
+
+    .actor-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .avatar-parents {
+      background: linear-gradient(135deg, #14532d, #166534);
+    }
+
+    .avatar-recep {
+      background: linear-gradient(135deg, #431407, #7c2d12);
+    }
+
+    .avatar-doctor {
+      background: linear-gradient(135deg, #2e1065, #4c1d95);
+    }
+
+    .section-header h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .section-header .subtitle {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    /* ─── Flow Row ───────────────────────────────────────────────────────── */
+    /*  Each row = one use-case / workflow step                              */
+    .flow-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .flow-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ─── Screen Box ─────────────────────────────────────────────────────── */
+    .screen-box {
+      flex: 0 0 auto;
+      width: 200px;
+      border-radius: 12px;
+      border: 1.5px solid;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .35);
+      position: relative;
+    }
+
+    .screen-box .sbar {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 5px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .screen-box .sbar .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .screen-box .sbody {
+      padding: 10px 12px 12px;
+      background: #0f172a;
+    }
+
+    .screen-box .sname {
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .screen-box .sdesc {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .screen-box .uc-tag {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    /* Color variants */
+    .parents-box {
+      border-color: #166534;
+    }
+
+    .parents-box .sbar {
+      background: #14532d;
+      color: #86efac;
+    }
+
+    .parents-box .sname {
+      color: #86efac;
+    }
+
+    .parents-box .uc-tag {
+      background: #14532d;
+      color: #86efac;
+    }
+
+    .recep-box {
+      border-color: #7c2d12;
+    }
+
+    .recep-box .sbar {
+      background: #431407;
+      color: #fdba74;
+    }
+
+    .recep-box .sname {
+      color: #fdba74;
+    }
+
+    .recep-box .uc-tag {
+      background: #431407;
+      color: #fdba74;
+    }
+
+    .doctor-box {
+      border-color: #4c1d95;
+    }
+
+    .doctor-box .sbar {
+      background: #2e1065;
+      color: #c4b5fd;
+    }
+
+    .doctor-box .sname {
+      color: #c4b5fd;
+    }
+
+    .doctor-box .uc-tag {
+      background: #2e1065;
+      color: #c4b5fd;
+    }
+
+    .system-box {
+      border-color: #1e40af;
+    }
+
+    .system-box .sbar {
+      background: #1e3a5f;
+      color: #7dd3fc;
+    }
+
+    .system-box .sname {
+      color: #7dd3fc;
+    }
+
+    .system-box .uc-tag {
+      background: #1e3a5f;
+      color: #7dd3fc;
+    }
+
+    /* ─── Arrow ──────────────────────────────────────────────────────────── */
+    .arrow-h {
+      /* horizontal arrow */
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      padding-top: 28px;
+      /* align with screen body centre */
+      position: relative;
+    }
+
+    .arrow-h .line {
+      width: 100%;
+      height: 2px;
+      background: #475569;
+      position: relative;
+    }
+
+    .arrow-h .line::after {
+      content: '';
+      position: absolute;
+      right: -1px;
+      top: -5px;
+      border: 6px solid transparent;
+      border-left: 9px solid #475569;
+    }
+
+    .arrow-h .label {
+      font-size: 0.62rem;
+      color: #64748b;
+      text-align: center;
+      margin-top: 5px;
+      white-space: nowrap;
+    }
+
+    .arrow-h.dashed .line {
+      background: repeating-linear-gradient(90deg, #475569 0, #475569 5px, transparent 5px, transparent 10px);
+    }
+
+    .arrow-h.dashed .line::after {
+      border-left-color: #475569;
+    }
+
+    /* ─── System Banner (inline) ─────────────────────────────────────────── */
+    .system-note {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      background: #0f2744;
+      border: 1px dashed #1e40af;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 0;
+      align-self: flex-start;
+    }
+
+    .system-note .icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    .system-note .text {
+      font-size: 0.72rem;
+      color: #93c5fd;
+      line-height: 1.5;
+    }
+
+    .system-note .text strong {
+      color: #7dd3fc;
+      font-weight: 700;
+    }
+
+    /* ─── Vertical connector between rows ───────────────────────────────── */
+    .row-connector {
+      display: flex;
+      justify-content: flex-start;
+      padding-left: 100px;
+      /* half of screen-box width */
+      margin-top: -14px;
+      margin-bottom: -14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .row-connector .vc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .row-connector .vline {
+      width: 2px;
+      height: 28px;
+      background: #475569;
+    }
+
+    .row-connector .vtip {
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top: 8px solid #475569;
+    }
+
+    /* ─── Legend ─────────────────────────────────────────────────────────── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-top: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: #cbd5e1;
+    }
+
+    .legend-swatch {
+      width: 28px;
+      height: 4px;
+      border-radius: 2px;
+    }
+
+    .legend-swatch.solid {
+      background: #475569;
+    }
+
+    .legend-swatch.dashed {
+      background: repeating-linear-gradient(90deg, #475569 0, #475569 4px, transparent 4px, transparent 8px);
+    }
+
+    .legend-box {
+      width: 18px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1.5px solid;
+    }
+
+    /* ─── Responsive ─────────────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .screen-box {
+        width: 160px;
+      }
+
+      .arrow-h {
+        width: 44px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════ PAGE HEADER ═══════════ -->
+  <div class="page-header">
+    <h1>HCMS — Screen Flow Diagram</h1>
+    <p>Healthcare Clinic Management System &nbsp;|&nbsp; Pediatrics MVP</p>
+    <div class="badge-row">
+      <span class="badge parents">👩‍👧 Parents (Phụ huynh)</span>
+      <span class="badge recep">🏥 Receptionist (Lễ tân)</span>
+      <span class="badge doctor">👨‍⚕️ Doctor (Bác sĩ)</span>
+      <span class="badge system">⚙️ HCMS System</span>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — PARENTS
+     UC-01 Book Appointment → UC-02 Patient Demographics
+     UC-03 Receive Confirmation → UC-04 View Clinical Notes
+════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="actor-avatar avatar-parents">👩‍👧</div>
+      <div>
+        <h2>Parents (Phụ huynh)</h2>
+        <div class="subtitle">Self-Service Booking Portal &nbsp;·&nbsp; Patient EMR Portal</div>
+      </div>
+    </div>
+
+    <!-- ROW 1 — Login / Landing → Booking Portal -->
+    <div class="flow-row">
+      <!-- S01 -->
+      <div class="screen-box parents-box" id="s-login-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Login</div>
+        <div class="sbody">
+          <div class="sname">Login / Register</div>
+          <div class="sdesc">Parent authenticates via phone number or email OTP.</div>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Login</div>
+      </div>
+
+      <!-- S02 -->
+      <div class="screen-box parents-box" id="s-home-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Home</div>
+        <div class="sbody">
+          <div class="sname">Parent Home</div>
+          <div class="sdesc">Dashboard: upcoming appointments, quick actions.</div>
+          <span class="uc-tag">Entry</span>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Book</div>
+      </div>
+
+      <!-- S03 -->
+      <div class="screen-box parents-box" id="s-booking-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Booking</div>
+        <div class="sbody">
+          <div class="sname">Booking Portal</div>
+          <div class="sdesc">Select Doctor &amp; available time slot from calendar.</div>
+          <span class="uc-tag">UC-01</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector -->
+    <div class="row-connector">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Patient Demographics → Confirmation -->
+    <div class="flow-row">
+      <!-- S04 -->
+      <div class="screen-box parents-box" id="s-demo-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Patient Info
+        </div>
+        <div class="sbody">
+          <div class="sname">Patient Demographics</div>
+          <div class="sdesc">Enter child's name, DOB, parent contact &amp; chief complaint.</div>
+          <span class="uc-tag">UC-02</span>
+        </div>
+      </div>
+
+      <!-- → (System auto-creates APPOINTMENT) -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Submit</div>
+      </div>
+
+      <!-- System banner: auto-create APPOINTMENT -->
+      <div class="system-note">
+        <span class="icon">⚙️</span>
+        <div class="text">
+          <strong>HCMS auto-creates APPOINTMENT</strong><br>
+          Status: <em>Pending</em>. Dashboard notification pushed to Receptionist.
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h dashed">
+        <div class="line"></div>
+        <div class="label">Confirmation</div>
+      </div>
+
+      <!-- S05 -->
+      <div class="screen-box parents-box" id="s-conf-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Confirmation
+        </div>
+        <div class="sbody">
+          <div class="sname">Appointment Confirmed</div>
+          <div class="sdesc">SMS / Email confirmation received after Receptionist approves.</div>
+          <span class="uc-tag">UC-03</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector -->
+    <div class="row-connector">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 3 — Post-visit: view Clinical Notes & Prescription -->
+    <div class="flow-row">
+      <!-- S06 -->
+      <div class="screen-box parents-box" id="s-visit-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;My Records
+        </div>
+        <div class="sbody">
+          <div class="sname">Visit History</div>
+          <div class="sdesc">List of all past visits with date, doctor, diagnosis summary.</div>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Select Visit</div>
+      </div>
+
+      <!-- S07 -->
+      <div class="screen-box parents-box" id="s-notes-p">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Clinical
+          Notes</div>
+        <div class="sbody">
+          <div class="sname">Clinical Notes &amp; Rx</div>
+          <div class="sdesc">Diagnosis, aftercare instructions &amp; itemised prescription details.</div>
+          <span class="uc-tag">UC-04</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /section parents -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — RECEPTIONIST
+     UC-05 Dashboard → UC-06 Confirm Appt → UC-07 Walk-in
+     UC-08 View Billing → UC-09 1-Click Paid
+════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="actor-avatar avatar-recep">🏥</div>
+      <div>
+        <h2>Receptionist (Lễ tân)</h2>
+        <div class="subtitle">Appointment Management &nbsp;·&nbsp; Billing &amp; Payment</div>
+      </div>
+    </div>
+
+    <!-- ROW 1 — Login → Dashboard → Confirm Appointment -->
+    <div class="flow-row">
+      <!-- S10 -->
+      <div class="screen-box recep-box" id="s-login-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Login</div>
+        <div class="sbody">
+          <div class="sname">Staff Login</div>
+          <div class="sdesc">Receptionist authenticates with staff credentials.</div>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Login</div>
+      </div>
+
+      <!-- S11 -->
+      <div class="screen-box recep-box" id="s-dash-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Dashboard
+        </div>
+        <div class="sbody">
+          <div class="sname">Appointment Dashboard</div>
+          <div class="sdesc">Sortable list: patient, time, doctor, status. Real-time updates.</div>
+          <span class="uc-tag">UC-05</span>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Review</div>
+      </div>
+
+      <!-- S12 -->
+      <div class="screen-box recep-box" id="s-confirm-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Confirm</div>
+        <div class="sbody">
+          <div class="sname">Confirm Appointment</div>
+          <div class="sdesc">Change APPOINTMENT status: Pending → Confirmed. Triggers notification to Parent.</div>
+          <span class="uc-tag">UC-06</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector (centred on S11 Dashboard) -->
+    <div class="row-connector" style="padding-left:304px">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Walk-in Registration (branch from Dashboard) -->
+    <div class="flow-row">
+      <!-- padding spacer to align with Dashboard -->
+      <div style="flex:0 0 264px"></div>
+
+      <!-- S13 -->
+      <div class="screen-box recep-box" id="s-walkin-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Walk-in</div>
+        <div class="sbody">
+          <div class="sname">Register Walk-in</div>
+          <div class="sdesc">Manually create APPOINTMENT for on-site patient. Status: Confirmed.</div>
+          <span class="uc-tag">UC-07</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector back to billing section (from S12 Confirm) -->
+    <div class="row-connector" style="padding-left:304px">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 3 — Billing Invoice → 1-Click Paid -->
+    <div class="flow-row">
+      <!-- padding spacer to column-align with Dashboard/Confirm -->
+      <div style="flex:0 0 264px"></div>
+
+      <!-- S14 -->
+      <div class="screen-box recep-box" id="s-invoice-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Invoice</div>
+        <div class="sbody">
+          <div class="sname">View Billing Invoice</div>
+          <div class="sdesc">Auto-generated BILLING: service fee + itemised drugs. Status: Unpaid.</div>
+          <span class="uc-tag">UC-08</span>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Collect Fee</div>
+      </div>
+
+      <!-- S15 -->
+      <div class="screen-box recep-box" id="s-paid-r">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Payment</div>
+        <div class="sbody">
+          <div class="sname">1-Click Mark Paid</div>
+          <div class="sdesc">Single-click updates BILLING: Unpaid → <strong style="color:#86efac">Paid</strong>. Logs
+            timestamp.</div>
+          <span class="uc-tag">UC-09</span>
+        </div>
+      </div>
+    </div>
+  </div><!-- /section receptionist -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — DOCTOR
+     UC-10 Queue → UC-11 EMR → UC-12 VISIT → UC-13 Rx → UC-14 Profile
+════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <div class="actor-avatar avatar-doctor">👨‍⚕️</div>
+      <div>
+        <h2>Doctor (Bác sĩ)</h2>
+        <div class="subtitle">Clinical Dashboard &nbsp;·&nbsp; EMR Access &nbsp;·&nbsp; Visit &amp; Prescription
+          Management</div>
+      </div>
+    </div>
+
+    <!-- ROW 1 — Login → Patient Queue → Medical History -->
+    <div class="flow-row">
+      <!-- S20 -->
+      <div class="screen-box doctor-box" id="s-login-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Login</div>
+        <div class="sbody">
+          <div class="sname">Doctor Login</div>
+          <div class="sdesc">Secure staff login with credentials.</div>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Login</div>
+      </div>
+
+      <!-- S21 -->
+      <div class="screen-box doctor-box" id="s-queue-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Queue</div>
+        <div class="sbody">
+          <div class="sname">Patient Queue</div>
+          <div class="sdesc">Ordered list of waiting patients by appt. time. Real-time refresh.</div>
+          <span class="uc-tag">UC-10</span>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Select Patient</div>
+      </div>
+
+      <!-- S22 -->
+      <div class="screen-box doctor-box" id="s-emr-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;EMR</div>
+        <div class="sbody">
+          <div class="sname">Medical History (EMR)</div>
+          <div class="sdesc">Full PATIENT profile, past VISITs &amp; PRESCRIPTIONs.</div>
+          <span class="uc-tag">UC-11</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector (centred on S22 EMR) -->
+    <div class="row-connector" style="padding-left:368px">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Record Consultation VISIT → Issue Prescription -->
+    <div class="flow-row">
+      <!-- spacer to align at S22 EMR -->
+      <div style="flex:0 0 368px"></div>
+
+      <!-- S23 -->
+      <div class="screen-box doctor-box" id="s-visit-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Consultation
+        </div>
+        <div class="sbody">
+          <div class="sname">Record VISIT</div>
+          <div class="sdesc">Enter symptoms, clinical diagnosis (ICD), aftercare notes → creates VISIT entity.</div>
+          <span class="uc-tag">UC-12</span>
+        </div>
+      </div>
+
+      <!-- → -->
+      <div class="arrow-h">
+        <div class="line"></div>
+        <div class="label">Write Rx</div>
+      </div>
+
+      <!-- S24 -->
+      <div class="screen-box doctor-box" id="s-rx-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Prescription
+        </div>
+        <div class="sbody">
+          <div class="sname">Issue e-Prescription</div>
+          <div class="sdesc">Autocomplete drug name, dose, frequency, duration → PRESCRIPTION entity.</div>
+          <span class="uc-tag">UC-13</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ↓ vertical connector (aligned at S22 EMR column) -->
+    <div class="row-connector" style="padding-left:368px">
+      <div class="vc">
+        <div class="vline"></div>
+        <div class="vtip"></div>
+      </div>
+    </div>
+
+    <!-- ROW 3 — Manage Patient Profile (optional extension) -->
+    <div class="flow-row">
+      <!-- spacer to align at S22 EMR column -->
+      <div style="flex:0 0 368px"></div>
+
+      <!-- S25 -->
+      <div class="screen-box doctor-box" id="s-profile-d">
+        <div class="sbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Profile</div>
+        <div class="sbody">
+          <div class="sname">Manage Patient Profile</div>
+          <div class="sdesc">Update allergies, blood type, chronic condition flags &amp; vaccine notes.</div>
+          <span class="uc-tag">UC-14</span>
+        </div>
+      </div>
+
+      <!-- dashed arrow → system action -->
+      <div class="arrow-h dashed">
+        <div class="line"></div>
+        <div class="label">Save</div>
+      </div>
+
+      <!-- System banner -->
+      <div class="system-note">
+        <span class="icon">⚙️</span>
+        <div class="text">
+          <strong>HCMS auto-generates BILLING</strong><br>
+          Triggered when Doctor saves VISIT + PRESCRIPTION. Invoice pushed to Receptionist dashboard.
+        </div>
+      </div>
+    </div>
+  </div><!-- /section doctor -->
+
+
+  <!-- ═══════════ LEGEND ═══════════ -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-swatch solid"></div>
+      <span>Navigation / Action transition</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch dashed"></div>
+      <span>System-triggered / Response flow</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-box" style="border-color:#166534;background:#14532d"></div>
+      <span>Parents screens</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-box" style="border-color:#7c2d12;background:#431407"></div>
+      <span>Receptionist screens</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-box" style="border-color:#4c1d95;background:#2e1065"></div>
+      <span>Doctor screens</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-box" style="border-color:#1e40af;background:#1e3a5f"></div>
+      <span>HCMS System action</span>
+    </div>
+  </div>
+
+</body>
+
+</html>

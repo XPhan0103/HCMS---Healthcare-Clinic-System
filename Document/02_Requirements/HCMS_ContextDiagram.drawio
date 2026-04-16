@@ -1,0 +1,73 @@
+<mxfile host="Electron" modified="2024-04-16T00:00:00.000Z" agent="Mozilla/5.0" version="21.3.7" type="device">
+  <diagram id="context_diagram" name="HCMS Context">
+    <mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Center System Node -->
+        <mxCell id="system" value="&lt;b style=&quot;font-size: 16px;&quot;&gt;Healthcare Clinic&lt;br&gt;Management System&lt;br&gt;(HCMS)&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#000000;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="320" width="160" height="160" as="geometry" />
+        </mxCell>
+        
+        <!-- Left Node: Parents -->
+        <mxCell id="parents" value="&lt;b style=&quot;font-size: 14px;&quot;&gt;Parents&lt;br&gt;(Phụ huynh)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#000000;shadow=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="40" y="360" width="140" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Top Node: Receptionist -->
+        <mxCell id="receptionist" value="&lt;b style=&quot;font-size: 14px;&quot;&gt;Receptionist&lt;br&gt;(Lễ tân)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontColor=#000000;shadow=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Right Node: Doctor -->
+        <mxCell id="doctor" value="&lt;b style=&quot;font-size: 14px;&quot;&gt;Doctor&lt;br&gt;(Bác sĩ)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#000000;shadow=1;arcSize=20;" vertex="1" parent="1">
+          <mxGeometry x="660" y="360" width="140" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Edge: Parents -> HCMS -->
+        <mxCell id="edge_parent_in" value="Appointment Request,&lt;br&gt;Patient Demographics" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="parents" target="system">
+          <mxGeometry x="-0.0769" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: HCMS -> Parents -->
+        <mxCell id="edge_parent_out" value="Appointment Confirmation,&lt;br&gt;Clinical Notes &amp;amp; Prescriptions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#82b366;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="system" target="parents">
+          <mxGeometry x="0.0769" y="-15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: Receptionist -> HCMS -->
+        <mxCell id="edge_recept_in" value="Payment Confirmation,&lt;br&gt;Walk-in Appointments" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;strokeColor=#d79b00;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="receptionist" target="system">
+          <mxGeometry x="-0.0769" y="-20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: HCMS -> Receptionist -->
+        <mxCell id="edge_recept_out" value="Daily Appointment Queue,&lt;br&gt;Real-time Billing Invoices" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;strokeColor=#d79b00;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="system" target="receptionist">
+          <mxGeometry x="-0.0909" y="20" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: Doctor -> HCMS -->
+        <mxCell id="edge_doctor_in" value="Symptoms &amp;amp; Diagnosis Data,&lt;br&gt;Prescription Orders" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;strokeColor=#9673a6;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="doctor" target="system">
+          <mxGeometry x="-0.0769" y="-15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edge: HCMS -> Doctor -->
+        <mxCell id="edge_doctor_out" value="Patient Medical History,&lt;br&gt;Doctor&#39;s Daily Schedule" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeColor=#9673a6;strokeWidth=2;fontColor=#000000;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="system" target="doctor">
+          <mxGeometry x="-0.0909" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
