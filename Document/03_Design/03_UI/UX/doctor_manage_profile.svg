@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      .bg { fill: #f8fafc; }
+      .sidebar { fill: #0f172a; }
+      .card { fill: #ffffff; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.06)); }
+      .accent { fill: #0d9488; }
+      .accent-bg { fill: #ccfbf1; }
+      .text-main { fill: #1e293b; }
+      .text-sub { fill: #64748b; }
+      .border { fill: #e2e8f0; }
+      .input-bg { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect class="bg" width="1280" height="800" />
+
+  <!-- Sidebar -->
+  <rect class="sidebar" width="90" height="800" />
+  <circle cx="45" cy="50" r="16" class="accent" />
+  <text x="36" y="56" style="fill: white; font-weight: 700; font-size: 18px;">H</text>
+
+  <circle cx="45" cy="130" r="10" fill="#475569" />
+  <rect x="0" y="170" width="4" height="60" class="accent" />
+  <rect x="20" y="180" width="50" height="40" rx="8" class="accent" opacity="0.2" />
+  <circle cx="45" cy="200" r="10" fill="#0d9488" />
+  <circle cx="45" cy="270" r="10" fill="#475569" />
+
+  <!-- Main Content Area -->
+  <!-- Context Header -->
+  <circle cx="150" cy="80" r="30" class="accent-bg" />
+  <text x="138" y="88" style="fill: #0d9488; font-weight: 700; font-size: 22px;">C</text>
+  <text x="200" y="75" class="text-main" style="font-weight: 700; font-size: 24px;">Bé Nguyễn C.</text>
+  <text x="200" y="95" class="text-sub" style="font-size: 15px;">Quản lý Hồ sơ Tổng quát (Patient Profile &amp; Vitals)</text>
+
+  <rect x="1080" y="55" width="160" height="40" rx="8" class="bg" stroke="#cbd5e1" stroke-width="1" />
+  <text x="1160" y="80" class="text-main" style="font-weight: 600; font-size: 14px;" text-anchor="middle">← Trở về EMR</text>
+
+  <!-- Content Split -->
+  <!-- Left Side: Vitals -->
+  <rect x="120" y="150" width="500" height="600" rx="16" class="card" />
+  <text x="150" y="190" class="text-main" style="font-weight: 700; font-size: 18px;">1. Chỉ số Sinh tồn (Vitals)</text>
+  <line x1="120" y1="210" x2="620" y2="210" class="border" stroke-width="1" />
+
+  <text x="150" y="250" class="text-sub" style="font-weight: 500; font-size: 14px;">Cân nặng (kg)</text>
+  <rect x="150" y="260" width="200" height="45" rx="8" class="input-bg" />
+  <text x="165" y="288" class="text-main" style="font-size: 15px;">22</text>
+
+  <text x="380" y="250" class="text-sub" style="font-weight: 500; font-size: 14px;">Chiều cao (cm)</text>
+  <rect x="380" y="260" width="200" height="45" rx="8" class="input-bg" />
+  <text x="395" y="288" class="text-main" style="font-size: 15px;">115</text>
+
+  <text x="150" y="340" class="text-sub" style="font-weight: 500; font-size: 14px;">Nhiệt độ cơ thể (°C) hiện tại</text>
+  <rect x="150" y="350" width="430" height="45" rx="8" class="input-bg" />
+  <text x="165" y="378" class="text-main" style="font-size: 15px;">38.5</text>
+
+  <text x="150" y="430" class="text-sub" style="font-weight: 500; font-size: 14px;">Nhóm máu</text>
+  <rect x="150" y="440" width="430" height="45" rx="8" class="input-bg" />
+  <text x="165" y="468" class="text-main" style="font-size: 15px;">O+</text>
+
+  <!-- Right Side: Medical Background & Allergies -->
+  <rect x="660" y="150" width="580" height="600" rx="16" class="card" />
+  <text x="690" y="190" class="text-main" style="font-weight: 700; font-size: 18px;">2. Tiền sử Bệnh &amp; Dị ứng</text>
+  <line x1="660" y1="210" x2="1240" y2="210" class="border" stroke-width="1" />
+
+  <text x="690" y="250" class="text-sub" style="font-weight: 500; font-size: 14px;">Danh sách Dị ứng (Cảnh báo đỏ)</text>
+  <rect x="690" y="260" width="520" height="80" rx="8" class="input-bg" />
+  
+  <rect x="705" y="275" width="80" height="30" rx="15" fill="#fee2e2" />
+  <text x="718" y="295" style="fill: #991b1b; font-weight: 600; font-size: 13px;">Lactose X</text>
+  <text x="795" y="295" class="text-sub" style="font-size: 14px; font-style: italic;">Nhập thêm dị ứng...</text>
+
+  <text x="690" y="380" class="text-sub" style="font-weight: 500; font-size: 14px;">Tiền sử gia đình / Bệnh di truyền</text>
+  <rect x="690" y="390" width="520" height="80" rx="8" class="input-bg" />
+  <text x="705" y="415" class="text-main" style="font-size: 15px;">Không có ghi nhận đặc biệt.</text>
+
+  <!-- Save Button -->
+  <rect x="120" y="770" width="1120" height="80" class="card" /> <!-- sticky footer bg if we wanted, but let's just put it bottom right -->
+  
+  <rect x="690" y="660" width="140" height="45" rx="6" fill="#f1f5f9" />
+  <text x="760" y="688" class="text-sub" style="font-weight: 600; font-size: 15px;" text-anchor="middle">Hủy</text>
+
+  <rect x="850" y="660" width="360" height="45" rx="6" class="accent" />
+  <text x="1030" y="688" style="fill: white; font-weight: 700; font-size: 15px;" text-anchor="middle">Lưu Cập Nhật Hồ Sơ</text>
+
+</svg>

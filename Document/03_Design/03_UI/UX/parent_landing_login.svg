@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" width="400" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      .bg { fill: #f8fafc; }
+      .primary { fill: #0ea5e9; }
+      .card { fill: #ffffff; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
+      .text-main { fill: #0f172a; }
+      .text-sub { fill: #64748b; }
+      .input-bg { fill: #f1f5f9; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="400" height="800" />
+  
+  <!-- Hero Section -->
+  <rect width="400" height="400" rx="30" class="primary" />
+  <rect width="400" height="30" y="370" fill="#f8fafc" /> <!-- Hide bottom rounding if needed, but keeping it rounded looks nice -->
+  <rect width="400" height="400" class="primary" /> <!-- Solid top -->
+  <circle cx="200" cy="150" r="120" fill="white" opacity="0.1" />
+
+  <text x="200" y="100" style="fill: white; font-weight: 700; font-size: 32px;" text-anchor="middle">HCMS.</text>
+  <text x="200" y="130" style="fill: rgba(255,255,255,0.9); font-weight: 500; font-size: 16px;" text-anchor="middle">Phòng Khám Nhi Khoa</text>
+  <text x="200" y="180" style="fill: white; font-weight: 600; font-size: 20px;" text-anchor="middle">Chăm sóc bé yêu toàn diện</text>
+
+  <!-- Login Card -->
+  <rect x="20" y="260" width="360" height="460" rx="20" class="card" />
+
+  <text x="200" y="310" class="text-main" style="font-weight: 700; font-size: 22px;" text-anchor="middle">Tham gia cùng chúng tôi</text>
+  <text x="200" y="335" class="text-sub" style="font-size: 14px;" text-anchor="middle">Đăng nhập để đặt lịch &amp; tra cứu hồ sơ</text>
+
+  <!-- Form Fields -->
+  <text x="45" y="390" class="text-sub" style="font-weight: 500; font-size: 14px;">Số điện thoại Phụ huynh</text>
+  <rect x="40" y="400" width="320" height="50" rx="10" class="input-bg" stroke="#cbd5e1" stroke-width="1" />
+  <text x="60" y="430" class="text-main" style="font-size: 16px;">0912 345 678</text>
+
+  <!-- OTP Section / Password -->
+  <text x="45" y="480" class="text-sub" style="font-weight: 500; font-size: 14px;">Mã xác thực OTP</text>
+  <rect x="40" y="490" width="320" height="50" rx="10" class="input-bg" stroke="#cbd5e1" stroke-width="1" />
+  <text x="60" y="520" class="text-main" style="font-size: 16px; letter-spacing: 5px;">202688</text>
+  <text x="280" y="520" class="primary" style="font-weight: 600; font-size: 13px;">Gửi lại mã</text>
+
+  <!-- Login Button -->
+  <rect x="40" y="580" width="320" height="55" rx="12" class="primary" />
+  <text x="200" y="613" style="fill: white; font-weight: 700; font-size: 16px;" text-anchor="middle">Đăng nhập</text>
+
+  <!-- Register Link -->
+  <text x="200" y="670" class="text-sub" style="font-size: 14px;" text-anchor="middle">Lần đầu sử dụng?</text>
+  <text x="200" y="690" class="primary" style="font-weight: 700; font-size: 14px;" text-anchor="middle">Đăng ký tài khoản mới</text>
+
+</svg>

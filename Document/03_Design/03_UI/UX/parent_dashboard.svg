@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 800" width="400" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      .bg { fill: #f8fafc; }
+      .card { fill: #ffffff; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
+      .primary { fill: #0ea5e9; }
+      .text-main { fill: #0f172a; }
+      .text-sub { fill: #64748b; }
+      .accent-blue { fill: #e0f2fe; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="400" height="800" />
+  
+  <!-- Header -->
+  <rect class="card" width="400" height="120" />
+  <circle cx="40" cy="70" r="24" class="accent-blue" />
+  <text x="32" y="78" style="fill: #0ea5e9; font-weight: 700; font-size: 20px;">V</text>
+  <text x="80" y="65" class="text-sub" style="font-weight: 500; font-size: 14px;">Xin chào,</text>
+  <text x="80" y="85" class="text-main" style="font-weight: 700; font-size: 18px;">Chị Vy (Phụ huynh)</text>
+
+  <!-- CTA Box -->
+  <rect x="20" y="140" width="360" height="80" rx="16" class="primary" />
+  <text x="40" y="175" style="fill: white; font-weight: 700; font-size: 18px;">+ Đặt lịch khám mới</text>
+  <text x="40" y="195" style="fill: rgba(255,255,255,0.8); font-size: 13px;">Nhanh chóng, không phải chờ đợi</text>
+  <circle cx="340" cy="180" r="16" fill="white" opacity="0.2" />
+
+  <!-- Upcoming Appointment -->
+  <text x="20" y="260" class="text-main" style="font-weight: 700; font-size: 16px;">Lịch Hẹn Sắp Tới</text>
+  
+  <rect x="20" y="280" width="360" height="140" rx="16" class="card" />
+  <rect x="20" y="280" width="8" height="140" rx="4" class="primary" /> <!-- Left edge strip -->
+  
+  <text x="40" y="315" class="text-main" style="font-weight: 600; font-size: 15px;">Bé Trần Văn A - 4 Tuổi</text>
+  <text x="40" y="340" class="text-sub" style="font-size: 13px;">Lý do: Sốt cao, ho có đờm</text>
+  
+  <rect x="40" y="360" width="320" height="1" fill="#e2e8f0" />
+  
+  <text x="40" y="395" class="text-main" style="font-weight: 600; font-size: 15px;">Thứ 4, 15/06/2026</text>
+  <text x="180" y="395" class="primary" style="font-weight: 700; font-size: 15px;">08:30 Sáng</text>
+  <text x="280" y="395" class="text-main" style="font-weight: 600; font-size: 14px;">BS. Minh</text>
+
+  <!-- Visit History -->
+  <text x="20" y="470" class="text-main" style="font-weight: 700; font-size: 16px;">Lịch sử Thăm Khám</text>
+  <text x="320" y="470" class="primary" style="font-weight: 600; font-size: 13px;">Xem tất cả</text>
+
+  <!-- History Item 1 -->
+  <rect x="20" y="490" width="360" height="90" rx="12" class="card" stroke="#e2e8f0" stroke-width="1" />
+  <rect x="35" y="505" width="40" height="40" rx="8" class="bg" />
+  <text x="50" y="530" class="text-sub" style="font-size: 16px;">📋</text>
+  
+  <text x="90" y="520" class="text-main" style="font-weight: 600; font-size: 15px;">12/03/2026</text>
+  <text x="90" y="540" class="text-sub" style="font-size: 13px;">Viêm họng cấp (BS. Minh)</text>
+  
+  <rect x="270" y="515" width="90" height="30" rx="15" class="primary" opacity="0.1" />
+  <text x="282" y="535" class="primary" style="font-weight: 600; font-size: 12px;">Xem Đơn thuốc</text>
+
+  <!-- History Item 2 -->
+  <rect x="20" y="595" width="360" height="90" rx="12" class="card" stroke="#e2e8f0" stroke-width="1" />
+  <rect x="35" y="610" width="40" height="40" rx="8" class="bg" />
+  <text x="50" y="635" class="text-sub" style="font-size: 16px;">📋</text>
+  
+  <text x="90" y="625" class="text-main" style="font-weight: 600; font-size: 15px;">05/01/2026</text>
+  <text x="90" y="645" class="text-sub" style="font-size: 13px;">Khám tổng quát (BS. Hoàng)</text>
+  
+  <rect x="270" y="620" width="90" height="30" rx="15" class="primary" opacity="0.1" />
+  <text x="282" y="640" class="primary" style="font-weight: 600; font-size: 12px;">Xem Đơn thuốc</text>
+
+  <!-- Bottom Nav Bar -->
+  <rect x="0" y="730" width="400" height="70" class="card" />
+  <text x="55" y="765" class="primary" style="font-weight: 700; font-size: 13px;">Trang chủ</text>
+  <text x="175" y="765" class="text-sub" style="font-weight: 500; font-size: 13px;">Bệnh nhi</text>
+  <text x="290" y="765" class="text-sub" style="font-weight: 500; font-size: 13px;">Hồ sơ cá nhân</text>
+</svg>

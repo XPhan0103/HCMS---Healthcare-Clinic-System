@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      .bg { fill: #cbd5e1; } /* Dark overlay simulation */
+      .card { fill: #ffffff; filter: drop-shadow(0 20px 25px rgba(0,0,0,0.15)); }
+      .primary { fill: #0ea5e9; }
+      .accent { fill: #f59e0b; }
+      .text-main { fill: #0f172a; }
+      .text-sub { fill: #64748b; }
+      .border { fill: #e2e8f0; stroke: #e2e8f0; stroke-width: 1; }
+      .dashed { stroke: #cbd5e1; stroke-width: 2; stroke-dasharray: 6 6; }
+      .badge-warning { fill: #fef3c7; }
+      .badge-warning-text { fill: #92400e; font-weight: 600; font-size: 14px; }
+      .print-btn { fill: #f1f5f9; }
+    </style>
+  </defs>
+
+  <!-- Background Dimming Overlay -->
+  <rect x="0" y="0" width="1280" height="800" class="bg" opacity="0.6" />
+
+  <!-- Invoice Modal Card -->
+  <rect x="340" y="60" width="600" height="680" rx="16" class="card" />
+
+  <!-- Close Button X -->
+  <circle cx="890" cy="110" r="16" fill="#f1f5f9" />
+  <text x="884" y="116" class="text-sub" style="font-weight: 700; font-size: 16px;">X</text>
+
+  <!-- Title & Status -->
+  <text x="400" y="120" class="text-main" style="font-weight: 700; font-size: 24px;">Hóa Đơn Dịch Vụ</text>
+  <text x="400" y="145" class="text-sub" style="font-size: 14px;">Mã HĐ: INV-20260312-0930</text>
+
+  <rect x="740" y="98" width="100" height="28" rx="14" class="badge-warning" />
+  <text x="765" y="117" class="badge-warning-text">Unpaid</text>
+
+  <!-- Patient Details -->
+  <rect x="400" y="180" width="480" height="90" rx="8" class="bg" fill-opacity="0.2" stroke="#e2e8f0" stroke-width="1" />
+  <text x="420" y="210" class="text-sub" style="font-weight: 600; font-size: 13px;">BỆNH NHI</text>
+  <text x="420" y="235" class="text-main" style="font-weight: 700; font-size: 16px;">Bé Nguyễn C (6 tuổi)</text>
+  <text x="420" y="255" class="text-main" style="font-size: 13px;">Phụ huynh: Chị Vy - 090xxxx123</text>
+
+  <text x="680" y="210" class="text-sub" style="font-weight: 600; font-size: 13px;">THÔNG TIN KHÁM</text>
+  <text x="680" y="235" class="text-main" style="font-size: 14px;">BS. Minh</text>
+  <text x="680" y="255" class="text-main" style="font-size: 14px;">Ngày: 12/03/2026 09:30</text>
+
+  <!-- Invoice Table Header -->
+  <text x="400" y="320" class="text-main" style="font-weight: 600; font-size: 14px;">TÊN DỊCH VỤ / THUỐC</text>
+  <text x="660" y="320" class="text-main" style="font-weight: 600; font-size: 14px;">S.LƯỢNG</text>
+  <text x="800" y="320" class="text-main" style="font-weight: 600; font-size: 14px;" text-anchor="end">THÀNH TIỀN</text>
+  <line x1="400" y1="335" x2="880" y2="335" class="border" />
+
+  <!-- Item 1: Service -->
+  <text x="400" y="370" class="text-main" style="font-weight: 600; font-size: 15px;">Phí khám Nhi khoa Lâm sàng</text>
+  <text x="400" y="390" class="text-sub" style="font-size: 13px;">Mã: SV-001</text>
+  <text x="680" y="370" class="text-main" style="font-size: 15px;">1</text>
+  <text x="880" y="370" class="text-main" style="font-size: 15px;" text-anchor="end">150.000 VNĐ</text>
+
+  <!-- Item 2: Drug 1 -->
+  <text x="400" y="440" class="text-main" style="font-weight: 600; font-size: 15px;">Hapacol 150mg (Gói)</text>
+  <text x="400" y="460" class="text-sub" style="font-size: 13px;">Thuốc nội trú</text>
+  <text x="680" y="440" class="text-main" style="font-size: 15px;">10</text>
+  <text x="880" y="440" class="text-main" style="font-size: 15px;" text-anchor="end">35.000 VNĐ</text>
+
+  <!-- Item 3: Drug 2 -->
+  <text x="400" y="510" class="text-main" style="font-weight: 600; font-size: 15px;">Oresol 27.9g (Gói)</text>
+  <text x="400" y="530" class="text-sub" style="font-size: 13px;">Thuốc nội trú</text>
+  <text x="680" y="510" class="text-main" style="font-size: 15px;">5</text>
+  <text x="880" y="510" class="text-main" style="font-size: 15px;" text-anchor="end">15.000 VNĐ</text>
+
+  <!-- Total Calculation -->
+  <line x1="400" y1="560" x2="880" y2="560" class="dashed" />
+  
+  <text x="680" y="595" class="text-main" style="font-weight: 700; font-size: 18px;">Tổng Cộng:</text>
+  <text x="880" y="595" class="primary" style="font-weight: 700; font-size: 24px;" text-anchor="end">200.000 VNĐ</text>
+
+  <!-- 1-Click Paid Button (WF-03 Focus) -->
+  <rect x="400" y="650" width="120" height="44" rx="8" class="print-btn" />
+  <text x="460" y="677" class="text-sub" style="font-weight: 600; font-size: 14px;" text-anchor="middle">In Biên Lai</text>
+
+  <rect x="540" y="650" width="340" height="44" rx="8" class="accent" filter="drop-shadow(0 4px 6px rgba(245,158,11,0.25))" />
+  <text x="710" y="677" style="fill: white; font-weight: 700; font-size: 15px;" text-anchor="middle">1-CLICK PAID (Xóa Nợ Hóa Đơn)</text>
+
+</svg>
