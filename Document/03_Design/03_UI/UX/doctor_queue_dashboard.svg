@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap');
+      text { font-family: 'Inter', sans-serif; }
+      .bg { fill: #f8fafc; }
+      .sidebar { fill: #0f172a; }
+      .card { fill: #ffffff; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05)); }
+      .accent { fill: #0d9488; }
+      .text-main { fill: #1e293b; }
+      .text-sub { fill: #64748b; }
+      .border { fill: #e2e8f0; }
+      .bg-gray { fill: #f1f5f9; }
+      .badge-yellow { fill: #fef3c7; }
+      .badge-yellow-text { fill: #92400e; font-weight: 600; font-size: 13px; }
+      .badge-blue { fill: #e0f2fe; }
+      .badge-blue-text { fill: #075985; font-weight: 600; font-size: 13px; }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect class="bg" width="1280" height="800" />
+
+  <!-- Sidebar (Matching Doctor EMR) -->
+  <rect class="sidebar" width="90" height="800" />
+  <circle cx="45" cy="50" r="16" class="accent" />
+  <text x="36" y="56" style="fill: white; font-weight: 700; font-size: 18px;">H</text>
+  
+  <!-- Active Item: Dashboard -->
+  <rect x="0" y="100" width="4" height="60" class="accent" />
+  <rect x="20" y="110" width="50" height="40" rx="8" class="accent" opacity="0.2" />
+  <circle cx="45" cy="130" r="10" fill="#0d9488" />
+  
+  <circle cx="45" cy="200" r="10" fill="#475569" />
+  <circle cx="45" cy="270" r="10" fill="#475569" />
+  <circle cx="45" cy="740" r="18" fill="#e2e8f0" />
+  <text x="36" y="745" style="fill: #0f172a; font-weight: 700; font-size: 13px;">BS</text>
+
+  <!-- Main Content Area -->
+  <text x="140" y="80" class="text-main" style="font-weight: 700; font-size: 28px;">Xin chào, BS. Minh</text>
+  <text x="140" y="110" class="text-sub" style="font-weight: 500; font-size: 15px;">Dưới đây là danh sách bệnh nhi đang chờ khám ngày hôm nay (15/06/2026).</text>
+
+  <!-- Quick Stats -->
+  <rect x="140" y="150" width="220" height="90" rx="12" class="card" />
+  <text x="160" y="185" class="text-sub" style="font-weight: 600; font-size: 14px;">Đang Đợi Khám</text>
+  <text x="160" y="220" class="accent" style="font-weight: 700; font-size: 32px;">03</text>
+  
+  <rect x="380" y="150" width="220" height="90" rx="12" class="card" />
+  <text x="400" y="185" class="text-sub" style="font-weight: 600; font-size: 14px;">Đã Khám Lịch Hôm Nay</text>
+  <text x="400" y="220" class="text-main" style="font-weight: 700; font-size: 32px;">07</text>
+
+  <!-- Active Call / Next Patient Highlight Banner -->
+  <rect x="140" y="270" width="1080" height="120" rx="16" class="card" stroke="#0d9488" stroke-width="2" />
+  <rect x="140" y="270" width="8" height="120" rx="4" class="accent" />
+  
+  <circle cx="210" cy="330" r="30" class="bg-gray" />
+  <text x="198" y="338" class="text-sub" style="font-weight: 700; font-size: 20px;">C</text>
+  
+  <text x="260" y="315" class="accent" style="font-weight: 700; font-size: 14px;">ĐANG GỌI SỐ / TRONG PHÒNG KHÁM</text>
+  <text x="260" y="340" class="text-main" style="font-weight: 700; font-size: 22px;">Bệnh nhi Nguyễn C (6 Tuổi)</text>
+  <text x="260" y="360" class="text-sub" style="font-size: 14px;">Lý do: Đau bụng âm ỉ</text>
+  
+  <rect x="1000" y="310" width="170" height="44" rx="8" class="accent" />
+  <text x="1015" y="337" style="fill: white; font-weight: 600; font-size: 14px;">Bắt đầu Khám (EMR)</text>
+
+  <!-- Patient Queue Table -->
+  <text x="140" y="440" class="text-main" style="font-weight: 700; font-size: 20px;">Danh sách Đợi (Queue)</text>
+
+  <rect x="140" y="460" width="1080" height="300" rx="12" class="card" />
+  
+  <rect x="140" y="460" width="1080" height="50" rx="12" class="bg-gray" />
+  <rect x="140" y="500" width="1080" height="10" class="card" /> <!-- Hide bottom rounding -->
+  <line x1="140" y1="510" x2="1220" y2="510" class="border" stroke-width="1" />
+  
+  <text x="170" y="490" class="text-sub" style="font-weight: 600; font-size: 13px;">THỜI GIAN</text>
+  <text x="320" y="490" class="text-sub" style="font-weight: 600; font-size: 13px;">HỌ TÊN BỆNH NHI</text>
+  <text x="560" y="490" class="text-sub" style="font-weight: 600; font-size: 13px;">LÝ DO KHÁM</text>
+  <text x="860" y="490" class="text-sub" style="font-weight: 600; font-size: 13px;">TRẠNG THÁI</text>
+
+  <!-- Queue Item 1 -->
+  <line x1="140" y1="580" x2="1220" y2="580" class="border" stroke-width="1" />
+  <text x="170" y="545" class="text-main" style="font-weight: 600; font-size: 15px;">10:00</text>
+  <text x="320" y="545" class="text-main" style="font-weight: 600; font-size: 15px;">Phạm D (3 Tuổi)</text>
+  <text x="560" y="545" class="text-main" style="font-size: 15px;">Sưng mắt đỏ</text>
+  
+  <rect x="860" y="525" width="80" height="26" rx="13" class="badge-blue" />
+  <text x="872" y="543" class="badge-blue-text">Waiting</text>
+  
+  <text x="1100" y="545" class="accent" style="font-size: 14px; font-weight: 600;">Xem Hồ sơ</text>
+
+  <!-- Queue Item 2 -->
+  <line x1="140" y1="650" x2="1220" y2="650" class="border" stroke-width="1" />
+  <text x="170" y="615" class="text-main" style="font-weight: 600; font-size: 15px;">10:30</text>
+  <text x="320" y="615" class="text-main" style="font-weight: 600; font-size: 15px;">Nguyễn Thị E (1.5 Tuổi)</text>
+  <text x="560" y="615" class="text-main" style="font-size: 15px;">Khám định kỳ, tiêm chủng</text>
+  
+  <rect x="860" y="595" width="80" height="26" rx="13" class="badge-blue" />
+  <text x="872" y="613" class="badge-blue-text">Waiting</text>
+  
+  <text x="1100" y="615" class="accent" style="font-size: 14px; font-weight: 600;">Xem Hồ sơ</text>
+
+  <!-- Queue Item 3 -->
+  <line x1="140" y1="720" x2="1220" y2="720" class="border" stroke-width="1" />
+  <text x="170" y="685" class="text-main" style="font-weight: 600; font-size: 15px;">11:00</text>
+  <text x="320" y="685" class="text-main" style="font-weight: 600; font-size: 15px;">Lê F (8 Tuổi)</text>
+  <text x="560" y="685" class="text-main" style="font-size: 15px;">Kiểm tra hô hấp (Walk-in)</text>
+  
+  <rect x="860" y="665" width="80" height="26" rx="13" class="badge-yellow" />
+  <text x="872" y="683" class="badge-yellow-text">Walk-in</text>
+  
+  <text x="1100" y="685" class="accent" style="font-size: 14px; font-weight: 600;">Xem Hồ sơ</text>
+
+</svg>
