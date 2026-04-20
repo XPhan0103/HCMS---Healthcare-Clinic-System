@@ -1,0 +1,1772 @@
+openapi: "3.0.3"
+
+info:
+  title: "HCMS - Healthcare Clinic Management System API"
+  description: |
+    Official API Contract for the HCMS MVP (v1.0).
+    This contract covers all backend endpoints derived from the 14 Use Cases defined in HCMS_SRS_v0.1.
+    
+    Design Rules enforced (see api_design_rule.md):
+    - Global route prefix: /api/v1/
+    - Path URL convention: kebab-case
+    - All responses wrapped in: { code, message, data }
+    - JWT Bearer Authentication on all secured endpoints
+    - Sensitive fields (password, etc.) are never returned in responses
+    
+    Actors:
+      - PARENT  : External user (phone/OTP authentication)
+      - RECEPTIONIST : Internal clinic staff (username/password)
+      - DOCTOR  : Internal clinical user (username/password)
+  version: "1.0.0"
+  contact:
+    name: "HCMS Development Team"
+
+servers:
+  - url: "http://localhost:8080"
+    description: "Local Development Server"
+  - url: "https://api.hcms.clinic"
+    description: "Production Server"
+
+# ─────────────────────────────────────────────
+# SECURITY SCHEMES
+# ─────────────────────────────────────────────
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "JWT token obtained from /api/v1/auth/login or /api/v1/auth/parent/verify-otp"
+
+  # ─── REUSABLE SCHEMAS ───────────────────────
+  schemas:
+
+    # ── Standard Response Envelope ────────────
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Success"
+        data:
+          description: "Payload — object, array, or null"
+
+    # ── AUTH ──────────────────────────────────
+    StaffLoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+          example: "receptionist01"
+        password:
+          type: string
+          format: password
+          example: "••••••••"
+
+    StaffAuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        tokenType:
+          type: string
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          example: 86400
+        userId:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          example: "Chị Lan"
+        role:
+          type: string
+          enum: [RECEPTIONIST, DOCTOR]
+          example: "RECEPTIONIST"
+
+    ParentOtpRequest:
+      type: object
+      required: [phoneNumber]
+      properties:
+        phoneNumber:
+          type: string
+          example: "0909123456"
+
+    ParentVerifyOtpRequest:
+      type: object
+      required: [phoneNumber, otp]
+      properties:
+        phoneNumber:
+          type: string
+          example: "0909123456"
+        otp:
+          type: string
+          example: "123456"
+
+    ParentAuthResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        tokenType:
+          type: string
+          example: "Bearer"
+        expiresIn:
+          type: integer
+          example: 3600
+        patientId:
+          type: string
+          format: uuid
+          description: "The primary child patient linked to this parent account"
+
+    # ── PATIENT ───────────────────────────────
+    PatientCreateRequest:
+      type: object
+      required: [fullName, dateOfBirth, gender, parentPhoneNumber]
+      properties:
+        fullName:
+          type: string
+          example: "Nguyễn Bảo An"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "2020-03-15"
+        gender:
+          type: string
+          enum: [MALE, FEMALE, OTHER]
+          example: "MALE"
+        parentPhoneNumber:
+          type: string
+          example: "0909123456"
+        parentEmail:
+          type: string
+          format: email
+          example: "me@example.com"
+        reasonForVisit:
+          type: string
+          example: "Sốt cao 3 ngày"
+
+    PatientUpdateRequest:
+      type: object
+      properties:
+        heightCm:
+          type: number
+          format: float
+          example: 95.5
+        weightKg:
+          type: number
+          format: float
+          example: 14.2
+        bloodType:
+          type: string
+          enum: [A, B, AB, O, UNKNOWN]
+          example: "A"
+        allergies:
+          type: string
+          example: "Penicillin, Shrimp"
+        chronicConditions:
+          type: string
+          example: "Asthma"
+        vaccinationNotes:
+          type: string
+          example: "BCG done. Missing MMR booster."
+
+    PatientResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          example: "Nguyễn Bảo An"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "2020-03-15"
+        gender:
+          type: string
+          example: "MALE"
+        parentPhoneNumber:
+          type: string
+          example: "0909123456"
+        parentEmail:
+          type: string
+          example: "me@example.com"
+        heightCm:
+          type: number
+          example: 95.5
+        weightKg:
+          type: number
+          example: 14.2
+        bloodType:
+          type: string
+          example: "A"
+        allergies:
+          type: string
+          example: "Penicillin"
+        chronicConditions:
+          type: string
+          example: "Asthma"
+        vaccinationNotes:
+          type: string
+          example: "BCG done."
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── APPOINTMENT ───────────────────────────
+    BookAppointmentRequest:
+      type: object
+      required: [doctorId, slotDateTime, patient]
+      properties:
+        doctorId:
+          type: string
+          format: uuid
+          example: "d1a2b3c4-..."
+        slotDateTime:
+          type: string
+          format: date-time
+          example: "2026-06-01T09:00:00"
+        patient:
+          $ref: '#/components/schemas/PatientCreateRequest'
+
+    WalkInAppointmentRequest:
+      type: object
+      required: [doctorId, patient]
+      properties:
+        doctorId:
+          type: string
+          format: uuid
+          example: "d1a2b3c4-..."
+        slotDateTime:
+          type: string
+          format: date-time
+          example: "2026-06-01T10:30:00"
+        patient:
+          $ref: '#/components/schemas/PatientCreateRequest'
+
+    AppointmentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        patientId:
+          type: string
+          format: uuid
+        patientName:
+          type: string
+          example: "Nguyễn Bảo An"
+        doctorId:
+          type: string
+          format: uuid
+        doctorName:
+          type: string
+          example: "BS. Minh"
+        slotDateTime:
+          type: string
+          format: date-time
+          example: "2026-06-01T09:00:00"
+        status:
+          type: string
+          enum: [PENDING, CONFIRMED, CHECKED_IN, IN_PROGRESS, COMPLETED, CANCELLED]
+          example: "PENDING"
+        reasonForVisit:
+          type: string
+          example: "Sốt cao 3 ngày"
+        createdAt:
+          type: string
+          format: date-time
+
+    AppointmentStatusUpdateRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [CONFIRMED, CHECKED_IN, IN_PROGRESS, COMPLETED, CANCELLED]
+          example: "CONFIRMED"
+        cancellationReason:
+          type: string
+          description: "Required if status is CANCELLED"
+          example: "Doctor unavailable"
+
+    # ── DOCTOR (lookup) ───────────────────────
+    DoctorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          example: "BS. Minh"
+        specialty:
+          type: string
+          example: "Paediatrics"
+
+    AvailableSlot:
+      type: object
+      properties:
+        slotDateTime:
+          type: string
+          format: date-time
+          example: "2026-06-01T09:00:00"
+        available:
+          type: boolean
+          example: true
+
+    # ── VISIT ─────────────────────────────────
+    VisitCreateRequest:
+      type: object
+      required: [appointmentId, diagnosis]
+      properties:
+        appointmentId:
+          type: string
+          format: uuid
+        symptoms:
+          type: string
+          example: "Sốt 38.5°C, ho khan"
+        vitalSigns:
+          type: string
+          example: "HR: 100bpm, SpO2: 98%"
+        diagnosis:
+          type: string
+          example: "Upper Respiratory Tract Infection (J06.9)"
+        aftercareInstructions:
+          type: string
+          example: "Uống nhiều nước. Tái khám sau 3 ngày nếu không giảm sốt."
+
+    VisitResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        appointmentId:
+          type: string
+          format: uuid
+        patientId:
+          type: string
+          format: uuid
+        doctorId:
+          type: string
+          format: uuid
+        doctorName:
+          type: string
+          example: "BS. Minh"
+        symptoms:
+          type: string
+        vitalSigns:
+          type: string
+        diagnosis:
+          type: string
+        aftercareInstructions:
+          type: string
+        status:
+          type: string
+          enum: [OPEN, FINALIZED]
+          example: "OPEN"
+        visitDate:
+          type: string
+          format: date-time
+        prescription:
+          $ref: '#/components/schemas/PrescriptionResponse'
+
+    # ── PRESCRIPTION ──────────────────────────
+    PrescriptionItem:
+      type: object
+      required: [drugName, dosage, frequency]
+      properties:
+        drugName:
+          type: string
+          example: "Amoxicillin 250mg"
+        dosage:
+          type: string
+          example: "1 tablet"
+        frequency:
+          type: string
+          example: "3 times/day"
+        route:
+          type: string
+          example: "Oral"
+        durationDays:
+          type: integer
+          example: 5
+        notes:
+          type: string
+          example: "Take after meals"
+
+    PrescriptionCreateRequest:
+      type: object
+      required: [visitId, items]
+      properties:
+        visitId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrescriptionItem'
+          minItems: 0
+
+    PrescriptionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        visitId:
+          type: string
+          format: uuid
+        issuedBy:
+          type: string
+          example: "BS. Minh"
+        issuedAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrescriptionItem'
+
+    # ── BILLING ───────────────────────────────
+    BillingResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        appointmentId:
+          type: string
+          format: uuid
+        patientName:
+          type: string
+          example: "Nguyễn Bảo An"
+        consultationFee:
+          type: number
+          format: double
+          example: 150000
+        medicationCost:
+          type: number
+          format: double
+          example: 75000
+        totalAmount:
+          type: number
+          format: double
+          example: 225000
+        status:
+          type: string
+          enum: [UNPAID, PAID]
+          example: "UNPAID"
+        paidAt:
+          type: string
+          format: date-time
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+
+    # ── DRUG AUTOCOMPLETE ─────────────────────
+    DrugSuggestion:
+      type: object
+      properties:
+        drugName:
+          type: string
+          example: "Amoxicillin 250mg"
+        defaultDosage:
+          type: string
+          example: "1 tablet"
+        defaultFrequency:
+          type: string
+          example: "3 times/day"
+
+    # ── NOTIFICATION ──────────────────────────
+    NotificationResponse:
+      type: object
+      properties:
+        notificationId:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [APPOINTMENT_CONFIRMED, APPOINTMENT_CANCELLED]
+        sentTo:
+          type: string
+          example: "0909123456"
+        sentAt:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [SENT, FAILED]
+
+    # ── ERROR ─────────────────────────────────
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: "Validation failed"
+        data:
+          nullable: true
+          example: null
+
+# ─────────────────────────────────────────────
+# PATHS
+# ─────────────────────────────────────────────
+paths:
+
+  # ════════════════════════════════════════════
+  # [AUTH] — Unauthenticated entry points
+  # ════════════════════════════════════════════
+
+  /api/v1/auth/staff/login:
+    post:
+      tags: [Authentication]
+      summary: "Staff Login (Receptionist / Doctor)"
+      description: |
+        UC-related: UC-05, UC-06, UC-07, UC-08, UC-09, UC-10, UC-11, UC-12, UC-13, UC-14
+        Authenticates internal clinic staff (Receptionist or Doctor) using username + password.
+        Returns a JWT Bearer token for all subsequent secured requests.
+      operationId: staffLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffLoginRequest'
+      responses:
+        '200':
+          description: "Login successful"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/StaffAuthResponse'
+        '401':
+          description: "Invalid credentials"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/auth/parent/request-otp:
+    post:
+      tags: [Authentication]
+      summary: "Parent Request OTP"
+      description: |
+        UC-related: UC-04
+        Parent (external user) provides their registered phone number.
+        System sends a one-time OTP via SMS for authentication.
+      operationId: parentRequestOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentOtpRequest'
+      responses:
+        '200':
+          description: "OTP sent successfully"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            example: "OTP has been sent to 0909123456"
+        '404':
+          description: "Phone number not registered"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/auth/parent/verify-otp:
+    post:
+      tags: [Authentication]
+      summary: "Parent Verify OTP & Get Token"
+      description: |
+        UC-related: UC-04
+        Validates the OTP entered by the Parent. On success, issues a JWT token
+        granting read-only access to the EMR Portal (clinical notes & prescriptions).
+      operationId: parentVerifyOtp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParentVerifyOtpRequest'
+      responses:
+        '200':
+          description: "OTP verified, token issued"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ParentAuthResponse'
+        '401':
+          description: "Invalid or expired OTP (MSG04)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [DOCTORS] — Doctor discovery (public read)
+  # ════════════════════════════════════════════
+
+  /api/v1/doctors:
+    get:
+      tags: [Doctors]
+      summary: "List Available Doctors"
+      description: |
+        UC-related: UC-01
+        Returns the list of active doctors at the clinic that Parents can choose
+        when booking an appointment online. No authentication required.
+      operationId: listDoctors
+      responses:
+        '200':
+          description: "List of doctors"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/DoctorResponse'
+
+  /api/v1/doctors/{doctorId}/available-slots:
+    get:
+      tags: [Doctors]
+      summary: "Get Available Time Slots for a Doctor"
+      description: |
+        UC-related: UC-01
+        Returns a list of open appointment slots for the specified doctor
+        for the next 7 days. Used by Parents in the Booking Portal to
+        select a preferred date and time.
+      operationId: getDoctorAvailableSlots
+      parameters:
+        - name: doctorId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: fromDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2026-06-01"
+          description: "Start date to fetch available slots (defaults to today)"
+      responses:
+        '200':
+          description: "Available slots"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AvailableSlot'
+        '404':
+          description: "Doctor not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [APPOINTMENTS] — Booking & Management
+  # ════════════════════════════════════════════
+
+  /api/v1/appointments:
+    post:
+      tags: [Appointments]
+      summary: "Book Appointment Online (Self-Service)"
+      description: |
+        UC-related: UC-01, UC-02
+        Called by Parents from the online Booking Portal.
+        Validates slot availability (BR-01), creates/updates PATIENT entity,
+        and creates APPOINTMENT with status PENDING.
+        Does NOT require authentication — any parent can submit a booking.
+      operationId: bookAppointment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookAppointmentRequest'
+      responses:
+        '201':
+          description: "Appointment created with status PENDING"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 201
+                      data:
+                        $ref: '#/components/schemas/AppointmentResponse'
+        '409':
+          description: "Time slot no longer available (MSG01)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: "Validation error — missing required fields (MSG02, MSG03)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/appointments/today:
+    get:
+      tags: [Appointments]
+      summary: "View Today's Appointment Dashboard"
+      description: |
+        UC-related: UC-05
+        Returns the full list of appointments for the current date, 
+        categorized by status (PENDING, CONFIRMED, CHECKED_IN, COMPLETED).
+        Used by the Receptionist on their dashboard. Auto-refresh supported
+        via polling this endpoint.
+      operationId: getTodayAppointments
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [PENDING, CONFIRMED, CHECKED_IN, IN_PROGRESS, COMPLETED, CANCELLED]
+          description: "Filter by appointment status"
+        - name: doctorId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: "Filter by doctor (optional for Receptionist full view)"
+      responses:
+        '200':
+          description: "Today's appointment list"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/AppointmentResponse'
+        '401':
+          description: "Unauthorized — JWT token missing or invalid"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/appointments/walk-in:
+    post:
+      tags: [Appointments]
+      summary: "Register Walk-in Appointment"
+      description: |
+        UC-related: UC-07
+        Called by the Receptionist to manually register a walk-in patient at the desk.
+        If the patient already exists (search by phone), links to existing PATIENT record.
+        Creates APPOINTMENT with status CHECKED_IN directly.
+      operationId: registerWalkIn
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalkInAppointmentRequest'
+      responses:
+        '201':
+          description: "Walk-in appointment registered with status CHECKED_IN"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 201
+                      data:
+                        $ref: '#/components/schemas/AppointmentResponse'
+        '422':
+          description: "Validation error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/appointments/{appointmentId}:
+    get:
+      tags: [Appointments]
+      summary: "Get Appointment Detail"
+      description: |
+        Returns full details of a specific appointment by ID.
+        Used to populate modals/drawers in both Receptionist and Doctor dashboards.
+      operationId: getAppointmentById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Appointment detail"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AppointmentResponse'
+        '404':
+          description: "Appointment not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/appointments/{appointmentId}/status:
+    patch:
+      tags: [Appointments]
+      summary: "Update Appointment Status (Confirm / Cancel / Check-in)"
+      description: |
+        UC-related: UC-06 (Confirm), UC-07 (Check-in), UC-06 Alt Flow (Cancel)
+        Receptionist updates the status of an appointment.
+        - CONFIRMED → triggers UC-03 (sends notification to parent).
+        - CANCELLED  → triggers cancellation notification with reason.
+        - CHECKED_IN → used for walk-in or patient arrival confirmation.
+      operationId: updateAppointmentStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppointmentStatusUpdateRequest'
+      responses:
+        '200':
+          description: "Status updated successfully"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/AppointmentResponse'
+        '400':
+          description: "Invalid status transition"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Appointment not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [NOTIFICATIONS] — UC-03
+  # ════════════════════════════════════════════
+
+  /api/v1/appointments/{appointmentId}/notify:
+    post:
+      tags: [Notifications]
+      summary: "Send Appointment Notification to Parent"
+      description: |
+        UC-related: UC-03
+        Manually triggers sending an SMS/Email notification to the parent
+        for a specific appointment (CONFIRMED or CANCELLED).
+        Note: This is auto-triggered by the system when status changes via
+        PATCH /api/v1/appointments/{appointmentId}/status, but can also be
+        called explicitly for retries.
+      operationId: sendAppointmentNotification
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: appointmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type]
+              properties:
+                type:
+                  type: string
+                  enum: [APPOINTMENT_CONFIRMED, APPOINTMENT_CANCELLED]
+                  example: "APPOINTMENT_CONFIRMED"
+                cancellationReason:
+                  type: string
+                  example: "Doctor unavailable on this day"
+      responses:
+        '200':
+          description: "Notification dispatched"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/NotificationResponse'
+        '404':
+          description: "Appointment not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [PATIENTS] — PATIENT Entity Management
+  # ════════════════════════════════════════════
+
+  /api/v1/patients/search:
+    get:
+      tags: [Patients]
+      summary: "Search Patient by Phone Number"
+      description: |
+        UC-related: UC-07 (Walk-in Alt Flow — Patient Exists)
+        Allows Receptionist to search for an existing patient by phone number
+        before creating a duplicate walk-in record. Returns matched PATIENT profiles.
+      operationId: searchPatientByPhone
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: phone
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "0909123456"
+      responses:
+        '200':
+          description: "Matching patient(s) found"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PatientResponse'
+
+  /api/v1/patients/{patientId}:
+    get:
+      tags: [Patients]
+      summary: "Get Patient Profile"
+      description: |
+        UC-related: UC-11, UC-14
+        Returns the full PATIENT profile including demographics, allergies,
+        chronic conditions, and vaccination notes for a Doctor's EMR view.
+      operationId: getPatientById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Patient profile"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PatientResponse'
+        '404':
+          description: "Patient not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    patch:
+      tags: [Patients]
+      summary: "Update Patient Medical Profile"
+      description: |
+        UC-related: UC-14
+        Allows the Doctor to update supplementary medical information in the
+        PATIENT entity: height, weight, blood type, allergies, chronic conditions,
+        and vaccination notes. Uses PATCH (partial update).
+      operationId: updatePatientProfile
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatientUpdateRequest'
+      responses:
+        '200':
+          description: "Patient profile updated successfully"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PatientResponse'
+        '404':
+          description: "Patient not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/patients/{patientId}/medical-history:
+    get:
+      tags: [Patients]
+      summary: "Get Patient Full Medical History (EMR)"
+      description: |
+        UC-related: UC-11
+        Doctor retrieves the full EMR for a patient: demographics, all past VISIT records
+        (symptoms, diagnosis, aftercare), and all linked PRESCRIPTION records.
+        Returns a structured timeline view to support evidence-based clinical decisions.
+      operationId: getPatientMedicalHistory
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Patient medical history (EMR)"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          patient:
+                            $ref: '#/components/schemas/PatientResponse'
+                          visitHistory:
+                            type: array
+                            items:
+                              $ref: '#/components/schemas/VisitResponse'
+        '404':
+          description: "Patient not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/patients/{patientId}/emr-portal:
+    get:
+      tags: [Patients]
+      summary: "Parent — View Latest Clinical Notes & Prescriptions (EMR Portal)"
+      description: |
+        UC-related: UC-04
+        Authenticated via OTP-based JWT (Parent token).
+        Returns the most recent VISIT record (diagnosis, aftercare instructions)
+        and its linked PRESCRIPTION (medicine name, dosage, frequency)
+        for the parent to view on their smartphone.
+        Sensitive staff fields are stripped before returning.
+      operationId: getPatientEmrPortal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: patientId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Latest visit notes and prescription"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          visitDate:
+                            type: string
+                            format: date-time
+                          doctorName:
+                            type: string
+                            example: "BS. Minh"
+                          diagnosis:
+                            type: string
+                            example: "Upper Respiratory Tract Infection (J06.9)"
+                          aftercareInstructions:
+                            type: string
+                            example: "Uống nhiều nước. Tái khám sau 3 ngày."
+                          prescription:
+                            $ref: '#/components/schemas/PrescriptionResponse'
+        '401':
+          description: "Unauthorized — OTP token invalid or expired"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "No finalized visit found for this patient"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [DOCTOR QUEUE] — UC-10 Clinical Dashboard
+  # ════════════════════════════════════════════
+
+  /api/v1/doctors/me/patient-queue:
+    get:
+      tags: [Doctor Queue]
+      summary: "Doctor — View Personal Patient Queue"
+      description: |
+        UC-related: UC-10
+        Returns the ordered list of appointments assigned to the currently authenticated Doctor
+        for today. Queue is sorted by slotDateTime.
+        Displays CHECKED_IN (Waiting) patients at the top, then IN_PROGRESS, then COMPLETED.
+        Supports real-time auto-refresh via polling.
+      operationId: getDoctorPatientQueue
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [CHECKED_IN, IN_PROGRESS, COMPLETED]
+          description: "Filter patients by queue status"
+      responses:
+        '200':
+          description: "Ordered patient queue for the logged-in doctor"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            appointmentId:
+                              type: string
+                              format: uuid
+                            patientId:
+                              type: string
+                              format: uuid
+                            patientName:
+                              type: string
+                              example: "Nguyễn Bảo An"
+                            slotDateTime:
+                              type: string
+                              format: date-time
+                            status:
+                              type: string
+                              enum: [CHECKED_IN, IN_PROGRESS, COMPLETED]
+                            waitingSinceMinutes:
+                              type: integer
+                              example: 15
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [VISITS] — UC-12 Record Clinical Consultation
+  # ════════════════════════════════════════════
+
+  /api/v1/visits:
+    post:
+      tags: [Visits]
+      summary: "Record Clinical Consultation (Create VISIT)"
+      description: |
+        UC-related: UC-12
+        Doctor creates a new VISIT record for an active appointment.
+        Requires non-empty diagnosis field (MSG05).
+        Linked to the APPOINTMENT and PATIENT entities.
+        Sets APPOINTMENT status to IN_PROGRESS.
+      operationId: createVisit
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisitCreateRequest'
+      responses:
+        '201':
+          description: "VISIT record created"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 201
+                      data:
+                        $ref: '#/components/schemas/VisitResponse'
+        '422':
+          description: "Validation error — diagnosis cannot be empty (MSG05)"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/visits/{visitId}:
+    get:
+      tags: [Visits]
+      summary: "Get Visit Detail"
+      description: |
+        Returns the full detail of a VISIT record, including linked prescription.
+        Used by Doctor to review open visit during consultation.
+      operationId: getVisitById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: visitId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Visit detail with prescription"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/VisitResponse'
+        '404':
+          description: "Visit not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/visits/{visitId}/finalize:
+    post:
+      tags: [Visits]
+      summary: "Finalize Consultation (Close VISIT)"
+      description: |
+        UC-related: UC-13 (step 6 — Finalize Consultation)
+        Doctor finalizes the current consultation session.
+        This action:
+          1. Marks VISIT status as FINALIZED.
+          2. Links the PRESCRIPTION to this VISIT.
+          3. Auto-generates a BILLING invoice (consultation fee + medication costs).
+          4. Sets APPOINTMENT status to COMPLETED.
+        Supports UC-13 Alt Flow: If no prescription items exist, BILLING
+        is generated with consultation fee only.
+      operationId: finalizeVisit
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: visitId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Consultation finalized — BILLING generated"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          visit:
+                            $ref: '#/components/schemas/VisitResponse'
+                          billing:
+                            $ref: '#/components/schemas/BillingResponse'
+        '400':
+          description: "Visit already finalized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Visit not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [PRESCRIPTIONS] — UC-13
+  # ════════════════════════════════════════════
+
+  /api/v1/prescriptions:
+    post:
+      tags: [Prescriptions]
+      summary: "Issue Electronic Prescription"
+      description: |
+        UC-related: UC-13
+        Doctor creates or updates a PRESCRIPTION for an active VISIT session.
+        Supports multiple drug items in one request.
+        Drug names are selected via Autocomplete (see /api/v1/drugs/suggestions).
+        Allows empty items list (UC-13 Alt — no medication needed).
+        BILLING is generated when calling POST /api/v1/visits/{visitId}/finalize.
+      operationId: createPrescription
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrescriptionCreateRequest'
+      responses:
+        '201':
+          description: "Prescription created and linked to VISIT"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      code:
+                        type: integer
+                        example: 201
+                      data:
+                        $ref: '#/components/schemas/PrescriptionResponse'
+        '404':
+          description: "Visit not found or already finalized"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/prescriptions/{prescriptionId}:
+    get:
+      tags: [Prescriptions]
+      summary: "Get Prescription Detail"
+      description: |
+        Returns the full prescription detail including all drug items, dosage, frequency.
+        Used to populate the prescription panel during consultation and in the Parent EMR portal.
+      operationId: getPrescriptionById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: prescriptionId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Prescription detail"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PrescriptionResponse'
+        '404':
+          description: "Prescription not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  # ════════════════════════════════════════════
+  # [DRUGS] — Autocomplete (UC-13)
+  # ════════════════════════════════════════════
+
+  /api/v1/drugs/suggestions:
+    get:
+      tags: [Drugs]
+      summary: "Drug Name Autocomplete"
+      description: |
+        UC-related: UC-13 (step 3 — Autocomplete suggestions)
+        Returns a list of drug suggestions matching the partial name typed by the Doctor.
+        Queries the internal drug dictionary for fast lookup.
+        Minimum 2 characters required in the query parameter.
+      operationId: getDrugSuggestions
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 2
+          example: "Amox"
+          description: "Partial drug name typed by the Doctor (min 2 chars)"
+      responses:
+        '200':
+          description: "Matching drug suggestions"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/DrugSuggestion'
+
+  # ════════════════════════════════════════════
+  # [BILLING] — UC-08, UC-09
+  # ════════════════════════════════════════════
+
+  /api/v1/billing:
+    get:
+      tags: [Billing]
+      summary: "List Billing Invoices (Receptionist Dashboard)"
+      description: |
+        UC-related: UC-08
+        Returns a filterable list of BILLING records.
+        Receptionist can filter by status (UNPAID/PAID) and date
+        to monitor outstanding invoices.
+      operationId: listBillingInvoices
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [UNPAID, PAID]
+          description: "Filter by payment status"
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2026-06-01"
+          description: "Filter by billing date (defaults to today)"
+      responses:
+        '200':
+          description: "List of billing invoices"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/BillingResponse'
+
+  /api/v1/billing/{billingId}:
+    get:
+      tags: [Billing]
+      summary: "View Billing Invoice Detail"
+      description: |
+        UC-related: UC-08
+        Returns the full detail of a BILLING record:
+        consultation fee, itemized medication costs, total amount due,
+        and current payment status (UNPAID/PAID).
+      operationId: getBillingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: billingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Billing invoice detail"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/BillingResponse'
+        '404':
+          description: "Billing record not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/billing/{billingId}/mark-as-paid:
+    patch:
+      tags: [Billing]
+      summary: "1-Click Mark as Paid"
+      description: |
+        UC-related: UC-09
+        Receptionist clicks the single 'Mark as Paid' button.
+        System immediately updates BILLING status from UNPAID → PAID,
+        records the paidAt timestamp, and logs the transaction for
+        end-of-day revenue reconciliation.
+        Supports UC-09 Alt Flow: If payment is delayed, Receptionist
+        simply does not call this endpoint — the invoice remains UNPAID.
+      operationId: markBillingAsPaid
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: billingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: "Payment confirmed — status updated to PAID"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/BillingResponse'
+        '400':
+          description: "Invoice is already PAID"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: "Billing record not found"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/billing/daily-report:
+    get:
+      tags: [Billing]
+      summary: "Daily Revenue Summary Report"
+      description: |
+        UC-related: UC-09 (post-payment — end-of-day revenue reconciliation)
+        Returns an aggregated daily revenue summary: total invoices, total paid,
+        total unpaid, and gross revenue for the specified date.
+        Used by the Receptionist for end-of-day closing.
+      operationId: getDailyBillingReport
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+            example: "2026-06-01"
+          description: "Target date for the report (defaults to today)"
+      responses:
+        '200':
+          description: "Daily billing summary"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          date:
+                            type: string
+                            format: date
+                            example: "2026-06-01"
+                          totalInvoices:
+                            type: integer
+                            example: 15
+                          totalPaid:
+                            type: integer
+                            example: 13
+                          totalUnpaid:
+                            type: integer
+                            example: 2
+                          grossRevenue:
+                            type: number
+                            format: double
+                            example: 3450000
+
+# ─────────────────────────────────────────────
+# TAGS
+# ─────────────────────────────────────────────
+tags:
+  - name: Authentication
+    description: |
+      Login and token issuance endpoints.
+      Staff (Receptionist/Doctor) use username+password.
+      Parents use phone number + OTP.
+  - name: Doctors
+    description: |
+      Doctor profile and available time slot discovery.
+      Used by Parents in the Booking Portal (UC-01).
+  - name: Appointments
+    description: |
+      Full appointment lifecycle management.
+      Covers UC-01, UC-02, UC-05, UC-06, UC-07.
+  - name: Notifications
+    description: |
+      SMS/Email notification dispatch.
+      Covers UC-03 (confirmation and cancellation alerts to Parent).
+  - name: Patients
+    description: |
+      PATIENT entity management — demographics, medical profile, EMR history.
+      Covers UC-02, UC-04, UC-07, UC-11, UC-14.
+  - name: Doctor Queue
+    description: |
+      Real-time patient queue for the Doctor's Clinical Dashboard.
+      Covers UC-10.
+  - name: Visits
+    description: |
+      VISIT entity management — clinical consultation recording and finalization.
+      Covers UC-12, UC-13.
+  - name: Prescriptions
+    description: |
+      PRESCRIPTION entity management — electronic prescription issuance.
+      Covers UC-13.
+  - name: Drugs
+    description: |
+      Drug dictionary lookup with autocomplete support.
+      Covers UC-13 (autocomplete drug name).
+  - name: Billing
+    description: |
+      BILLING entity management — invoice viewing and 1-click payment.
+      Covers UC-08, UC-09.
