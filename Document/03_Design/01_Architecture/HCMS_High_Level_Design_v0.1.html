@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Level Design - HCMS Project (Pediatrics)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #0284c7;
+            --accent-light: #e0f2fe;
+            --accent-dark: #075985;
+            --text-main: #334155;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --bg-page: #f1f5f9;
+            --bg-card: #f8fafc;
+            --success: #166534;
+            --success-bg: #dcfce7;
+            --warning: #92400e;
+            --warning-bg: #fef3c7;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 2rem;
+            margin: 0;
+        }
+
+        .doc-container {
+            max-width: 1060px;
+            margin: 0 auto;
+            background: white;
+            padding: 3.5rem 4rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border-top: 6px solid var(--accent);
+            border-radius: 8px;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            margin: 0 0 0.3rem 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .sub-title { color: var(--text-secondary); font-size: 1.1rem; }
+
+        .vi-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: block;
+            margin-top: 0.2rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: var(--accent-light);
+            color: #0369a1;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid #bae6fd;
+            white-space: nowrap;
+        }
+
+        /* ── Headings ── */
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        h2 .section-num {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        h3 {
+            color: #0369a1;
+            font-size: 1.15rem;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ── Meta Table ── */
+        .meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            font-size: 0.92rem;
+        }
+
+        .meta-table td {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+        }
+
+        .meta-table td:first-child {
+            width: 200px;
+            background: var(--bg-card);
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        /* ── Tables ── */
+        table.data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.92rem;
+        }
+
+        table.data-table th,
+        table.data-table td {
+            padding: 0.7rem 1rem;
+            border: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        table.data-table th {
+            background: var(--bg-card);
+            color: var(--accent-dark);
+            font-weight: 600;
+        }
+
+        table.data-table td code {
+            background: #f1f5f9;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.88rem;
+            color: #0e7490;
+        }
+
+        /* ── Diagram Container ── */
+        .diagram-container {
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .diagram-container svg {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .diagram-caption {
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* ── Info Box ── */
+        .info-box {
+            background: #f0f9ff;
+            border-left: 4px solid var(--accent);
+            padding: 1.2rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .info-box p { margin: 0; color: var(--accent-dark); line-height: 1.6; font-size: 0.92rem; }
+
+        .note-box {
+            background: #fefce8;
+            border-left: 4px solid #ca8a04;
+            padding: 1rem 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .note-box p { margin: 0; color: #854d0e; line-height: 1.6; font-size: 0.92rem; }
+
+        /* ── Tag Badges ── */
+        .tech-tag {
+            display: inline-block;
+            background: #ecfdf5;
+            color: var(--success);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid #bbf7d0;
+            margin: 0.1rem;
+        }
+
+        .layer-tag {
+            display: inline-block;
+            background: var(--accent-light);
+            color: #0369a1;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid #bae6fd;
+        }
+
+        /* ── Principle List ── */
+        .principle-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .principle-item {
+            border: 1px solid var(--border);
+            padding: 1rem 1.2rem;
+            border-radius: 6px;
+            background: var(--bg-card);
+        }
+
+        .principle-item strong {
+            color: #0369a1;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .principle-item span {
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        /* ── Footer ── */
+        .doc-footer {
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* ── Print ── */
+        @media print {
+            body { background: #fff; padding: 0; }
+            .doc-container { box-shadow: none; border-top: none; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-container">
+
+        <!-- ════════════════════════════════════════════════════════════════
+             HEADER
+             ════════════════════════════════════════════════════════════════ -->
+        <div class="header">
+            <div>
+                <h1 class="title">High Level Design (HLD)</h1>
+                <span class="vi-text" style="font-size: 1.1rem;">Thiết kế Kiến trúc Tổng thể Hệ thống</span>
+                <div class="sub-title" style="margin-top: 0.7rem;">HCMS — Healthcare Clinic Management System (Pediatrics)</div>
+            </div>
+            <div>
+                <span class="status-badge">Version: v0.1</span>
+            </div>
+        </div>
+
+        <!-- Document Metadata -->
+        <table class="meta-table">
+            <tbody>
+                <tr><td>Project</td><td>HCMS — Healthcare Clinic Management System (Phòng khám Nhi khoa)</td></tr>
+                <tr><td>Architecture Pattern</td><td>Modular Monolith (Ref: ADR-001)</td></tr>
+                <tr><td>Tech Stack</td><td>Spring Boot 3.x (Java 21) + React 19 (TypeScript / Vite)</td></tr>
+                <tr><td>Author</td><td>Solution Architect / Tech Lead</td></tr>
+                <tr><td>Date</td><td>2026-04-17</td></tr>
+                <tr><td>Status</td><td>Draft — Pending Review</td></tr>
+            </tbody>
+        </table>
+
+        <!-- ════════════════════════════════════════════════════════════════
+             1.1 SOFTWARE ARCHITECTURE
+             ════════════════════════════════════════════════════════════════ -->
+        <h2><span class="section-num">1.1</span> Software Architecture</h2>
+        <span class="vi-text" style="font-size: 0.95rem;">Kiến trúc Phần mềm Tổng thể — Modular Monolith</span>
+
+        <p>The HCMS system adopts a <strong>Modular Monolith</strong> architecture pattern as defined in <strong>ADR-001</strong>. This pattern provides clear bounded-context separation at the package level while maintaining a single deployable unit — optimized for the project's lean operational scale (1-2 doctors, 10-20 patients/day, 50-500 CCU) and a small development team (1 Tech Lead + 2-4 developers).</p>
+
+        <!-- Architecture Principles -->
+        <h3>1.1.1 Architecture Principles</h3>
+        <div class="principle-grid">
+            <div class="principle-item">
+                <strong>Separation of Concerns</strong>
+                <span>Each layer has a single, well-defined responsibility. UI logic, business logic, data access, and cross-cutting concerns are strictly isolated.</span>
+            </div>
+            <div class="principle-item">
+                <strong>Module Encapsulation</strong>
+                <span>Each business module (Patient, Appointment, etc.) owns its controller → service → repository → entity stack. Inter-module calls only through service interfaces.</span>
+            </div>
+            <div class="principle-item">
+                <strong>Shared Kernel</strong>
+                <span>Common DTOs, exceptions, utility classes, and base entities are centralized in the <code>common</code> package to avoid duplication while maintaining consistency.</span>
+            </div>
+            <div class="principle-item">
+                <strong>Stateless Communication</strong>
+                <span>REST API with JWT-based stateless authentication. No server-side session state. Horizontal scalability without sticky sessions.</span>
+            </div>
+        </div>
+
+        <!-- Layered Architecture Diagram -->
+        <h3>1.1.2 Layered Architecture Overview</h3>
+        <p>The system is organized into <strong>4 logical layers</strong>, each with specific technology choices and responsibilities:</p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 920 780" xmlns="http://www.w3.org/2000/svg" width="920" height="780" font-family="Inter, sans-serif">
+                <defs>
+                    <filter id="shadow" x="-2%" y="-2%" width="104%" height="108%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.08"/>
+                    </filter>
+                    <marker id="arrowDown" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+                    </marker>
+                    <marker id="arrowUp" markerWidth="10" markerHeight="7" refX="5" refY="3.5" orient="auto">
+                        <polygon points="10 0, 0 3.5, 10 7" fill="#64748b"/>
+                    </marker>
+                </defs>
+
+                <!-- Background -->
+                <rect x="0" y="0" width="920" height="780" fill="#fafbfc" rx="8"/>
+
+                <!-- ── LAYER 1: CLIENT / PRESENTATION ── -->
+                <rect x="30" y="20" width="860" height="115" rx="8" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5" filter="url(#shadow)"/>
+                <text x="50" y="46" font-size="11" fill="#1e40af" font-weight="700" letter-spacing="1.5">PRESENTATION LAYER</text>
+                <text x="50" y="65" font-size="10" fill="#3b82f6">Client-Side Single Page Application</text>
+
+                <rect x="60" y="78" width="150" height="42" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+                <text x="135" y="96" font-size="11" font-weight="600" fill="#1e3a8a" text-anchor="middle">React 19</text>
+                <text x="135" y="110" font-size="9" fill="#64748b" text-anchor="middle">TypeScript + Vite 8</text>
+
+                <rect x="230" y="78" width="150" height="42" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+                <text x="305" y="96" font-size="11" font-weight="600" fill="#1e3a8a" text-anchor="middle">Tailwind CSS</text>
+                <text x="305" y="110" font-size="9" fill="#64748b" text-anchor="middle">Shadcn/ui Components</text>
+
+                <rect x="400" y="78" width="150" height="42" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+                <text x="475" y="96" font-size="11" font-weight="600" fill="#1e3a8a" text-anchor="middle">Zustand</text>
+                <text x="475" y="110" font-size="9" fill="#64748b" text-anchor="middle">State Management</text>
+
+                <rect x="570" y="78" width="150" height="42" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+                <text x="645" y="96" font-size="11" font-weight="600" fill="#1e3a8a" text-anchor="middle">Axios</text>
+                <text x="645" y="110" font-size="9" fill="#64748b" text-anchor="middle">HTTP Client + JWT</text>
+
+                <rect x="740" y="78" width="130" height="42" rx="5" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+                <text x="805" y="96" font-size="11" font-weight="600" fill="#1e3a8a" text-anchor="middle">React Router 7</text>
+                <text x="805" y="110" font-size="9" fill="#64748b" text-anchor="middle">SPA Routing</text>
+
+                <!-- Arrow: Presentation → API -->
+                <line x1="460" y1="135" x2="460" y2="168" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowDown)"/>
+                <text x="475" y="157" font-size="9" fill="#64748b">HTTPS / REST</text>
+
+                <!-- ── LAYER 2: API GATEWAY ── -->
+                <rect x="30" y="170" width="860" height="100" rx="8" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5" filter="url(#shadow)"/>
+                <text x="50" y="196" font-size="11" fill="#92400e" font-weight="700" letter-spacing="1.5">API GATEWAY LAYER</text>
+                <text x="50" y="215" font-size="10" fill="#b45309">Security, Authentication &amp; Request Routing</text>
+
+                <rect x="60" y="228" width="180" height="32" rx="5" fill="#fff" stroke="#fbbf24" stroke-width="1"/>
+                <text x="150" y="249" font-size="11" font-weight="600" fill="#78350f" text-anchor="middle">Spring Boot 3.x</text>
+
+                <rect x="260" y="228" width="180" height="32" rx="5" fill="#fff" stroke="#fbbf24" stroke-width="1"/>
+                <text x="350" y="249" font-size="11" font-weight="600" fill="#78350f" text-anchor="middle">Spring Security + JWT</text>
+
+                <rect x="460" y="228" width="180" height="32" rx="5" fill="#fff" stroke="#fbbf24" stroke-width="1"/>
+                <text x="550" y="249" font-size="11" font-weight="600" fill="#78350f" text-anchor="middle">OAuth 2.0 (Google)</text>
+
+                <rect x="660" y="228" width="210" height="32" rx="5" fill="#fff" stroke="#fbbf24" stroke-width="1"/>
+                <text x="765" y="249" font-size="11" font-weight="600" fill="#78350f" text-anchor="middle">SpringDoc OpenAPI (Swagger)</text>
+
+                <!-- Arrow: API → Module -->
+                <line x1="460" y1="270" x2="460" y2="308" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowDown)"/>
+                <text x="475" y="294" font-size="9" fill="#64748b">Route to Module</text>
+
+                <!-- ── LAYER 3: MODULE LAYER (Bounded Contexts) ── -->
+                <rect x="30" y="310" width="860" height="255" rx="8" fill="#dcfce7" stroke="#86efac" stroke-width="1.5" filter="url(#shadow)"/>
+                <text x="50" y="336" font-size="11" fill="#166534" font-weight="700" letter-spacing="1.5">MODULE LAYER — BOUNDED CONTEXTS</text>
+                <text x="50" y="355" font-size="10" fill="#16a34a">Domain-Specific Business Logic (per Module: Controller → Service → Repository → Entity)</text>
+
+                <!-- Module boxes -->
+                <!-- Auth -->
+                <rect x="55" y="370" width="145" height="80" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+                <rect x="55" y="370" width="145" height="22" rx="6" fill="#166534"/>
+                <rect x="55" y="385" width="145" height="7" fill="#166534"/>
+                <text x="127" y="386" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">auth</text>
+                <text x="127" y="410" font-size="9" fill="#334155" text-anchor="middle">Login / Register</text>
+                <text x="127" y="424" font-size="9" fill="#334155" text-anchor="middle">Role Management</text>
+                <text x="127" y="438" font-size="9" fill="#334155" text-anchor="middle">JWT Token Issuing</text>
+
+                <!-- Patient -->
+                <rect x="215" y="370" width="145" height="80" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+                <rect x="215" y="370" width="145" height="22" rx="6" fill="#166534"/>
+                <rect x="215" y="385" width="145" height="7" fill="#166534"/>
+                <text x="287" y="386" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">patient</text>
+                <text x="287" y="410" font-size="9" fill="#334155" text-anchor="middle">Patient Profile (EMR)</text>
+                <text x="287" y="424" font-size="9" fill="#334155" text-anchor="middle">Medical History</text>
+                <text x="287" y="438" font-size="9" fill="#334155" text-anchor="middle">Parent Contact Info</text>
+
+                <!-- Appointment -->
+                <rect x="375" y="370" width="145" height="80" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+                <rect x="375" y="370" width="145" height="22" rx="6" fill="#166534"/>
+                <rect x="375" y="385" width="145" height="7" fill="#166534"/>
+                <text x="447" y="386" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">appointment</text>
+                <text x="447" y="410" font-size="9" fill="#334155" text-anchor="middle">Booking / Scheduling</text>
+                <text x="447" y="424" font-size="9" fill="#334155" text-anchor="middle">Time Slot Mgmt</text>
+                <text x="447" y="438" font-size="9" fill="#334155" text-anchor="middle">Status Tracking</text>
+
+                <!-- Consultation -->
+                <rect x="535" y="370" width="145" height="80" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+                <rect x="535" y="370" width="145" height="22" rx="6" fill="#166534"/>
+                <rect x="535" y="385" width="145" height="7" fill="#166534"/>
+                <text x="607" y="386" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">consultation</text>
+                <text x="607" y="410" font-size="9" fill="#334155" text-anchor="middle">Visit Record</text>
+                <text x="607" y="424" font-size="9" fill="#334155" text-anchor="middle">Diagnosis / Symptoms</text>
+                <text x="607" y="438" font-size="9" fill="#334155" text-anchor="middle">Prescription</text>
+
+                <!-- Billing -->
+                <rect x="695" y="370" width="145" height="80" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5"/>
+                <rect x="695" y="370" width="145" height="22" rx="6" fill="#166534"/>
+                <rect x="695" y="385" width="145" height="7" fill="#166534"/>
+                <text x="767" y="386" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">billing</text>
+                <text x="767" y="410" font-size="9" fill="#334155" text-anchor="middle">Invoice Generation</text>
+                <text x="767" y="424" font-size="9" fill="#334155" text-anchor="middle">Payment Status</text>
+                <text x="767" y="438" font-size="9" fill="#334155" text-anchor="middle">Fee Calculation</text>
+
+                <!-- Shared Kernel -->
+                <rect x="55" y="468" width="785" height="48" rx="6" fill="#f0fdf4" stroke="#4ade80" stroke-width="1.5" stroke-dasharray="6,3"/>
+                <text x="447" y="489" font-size="11" font-weight="700" fill="#166534" text-anchor="middle">SHARED KERNEL — common</text>
+                <text x="447" y="505" font-size="9" fill="#16a34a" text-anchor="middle">Base Entities  |  Common DTOs  |  Exception Handlers  |  Utility Classes  |  Constants  |  Validation</text>
+
+                <!-- Module interconnection arrows -->
+                <line x1="200" y1="420" x2="215" y2="420" stroke="#86efac" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="360" y1="420" x2="375" y2="420" stroke="#86efac" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="520" y1="420" x2="535" y2="420" stroke="#86efac" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="680" y1="420" x2="695" y2="420" stroke="#86efac" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <!-- Vertical lines from modules to shared kernel -->
+                <line x1="127" y1="450" x2="127" y2="468" stroke="#86efac" stroke-width="1" stroke-dasharray="3,2"/>
+                <line x1="287" y1="450" x2="287" y2="468" stroke="#86efac" stroke-width="1" stroke-dasharray="3,2"/>
+                <line x1="447" y1="450" x2="447" y2="468" stroke="#86efac" stroke-width="1" stroke-dasharray="3,2"/>
+                <line x1="607" y1="450" x2="607" y2="468" stroke="#86efac" stroke-width="1" stroke-dasharray="3,2"/>
+                <line x1="767" y1="450" x2="767" y2="468" stroke="#86efac" stroke-width="1" stroke-dasharray="3,2"/>
+
+                <!-- Arrow: Module → Data -->
+                <line x1="460" y1="565" x2="460" y2="600" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowDown)"/>
+                <text x="475" y="588" font-size="9" fill="#64748b">JPA / Hibernate</text>
+
+                <!-- ── LAYER 4: DATA / PERSISTENCE ── -->
+                <rect x="30" y="602" width="860" height="100" rx="8" fill="#fce7f3" stroke="#f9a8d4" stroke-width="1.5" filter="url(#shadow)"/>
+                <text x="50" y="628" font-size="11" fill="#9d174d" font-weight="700" letter-spacing="1.5">DATA / PERSISTENCE LAYER</text>
+                <text x="50" y="647" font-size="10" fill="#be185d">ORM, Database, and Schema Migration</text>
+
+                <rect x="60" y="660" width="200" height="32" rx="5" fill="#fff" stroke="#f9a8d4" stroke-width="1"/>
+                <text x="160" y="681" font-size="11" font-weight="600" fill="#831843" text-anchor="middle">Spring Data JPA</text>
+
+                <rect x="280" y="660" width="200" height="32" rx="5" fill="#fff" stroke="#f9a8d4" stroke-width="1"/>
+                <text x="380" y="681" font-size="11" font-weight="600" fill="#831843" text-anchor="middle">Hibernate ORM</text>
+
+                <rect x="500" y="660" width="200" height="32" rx="5" fill="#fff" stroke="#f9a8d4" stroke-width="1"/>
+                <text x="600" y="681" font-size="11" font-weight="600" fill="#831843" text-anchor="middle">PostgreSQL 17</text>
+
+                <rect x="720" y="660" width="150" height="32" rx="5" fill="#fff" stroke="#f9a8d4" stroke-width="1"/>
+                <text x="795" y="681" font-size="11" font-weight="600" fill="#831843" text-anchor="middle">Flyway Migration</text>
+
+                <!-- ── EXTERNAL: Infrastructure ── -->
+                <rect x="30" y="722" width="860" height="45" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="5,3"/>
+                <text x="460" y="743" font-size="10" fill="#64748b" text-anchor="middle" font-weight="600">INFRASTRUCTURE: Docker Compose  |  GitHub Actions (CI/CD)  |  DigitalOcean VPS  |  Vercel (FE)  |  Spring Actuator (Health Check)</text>
+                <text x="460" y="758" font-size="9" fill="#94a3b8" text-anchor="middle">Estimated Hosting: $20–40/month per project</text>
+            </svg>
+            <p class="diagram-caption">Figure 1.1 — HCMS Layered Architecture Overview (Modular Monolith — ADR-001)</p>
+        </div>
+
+        <!-- Layer Responsibility Table -->
+        <h3>1.1.3 Layer Responsibilities</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th width="20%">Layer</th>
+                    <th width="25%">Technology</th>
+                    <th width="55%">Responsibility</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="layer-tag">Presentation</span></td>
+                    <td>React 19, Vite 8, Tailwind CSS, Shadcn/ui, TypeScript</td>
+                    <td>Renders the user interface (SPA). Handles client-side routing, form validation, state management (Zustand), and API communication via Axios with JWT token interceptors. Separate deployment on Vercel/Netlify.</td>
+                </tr>
+                <tr>
+                    <td><span class="layer-tag">API Gateway</span></td>
+                    <td>Spring Boot 3.x, Spring Security, JWT, OAuth 2.0</td>
+                    <td>Single entry point for all REST API requests. Handles authentication (JWT filter), authorization (role-based access control), CORS policy enforcement, request validation, and auto-generated API documentation (Swagger UI).</td>
+                </tr>
+                <tr>
+                    <td><span class="layer-tag">Module</span></td>
+                    <td>Java 21, Jakarta Validation, Spring Services</td>
+                    <td>Contains all domain-specific business logic organized into bounded contexts. Each module (<code>auth</code>, <code>patient</code>, <code>appointment</code>, <code>consultation</code>, <code>billing</code>) owns its full vertical slice: Controller → Service → Repository → Entity → DTO. Inter-module communication occurs only through service interfaces.</td>
+                </tr>
+                <tr>
+                    <td><span class="layer-tag">Data</span></td>
+                    <td>Spring Data JPA, Hibernate, PostgreSQL 17, Flyway</td>
+                    <td>Manages data persistence, ORM mapping, and schema versioning. PostgreSQL provides ACID transactions, JSON support, and encryption at rest for EMR data. Flyway ensures reproducible database migrations.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Module Mapping -->
+        <h3>1.1.4 Module-to-Business Goal Mapping</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th width="18%">Module</th>
+                    <th width="20%">Core Entity</th>
+                    <th width="22%">Business Goal (Ref)</th>
+                    <th width="40%">Key Functions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>auth</code></td>
+                    <td>User / Role</td>
+                    <td>Cross-cutting (Security)</td>
+                    <td>User registration/login, JWT issuance, role-based access (DOCTOR, RECEPTIONIST, PARENT), OAuth 2.0 Google integration</td>
+                </tr>
+                <tr>
+                    <td><code>patient</code></td>
+                    <td>Patient</td>
+                    <td>G2: Digitize Pediatric EMR</td>
+                    <td>Patient demographics, parent contact info, basic medical history, encrypted EMR records</td>
+                </tr>
+                <tr>
+                    <td><code>appointment</code></td>
+                    <td>Appointment</td>
+                    <td>G1: Self-Service Booking Portal</td>
+                    <td>Online booking portal, time slot management, doctor assignment, status tracking (Pending → Confirmed → Completed → Cancelled)</td>
+                </tr>
+                <tr>
+                    <td><code>consultation</code></td>
+                    <td>Visit, Prescription</td>
+                    <td>G2: Digitize Pediatric EMR</td>
+                    <td>Clinical visit records, symptoms/diagnosis capture, prescription generation, clinical notes</td>
+                </tr>
+                <tr>
+                    <td><code>billing</code></td>
+                    <td>Billing</td>
+                    <td>G3: Streamlined Checkout</td>
+                    <td>Invoice auto-generation from consultation, fee calculation, 1-click payment status update (Paid/Unpaid), no insurance logic</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <p><strong>Architecture Decision Reference:</strong> This design strictly adheres to <strong>ADR-001: Adopt Modular Monolith with Spring Boot + React Tech Stack</strong>. The modular monolith was selected over Microservices (rejected — over-engineered for 50-500 CCU) and Serverless (rejected — cold-start latency unacceptable for booking UX). Module boundaries are enforced via Java packages with package-private access modifiers to prevent cross-module violations.</p>
+        </div>
+
+
+        <!-- ════════════════════════════════════════════════════════════════
+             1.2 PACKAGE DIAGRAM
+             ════════════════════════════════════════════════════════════════ -->
+        <h2><span class="section-num">1.2</span> Package Diagram</h2>
+        <span class="vi-text" style="font-size: 0.95rem;">Biểu đồ Gói (Package Diagram) — Cấu trúc Mã nguồn Backend &amp; Frontend</span>
+
+        <p>The package diagram illustrates the physical code organization for both the <strong>backend</strong> (Java/Spring Boot) and <strong>frontend</strong> (React/TypeScript) codebases. Each domain module follows a standardized internal structure: <code>controller → service → repository → entity → dto</code>, ensuring consistency across the team and enabling rapid onboarding.</p>
+
+        <!-- Backend Package Diagram -->
+        <h3>1.2.1 Backend Package Structure</h3>
+        <p>Root package: <code>com.hcms</code></p>
+
+        <div class="diagram-container">
+            <svg viewBox="0 0 920 820" xmlns="http://www.w3.org/2000/svg" width="920" height="820" font-family="Inter, sans-serif">
+                <defs>
+                    <filter id="shadow2" x="-2%" y="-2%" width="104%" height="108%">
+                        <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.06"/>
+                    </filter>
+                    <marker id="depArrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#94a3b8"/>
+                    </marker>
+                    <marker id="depArrowDash" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                        <polygon points="0 0, 8 3, 0 6" fill="#0284c7" fill-opacity="0.6"/>
+                    </marker>
+                </defs>
+
+                <rect x="0" y="0" width="920" height="820" fill="#fafbfc" rx="8"/>
+
+                <!-- Root Project Package -->
+                <rect x="20" y="15" width="880" height="790" rx="8" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+                <rect x="20" y="15" width="220" height="26" rx="8" fill="#0f172a"/>
+                <rect x="20" y="33" width="220" height="8" fill="#0f172a"/>
+                <text x="35" y="34" font-size="12" font-weight="700" fill="#fff">com.hcms</text>
+
+                <!-- ── config ── -->
+                <rect x="45" y="55" width="400" height="60" rx="6" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="45" y="55" width="80" height="20" rx="6" fill="#b45309"/>
+                <rect x="45" y="69" width="80" height="6" fill="#b45309"/>
+                <text x="55" y="70" font-size="10" font-weight="700" fill="#fff">config</text>
+                <text x="65" y="92" font-size="9" fill="#78350f">SecurityConfig</text>
+                <text x="175" y="92" font-size="9" fill="#78350f">CorsConfig</text>
+                <text x="260" y="92" font-size="9" fill="#78350f">JwtConfig</text>
+                <text x="340" y="92" font-size="9" fill="#78350f">WebConfig</text>
+                <text x="65" y="106" font-size="9" fill="#78350f">SwaggerConfig</text>
+
+                <!-- ── common (Shared Kernel) ── -->
+                <rect x="465" y="55" width="415" height="60" rx="6" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="1.5" filter="url(#shadow2)" stroke-dasharray="6,3"/>
+                <rect x="465" y="55" width="160" height="20" rx="6" fill="#0369a1"/>
+                <rect x="465" y="69" width="160" height="6" fill="#0369a1"/>
+                <text x="478" y="70" font-size="10" font-weight="700" fill="#fff">common (Shared Kernel)</text>
+                <text x="485" y="92" font-size="9" fill="#0c4a6e">dto/</text>
+                <text x="520" y="92" font-size="9" fill="#0c4a6e">exception/</text>
+                <text x="590" y="92" font-size="9" fill="#0c4a6e">util/</text>
+                <text x="630" y="92" font-size="9" fill="#0c4a6e">constant/</text>
+                <text x="700" y="92" font-size="9" fill="#0c4a6e">base/</text>
+                <text x="485" y="106" font-size="9" fill="#0c4a6e">ApiResponse.java  |  BaseEntity.java  |  GlobalExceptionHandler.java</text>
+
+                <!-- ═══════════ MODULE PACKAGES ═══════════ -->
+
+                <!-- ── auth ── -->
+                <rect x="45" y="135" width="168" height="270" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="45" y="135" width="168" height="24" rx="6" fill="#166534"/>
+                <rect x="45" y="153" width="168" height="6" fill="#166534"/>
+                <text x="129" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">auth</text>
+
+                <rect x="57" y="172" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="129" y="187" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">controller/</text>
+                <text x="129" y="206" font-size="8.5" fill="#334155" text-anchor="middle">AuthController.java</text>
+
+                <rect x="57" y="218" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="129" y="233" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">service/</text>
+                <text x="129" y="252" font-size="8.5" fill="#334155" text-anchor="middle">AuthService.java</text>
+
+                <rect x="57" y="264" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="129" y="279" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">repository/</text>
+                <text x="129" y="298" font-size="8.5" fill="#334155" text-anchor="middle">UserRepository.java</text>
+
+                <rect x="57" y="310" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="129" y="325" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">entity/</text>
+                <text x="129" y="344" font-size="8.5" fill="#334155" text-anchor="middle">User.java, Role.java</text>
+
+                <rect x="57" y="356" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="129" y="371" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">dto/</text>
+                <text x="129" y="390" font-size="8.5" fill="#334155" text-anchor="middle">LoginReq, RegisterReq</text>
+
+                <!-- ── patient ── -->
+                <rect x="223" y="135" width="168" height="270" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="223" y="135" width="168" height="24" rx="6" fill="#166534"/>
+                <rect x="223" y="153" width="168" height="6" fill="#166534"/>
+                <text x="307" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">patient</text>
+
+                <rect x="235" y="172" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="307" y="187" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">controller/</text>
+                <text x="307" y="206" font-size="8.5" fill="#334155" text-anchor="middle">PatientController.java</text>
+
+                <rect x="235" y="218" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="307" y="233" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">service/</text>
+                <text x="307" y="252" font-size="8.5" fill="#334155" text-anchor="middle">PatientService.java</text>
+
+                <rect x="235" y="264" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="307" y="279" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">repository/</text>
+                <text x="307" y="298" font-size="8.5" fill="#334155" text-anchor="middle">PatientRepository.java</text>
+
+                <rect x="235" y="310" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="307" y="325" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">entity/</text>
+                <text x="307" y="344" font-size="8.5" fill="#334155" text-anchor="middle">Patient.java</text>
+
+                <rect x="235" y="356" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="307" y="371" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">dto/</text>
+                <text x="307" y="390" font-size="8.5" fill="#334155" text-anchor="middle">PatientReq, PatientRes</text>
+
+                <!-- ── appointment ── -->
+                <rect x="401" y="135" width="168" height="270" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="401" y="135" width="168" height="24" rx="6" fill="#166534"/>
+                <rect x="401" y="153" width="168" height="6" fill="#166534"/>
+                <text x="485" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">appointment</text>
+
+                <rect x="413" y="172" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="485" y="187" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">controller/</text>
+                <text x="485" y="206" font-size="8.5" fill="#334155" text-anchor="middle">AppointmentController.java</text>
+
+                <rect x="413" y="218" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="485" y="233" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">service/</text>
+                <text x="485" y="252" font-size="8.5" fill="#334155" text-anchor="middle">AppointmentService.java</text>
+
+                <rect x="413" y="264" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="485" y="279" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">repository/</text>
+                <text x="485" y="298" font-size="8.5" fill="#334155" text-anchor="middle">AppointmentRepository.java</text>
+
+                <rect x="413" y="310" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="485" y="325" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">entity/</text>
+                <text x="485" y="344" font-size="8.5" fill="#334155" text-anchor="middle">Appointment.java</text>
+
+                <rect x="413" y="356" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="485" y="371" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">dto/</text>
+                <text x="485" y="390" font-size="8.5" fill="#334155" text-anchor="middle">BookingReq, BookingRes</text>
+
+                <!-- ── consultation ── -->
+                <rect x="579" y="135" width="168" height="270" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="579" y="135" width="168" height="24" rx="6" fill="#166534"/>
+                <rect x="579" y="153" width="168" height="6" fill="#166534"/>
+                <text x="663" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">consultation</text>
+
+                <rect x="591" y="172" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="663" y="187" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">controller/</text>
+                <text x="663" y="206" font-size="8.5" fill="#334155" text-anchor="middle">ConsultationController.java</text>
+
+                <rect x="591" y="218" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="663" y="233" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">service/</text>
+                <text x="663" y="252" font-size="8.5" fill="#334155" text-anchor="middle">ConsultationService.java</text>
+
+                <rect x="591" y="264" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="663" y="279" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">repository/</text>
+                <text x="663" y="298" font-size="8.5" fill="#334155" text-anchor="middle">VisitRepository.java</text>
+
+                <rect x="591" y="310" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="663" y="325" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">entity/</text>
+                <text x="663" y="344" font-size="8.5" fill="#334155" text-anchor="middle">Visit.java, Prescription.java</text>
+
+                <rect x="591" y="356" width="144" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="663" y="371" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">dto/</text>
+                <text x="663" y="390" font-size="8.5" fill="#334155" text-anchor="middle">VisitReq, PrescriptionDto</text>
+
+                <!-- ── billing ── -->
+                <rect x="757" y="135" width="128" height="270" rx="6" fill="#fff" stroke="#86efac" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="757" y="135" width="128" height="24" rx="6" fill="#166534"/>
+                <rect x="757" y="153" width="128" height="6" fill="#166534"/>
+                <text x="821" y="152" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">billing</text>
+
+                <rect x="765" y="172" width="112" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="821" y="187" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">controller/</text>
+                <text x="821" y="206" font-size="8.5" fill="#334155" text-anchor="middle">BillingController</text>
+
+                <rect x="765" y="218" width="112" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="821" y="233" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">service/</text>
+                <text x="821" y="252" font-size="8.5" fill="#334155" text-anchor="middle">BillingService</text>
+
+                <rect x="765" y="264" width="112" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="821" y="279" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">repository/</text>
+                <text x="821" y="298" font-size="8.5" fill="#334155" text-anchor="middle">BillingRepository</text>
+
+                <rect x="765" y="310" width="112" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="821" y="325" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">entity/</text>
+                <text x="821" y="344" font-size="8.5" fill="#334155" text-anchor="middle">Billing.java</text>
+
+                <rect x="765" y="356" width="112" height="22" rx="4" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+                <text x="821" y="371" font-size="10" fill="#166534" text-anchor="middle" font-weight="600">dto/</text>
+                <text x="821" y="390" font-size="8.5" fill="#334155" text-anchor="middle">InvoiceRes</text>
+
+                <!-- ═══════════ DEPENDENCY ARROWS ═══════════ -->
+
+                <!-- All modules depend on common (dashed blue) -->
+                <line x1="129" y1="405" x2="129" y2="425" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="129" y1="425" x2="460" y2="425" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <line x1="307" y1="405" x2="307" y2="430" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="307" y1="430" x2="460" y2="430" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <line x1="485" y1="405" x2="485" y2="435" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="485" y1="435" x2="460" y2="435" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <line x1="663" y1="405" x2="663" y2="440" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="663" y1="440" x2="460" y2="440" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <line x1="821" y1="405" x2="821" y2="445" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+                <line x1="821" y1="445" x2="460" y2="445" stroke="#0284c7" stroke-width="1" stroke-dasharray="4,2"/>
+
+                <!-- Common/Shared Kernel target box -->
+                <rect x="370" y="420" width="180" height="35" rx="5" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="6,3"/>
+                <text x="460" y="443" font-size="10" font-weight="700" fill="#0369a1" text-anchor="middle">common (Shared Kernel)</text>
+
+                <!-- ═══════════ INTER-MODULE DEPENDENCIES ═══════════ -->
+
+                <!-- appointment → patient (needs patient reference) -->
+                <line x1="401" y1="260" x2="391" y2="260" stroke="#94a3b8" stroke-width="1.2" marker-start="url(#depArrow)"/>
+                <text x="375" y="257" font-size="7.5" fill="#94a3b8" text-anchor="end">uses</text>
+
+                <!-- consultation → patient -->
+                <line x1="579" y1="190" x2="391" y2="190" stroke="#94a3b8" stroke-width="1" stroke-dasharray="4,2"/>
+                <text x="495" y="187" font-size="7.5" fill="#94a3b8" text-anchor="middle">uses patient</text>
+
+                <!-- consultation → appointment -->
+                <line x1="579" y1="240" x2="569" y2="240" stroke="#94a3b8" stroke-width="1.2" marker-start="url(#depArrow)"/>
+                <text x="563" y="237" font-size="7.5" fill="#94a3b8" text-anchor="end">uses</text>
+
+                <!-- billing → consultation -->
+                <line x1="757" y1="240" x2="747" y2="240" stroke="#94a3b8" stroke-width="1.2" marker-start="url(#depArrow)"/>
+                <text x="741" y="237" font-size="7.5" fill="#94a3b8" text-anchor="end">uses</text>
+
+                <!-- ═══════════ RESOURCES SECTION ═══════════ -->
+                <rect x="45" y="475" width="840" height="85" rx="6" fill="#fff7ed" stroke="#fdba74" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="45" y="475" width="200" height="20" rx="6" fill="#c2410c"/>
+                <rect x="45" y="489" width="200" height="6" fill="#c2410c"/>
+                <text x="58" y="490" font-size="10" font-weight="700" fill="#fff">src/main/resources</text>
+
+                <text x="65" y="515" font-size="9.5" fill="#7c2d12" font-weight="600">application.yml</text>
+                <text x="65" y="532" font-size="8.5" fill="#9a3412">DB connection, JWT secret, server port, Spring profiles</text>
+
+                <text x="300" y="515" font-size="9.5" fill="#7c2d12" font-weight="600">application-dev.yml</text>
+                <text x="300" y="532" font-size="8.5" fill="#9a3412">Development environment overrides</text>
+
+                <text x="540" y="515" font-size="9.5" fill="#7c2d12" font-weight="600">application-prod.yml</text>
+                <text x="540" y="532" font-size="8.5" fill="#9a3412">Production environment, EMR encryption keys</text>
+
+                <text x="65" y="550" font-size="9.5" fill="#7c2d12" font-weight="600">db/migration/</text>
+                <text x="165" y="550" font-size="8.5" fill="#9a3412">V1__init_schema.sql  |  V2__seed_data.sql  |  Flyway versioned scripts</text>
+
+                <!-- ═══════════ FRONTEND SECTION ═══════════ -->
+                <rect x="45" y="580" width="840" height="210" rx="6" fill="#faf5ff" stroke="#d8b4fe" stroke-width="1.5" filter="url(#shadow2)"/>
+                <rect x="45" y="580" width="200" height="24" rx="6" fill="#7e22ce"/>
+                <rect x="45" y="598" width="200" height="6" fill="#7e22ce"/>
+                <text x="58" y="597" font-size="11" font-weight="700" fill="#fff">frontend/src</text>
+
+                <!-- app/ -->
+                <rect x="65" y="616" width="190" height="160" rx="5" fill="#fff" stroke="#d8b4fe" stroke-width="1"/>
+                <rect x="65" y="616" width="190" height="20" rx="5" fill="#9333ea"/>
+                <rect x="65" y="630" width="190" height="6" fill="#9333ea"/>
+                <text x="78" y="631" font-size="9.5" font-weight="700" fill="#fff">app/</text>
+                <text x="78" y="652" font-size="8.5" fill="#581c87">guards/</text>
+                <text x="145" y="652" font-size="8" fill="#6b21a8">PrivateRoute, RoleGuard</text>
+                <text x="78" y="668" font-size="8.5" fill="#581c87">layouts/</text>
+                <text x="145" y="668" font-size="8" fill="#6b21a8">MainLayout, AuthLayout</text>
+                <text x="78" y="684" font-size="8.5" fill="#581c87">provider/</text>
+                <text x="145" y="684" font-size="8" fill="#6b21a8">AuthProvider, ThemeProvider</text>
+                <text x="78" y="700" font-size="8.5" fill="#581c87">routers/</text>
+                <text x="145" y="700" font-size="8" fill="#6b21a8">AppRouter.tsx</text>
+                <text x="78" y="716" font-size="8.5" fill="#581c87">App.tsx</text>
+                <text x="78" y="740" font-size="8.5" fill="#581c87">styles/</text>
+                <text x="145" y="740" font-size="8" fill="#6b21a8">globals.css, theme vars</text>
+                <text x="78" y="756" font-size="8.5" fill="#581c87">assets/</text>
+                <text x="145" y="756" font-size="8" fill="#6b21a8">images, icons, fonts</text>
+
+                <!-- features/ -->
+                <rect x="275" y="616" width="300" height="160" rx="5" fill="#fff" stroke="#d8b4fe" stroke-width="1"/>
+                <rect x="275" y="616" width="300" height="20" rx="5" fill="#9333ea"/>
+                <rect x="275" y="630" width="300" height="6" fill="#9333ea"/>
+                <text x="288" y="631" font-size="9.5" font-weight="700" fill="#fff">features/</text>
+
+                <!-- Feature modules -->
+                <rect x="288" y="645" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="329" y="661" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">booking/</text>
+                <text x="329" y="675" font-size="7.5" fill="#6b21a8" text-anchor="middle">pages, components</text>
+
+                <rect x="380" y="645" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="421" y="661" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">patient/</text>
+                <text x="421" y="675" font-size="7.5" fill="#6b21a8" text-anchor="middle">pages, components</text>
+
+                <rect x="472" y="645" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="513" y="661" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">doctor/</text>
+                <text x="513" y="675" font-size="7.5" fill="#6b21a8" text-anchor="middle">pages, components</text>
+
+                <rect x="288" y="693" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="329" y="709" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">billing/</text>
+                <text x="329" y="723" font-size="7.5" fill="#6b21a8" text-anchor="middle">pages, components</text>
+
+                <rect x="380" y="693" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="421" y="709" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">dashboard/</text>
+                <text x="421" y="723" font-size="7.5" fill="#6b21a8" text-anchor="middle">pages, components</text>
+
+                <rect x="472" y="693" width="82" height="38" rx="4" fill="#faf5ff" stroke="#e9d5ff" stroke-width="1"/>
+                <text x="513" y="709" font-size="8.5" fill="#7e22ce" text-anchor="middle" font-weight="600">auth/</text>
+                <text x="513" y="723" font-size="7.5" fill="#6b21a8" text-anchor="middle">Login, Register</text>
+
+                <text x="288" y="756" font-size="8" fill="#7e22ce" font-style="italic">Each feature: pages/ + components/ + hooks/ + types/</text>
+
+                <!-- shared/ -->
+                <rect x="595" y="616" width="270" height="160" rx="5" fill="#fff" stroke="#d8b4fe" stroke-width="1"/>
+                <rect x="595" y="616" width="270" height="20" rx="5" fill="#9333ea"/>
+                <rect x="595" y="630" width="270" height="6" fill="#9333ea"/>
+                <text x="608" y="631" font-size="9.5" font-weight="700" fill="#fff">shared/</text>
+                <text x="608" y="652" font-size="8.5" fill="#581c87" font-weight="600">components/</text>
+                <text x="695" y="652" font-size="8" fill="#6b21a8">Button, Modal, Table, DataGrid</text>
+                <text x="608" y="670" font-size="8.5" fill="#581c87" font-weight="600">hooks/</text>
+                <text x="695" y="670" font-size="8" fill="#6b21a8">useAuth, useFetch, useDebounce</text>
+                <text x="608" y="688" font-size="8.5" fill="#581c87" font-weight="600">services/</text>
+                <text x="695" y="688" font-size="8" fill="#6b21a8">authService, bookingService (Axios)</text>
+                <text x="608" y="706" font-size="8.5" fill="#581c87" font-weight="600">utils/</text>
+                <text x="695" y="706" font-size="8" fill="#6b21a8">formatDate, validators, constants</text>
+                <text x="608" y="724" font-size="8.5" fill="#581c87" font-weight="600">hoc/</text>
+                <text x="695" y="724" font-size="8" fill="#6b21a8">withAuth, withLoading</text>
+                <text x="608" y="742" font-size="8.5" fill="#581c87" font-weight="600">types/</text>
+                <text x="695" y="742" font-size="8" fill="#6b21a8">api.types.ts, common.types.ts</text>
+
+                <!-- Legend -->
+                <rect x="55" y="798" width="10" height="10" rx="2" fill="#166534"/>
+                <text x="72" y="807" font-size="8.5" fill="#334155">Business Module</text>
+                <rect x="180" y="798" width="10" height="10" rx="2" fill="#e0f2fe" stroke="#7dd3fc" stroke-width="1" stroke-dasharray="3,2"/>
+                <text x="197" y="807" font-size="8.5" fill="#334155">Shared Kernel</text>
+                <line x1="310" y1="804" x2="340" y2="804" stroke="#0284c7" stroke-width="1.2" stroke-dasharray="4,2"/>
+                <text x="347" y="807" font-size="8.5" fill="#334155">Depends on common</text>
+                <line x1="475" y1="804" x2="505" y2="804" stroke="#94a3b8" stroke-width="1.2"/>
+                <text x="512" y="807" font-size="8.5" fill="#334155">Inter-module dependency (via Service interface)</text>
+            </svg>
+            <p class="diagram-caption">Figure 1.2 — HCMS Package Diagram (Backend: com.hcms.* + Frontend: src/*)</p>
+        </div>
+
+        <!-- Package Dependency Rules -->
+        <h3>1.2.2 Package Dependency Rules</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="45%">Rule</th>
+                    <th width="50%">Rationale</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>All modules may depend on <code>common</code> (Shared Kernel)</td>
+                    <td>Shared DTOs, base entities, exception handlers and utilities are centralized to avoid code duplication across modules.</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>No module may directly access another module's <code>repository</code> or <code>entity</code></td>
+                    <td>Prevents tight coupling. All inter-module data access must go through the target module's <code>service</code> interface.</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Use <code>package-private</code> access on repositories and entities by default</td>
+                    <td>Java compiler enforces module boundaries. Only <code>public</code> service interfaces are exposed to other modules.</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>The <code>config</code> package is cross-cutting and accessible by all modules</td>
+                    <td>Security filters, CORS rules, and Swagger configuration apply globally to all API endpoints.</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Frontend <code>features/</code> mirror backend modules for naming consistency</td>
+                    <td>Reduces cognitive overhead. Developers can locate frontend code for any backend module instantly.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Inter-Module Dependencies -->
+        <h3>1.2.3 Inter-Module Dependency Matrix</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Source Module</th>
+                    <th>Target Module</th>
+                    <th>Dependency Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>appointment</code></td>
+                    <td><code>patient</code></td>
+                    <td>Service call</td>
+                    <td>Booking requires patient lookup for appointment association.</td>
+                </tr>
+                <tr>
+                    <td><code>appointment</code></td>
+                    <td><code>auth</code></td>
+                    <td>Service call</td>
+                    <td>Needs doctor (User with DOCTOR role) for assignment to appointments.</td>
+                </tr>
+                <tr>
+                    <td><code>consultation</code></td>
+                    <td><code>patient</code></td>
+                    <td>Service call</td>
+                    <td>Visit records reference patient EMR data for medical history context.</td>
+                </tr>
+                <tr>
+                    <td><code>consultation</code></td>
+                    <td><code>appointment</code></td>
+                    <td>Service call</td>
+                    <td>A consultation is triggered from a confirmed appointment. Status update on completion.</td>
+                </tr>
+                <tr>
+                    <td><code>billing</code></td>
+                    <td><code>consultation</code></td>
+                    <td>Service call</td>
+                    <td>Invoice is auto-generated from consultation records (fee calculation from visit + prescription).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note-box">
+            <p><strong>Design Constraint:</strong> All inter-module dependencies are <em>unidirectional</em>. Circular dependencies between modules are strictly prohibited. If a bidirectional data flow is required (e.g., appointment status update after consultation), use event-driven callbacks or DTOs passed through the Shared Kernel — never direct cross-module repository access.</p>
+        </div>
+
+        <!-- Related Documents -->
+        <h3>Related Documents</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th width="30%">Document</th>
+                    <th width="40%">File</th>
+                    <th width="30%">Relationship</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Architecture Decision Record</td>
+                    <td><code>ADR-001-adopt-modular-monolith_hcms.md</code></td>
+                    <td>Architecture pattern &amp; tech stack decision</td>
+                </tr>
+                <tr>
+                    <td>Business Goals &amp; Scope</td>
+                    <td><code>HCMS_Business_Goals_v0.1.html</code></td>
+                    <td>Business requirements &amp; 5-entity scope</td>
+                </tr>
+                <tr>
+                    <td>Project Charter</td>
+                    <td><code>HCMS_Project_Charter_v0.1.html</code></td>
+                    <td>Project scope, timeline, deliverables</td>
+                </tr>
+                <tr>
+                    <td>Stakeholder Matrix</td>
+                    <td><code>HCMS_Stakeholder_Matrix_v0.1.html</code></td>
+                    <td>User roles &amp; engagement strategy</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Footer -->
+        <div class="doc-footer">
+            <div>HCMS — Healthcare Clinic Management System (Pediatrics)</div>
+            <div>High Level Design v0.1 — 2026-04-17</div>
+        </div>
+
+    </div>
+</body>
+</html>
