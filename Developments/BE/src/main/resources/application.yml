@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  application:
+    name: hcms-backend
+  
+  profiles:
+    active: dev
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/hcms?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&charset=utf8mb4}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:meomeo5104}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        physical_naming_strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    # For MySQL 8+, Flyway needs this dependency in pom.xml which I added (flyway-mysql)
+
+logging:
+  level:
+    root: INFO
+    com.hcms: DEBUG
+
+# JWT Configuration
+jwt:
+  # Do not hardcode secret in source control. Use env var: JWT_SECRET
+  secret: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+  # Default expiration: 24 hours (86,400,000 ms)
+  expiration: ${JWT_EXPIRATION:86400000}

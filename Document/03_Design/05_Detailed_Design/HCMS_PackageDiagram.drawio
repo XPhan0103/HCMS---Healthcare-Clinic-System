@@ -1,0 +1,356 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3" pages="2">
+  <diagram id="backend" name="1. Backend — com.hcms">
+    <mxGraphModel dx="1410" dy="859" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="b_title" value="&lt;b style=&quot;font-size:15px;&quot;&gt;Package Diagram — Backend (com.hcms)&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:10px;color:#555;&quot;&gt;HCMS Healthcare Clinic Management System | Modular Monolith (ADR-001) | Ref: HLD §1.2&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="1" vertex="1">
+          <mxGeometry x="20" y="10" width="1614" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="b_root" value="&lt;b&gt;«root»  com.hcms&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#555555;strokeWidth=2;dashed=1;dashPattern=8 4;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="20" y="65" width="1614" height="1055" as="geometry" />
+        </mxCell>
+        <mxCell id="b_config" value="config" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#333333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="100" width="320" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="b_config_cls" value="&lt;i&gt;SecurityConfig.java&lt;/i&gt;&lt;br/&gt;&lt;i&gt;CorsConfig.java&lt;/i&gt;&lt;br/&gt;&lt;i&gt;JwtConfig.java&lt;/i&gt;&lt;br/&gt;&lt;i&gt;SwaggerConfig.java&lt;/i&gt;&lt;br/&gt;&lt;i&gt;WebConfig.java&lt;/i&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;fontSize=10;spacingTop=5;" parent="b_config" vertex="1">
+          <mxGeometry x="10" y="32" width="300" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="b_common" value="common  ·  «Shared Kernel»" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#09407a;rounded=1;arcSize=3;fontSize=12;dashed=1;dashPattern=8 4;" parent="1" vertex="1">
+          <mxGeometry x="390" y="100" width="850" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="b_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;ApiResponse.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_common" vertex="1">
+          <mxGeometry x="10" y="35" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_exception" value="&lt;b&gt;exception/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;GlobalExceptionHandler.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_common" vertex="1">
+          <mxGeometry x="170" y="35" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_util" value="&lt;b&gt;util/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;DateUtil.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_common" vertex="1">
+          <mxGeometry x="335" y="35" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_const" value="&lt;b&gt;constant/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AppConstants.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_common" vertex="1">
+          <mxGeometry x="500" y="35" width="155" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_base" value="&lt;b&gt;base/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;BaseEntity.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_common" vertex="1">
+          <mxGeometry x="665" y="35" width="175" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="b_common_note" value="⟶  Tất cả Business Modules phụ thuộc vào package này [Rule R1]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontStyle=2;fontColor=#09407a;" parent="b_common" vertex="1">
+          <mxGeometry x="10" y="105" width="830" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth" value="auth" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="330" width="270" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth_ctrl" value="&lt;b&gt;controller/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AuthController.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_auth" vertex="1">
+          <mxGeometry x="15" y="38" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth_svc" value="&lt;b&gt;service/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AuthService.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_auth" vertex="1">
+          <mxGeometry x="15" y="103" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth_repo" value="&lt;b&gt;repository/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;UserRepository.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_auth" vertex="1">
+          <mxGeometry x="15" y="168" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth_entity" value="&lt;b&gt;entity/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;User.java, Role.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_auth" vertex="1">
+          <mxGeometry x="15" y="233" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_auth_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;LoginReq.java, RegisterReq.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_auth" vertex="1">
+          <mxGeometry x="15" y="298" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient" value="patient" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="340" y="330" width="270" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient_ctrl" value="&lt;b&gt;controller/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;PatientController.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_patient" vertex="1">
+          <mxGeometry x="15" y="38" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient_svc" value="&lt;b&gt;service/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;PatientService.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_patient" vertex="1">
+          <mxGeometry x="15" y="103" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient_repo" value="&lt;b&gt;repository/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;PatientRepository.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_patient" vertex="1">
+          <mxGeometry x="15" y="168" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient_entity" value="&lt;b&gt;entity/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Patient.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_patient" vertex="1">
+          <mxGeometry x="15" y="233" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_patient_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;PatientReq.java, PatientRes.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_patient" vertex="1">
+          <mxGeometry x="15" y="298" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appointment" value="appointment" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="630" y="330" width="295" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appt_ctrl" value="&lt;b&gt;controller/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AppointmentController.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_appointment" vertex="1">
+          <mxGeometry x="15" y="38" width="265" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appt_svc" value="&lt;b&gt;service/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AppointmentService.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_appointment" vertex="1">
+          <mxGeometry x="15" y="103" width="265" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appt_repo" value="&lt;b&gt;repository/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AppointmentRepository.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_appointment" vertex="1">
+          <mxGeometry x="15" y="168" width="265" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appt_entity" value="&lt;b&gt;entity/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Appointment.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_appointment" vertex="1">
+          <mxGeometry x="15" y="233" width="265" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_appt_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;BookingReq.java, BookingRes.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_appointment" vertex="1">
+          <mxGeometry x="15" y="298" width="265" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_consultation" value="consultation" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="945" y="330" width="300" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b_cons_ctrl" value="&lt;b&gt;controller/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;ConsultationController.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_consultation" vertex="1">
+          <mxGeometry x="15" y="38" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_cons_svc" value="&lt;b&gt;service/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;ConsultationService.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_consultation" vertex="1">
+          <mxGeometry x="15" y="103" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_cons_repo" value="&lt;b&gt;repository/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;VisitRepository.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_consultation" vertex="1">
+          <mxGeometry x="15" y="168" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_cons_entity" value="&lt;b&gt;entity/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Visit.java, Prescription.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_consultation" vertex="1">
+          <mxGeometry x="15" y="233" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_cons_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;VisitReq.java, PrescriptionDto.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_consultation" vertex="1">
+          <mxGeometry x="15" y="298" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_billing" value="billing" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#333;rounded=1;arcSize=3;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="1265" y="330" width="270" height="385" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bill_ctrl" value="&lt;b&gt;controller/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;BillingController.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_billing" vertex="1">
+          <mxGeometry x="15" y="38" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bill_svc" value="&lt;b&gt;service/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;BillingService.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_billing" vertex="1">
+          <mxGeometry x="15" y="103" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bill_repo" value="&lt;b&gt;repository/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;BillingRepository.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_billing" vertex="1">
+          <mxGeometry x="15" y="168" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bill_entity" value="&lt;b&gt;entity/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Billing.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_billing" vertex="1">
+          <mxGeometry x="15" y="233" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="b_bill_dto" value="&lt;b&gt;dto/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;InvoiceRes.java&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fff0;strokeColor=#82b366;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" parent="b_billing" vertex="1">
+          <mxGeometry x="15" y="298" width="240" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_auth_common" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.1;entryY=1;entryDx=0;entryDy=0;" parent="1" source="b_auth" target="b_common" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_patient_common" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.3;entryY=1;entryDx=0;entryDy=0;" parent="1" source="b_patient" target="b_common" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_appt_common" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="b_appointment" target="b_common" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_cons_common" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.72;entryY=1;entryDx=0;entryDy=0;" parent="1" source="b_consultation" target="b_common" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_bill_common" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.9;entryY=1;entryDx=0;entryDy=0;" parent="1" source="b_billing" target="b_common" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_config_auth" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#d6b656;fontColor=#d6b656;fontSize=9;fontStyle=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="b_config" target="b_auth" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_appt_patient" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;exitX=0;exitY=0.55;exitDx=0;exitDy=0;entryX=1;entryY=0.55;entryDx=0;entryDy=0;" parent="1" source="b_appointment" target="b_patient" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_appt_auth" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;" parent="1" source="b_appointment" target="b_auth" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="777" y="740" />
+              <mxPoint x="185" y="740" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dep_cons_appt" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="b_consultation" target="b_appointment" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep_cons_patient" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;" parent="1" source="b_consultation" target="b_patient" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1095" y="750" />
+              <mxPoint x="475" y="750" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dep_bill_cons" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="b_billing" target="b_consultation" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="b_legend_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#aaaaaa;" parent="1" vertex="1">
+          <mxGeometry x="50" y="770" width="560" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="b_legend_title" value="&lt;b&gt;Chú giải (Legend)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="68" y="780" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg1" value="Business Module" style="swimlane;fontStyle=1;align=center;startSize=22;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="68" y="815" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg1t" value="Package chứa 1 bounded context (auth, patient, ...)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="223" y="828" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg2" value="common · «Shared Kernel»" style="swimlane;fontStyle=1;align=center;startSize=22;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#09407a;fontSize=9;dashed=1;dashPattern=8 4;" parent="1" vertex="1">
+          <mxGeometry x="68" y="872" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg2t" value="Shared Kernel: DTOs, Exceptions, Utils dùng chung" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="223" y="885" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg3" value="config" style="swimlane;fontStyle=1;align=center;startSize=22;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="68" y="929" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg3t" value="Cross-cutting (Security, CORS, JWT, Swagger)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="223" y="942" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg_arr1" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=9;fontStyle=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="68" y="1005" as="sourcePoint" />
+            <mxPoint x="213" y="1005" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b_leg_arr1t" value="→ Phụ thuộc vào Shared Kernel (common)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="223" y="994" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="b_leg_arr2" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="68" y="1048" as="sourcePoint" />
+            <mxPoint x="213" y="1048" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="b_leg_arr2t" value="→ Inter-module dependency (qua Service interface)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" parent="1" vertex="1">
+          <mxGeometry x="223" y="1037" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="b_rules" value="&lt;b&gt;Package Dependency Rules (HLD §1.2.2  |  ADR-001):&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;[R1]  Tất cả Business Modules được phép phụ thuộc vào &lt;b&gt;common&lt;/b&gt; (Shared Kernel).&lt;br/&gt;[R2]  Không module nào được trực tiếp truy cập &lt;b&gt;repository&lt;/b&gt; hoặc &lt;b&gt;entity&lt;/b&gt; của module khác. Phải qua &lt;b&gt;service interface&lt;/b&gt;.&lt;br/&gt;[R3]  Dùng &lt;b&gt;package-private&lt;/b&gt; cho repositories và entities theo mặc định.&lt;br/&gt;[R4]  Package &lt;b&gt;config&lt;/b&gt; là cross-cutting — accessible bởi tất cả modules.&lt;br/&gt;[R5]  Tất cả dependencies là &lt;b&gt;đơn hướng (unidirectional)&lt;/b&gt; — cấm circular dependency.&lt;br/&gt;[R6]  Inter-module communication chỉ thông qua &lt;b&gt;public service interfaces&lt;/b&gt; (Java package-private enforcement)." style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;spacingLeft=14;spacingTop=12;spacingBottom=10;" parent="1" vertex="1">
+          <mxGeometry x="640" y="770" width="994" height="310" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="frontend" name="2. Frontend — src">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <!-- TITLE -->
+        <mxCell id="f_title" value="&lt;b style=&quot;font-size:15px;&quot;&gt;Package Diagram — Frontend (frontend/src)&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;font-size:10px;color:#555;&quot;&gt;HCMS Healthcare Clinic Management System | React 19 + Vite 8 + TypeScript | HLD §1.2&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="20" y="10" width="1614" height="50" as="geometry" />
+        </mxCell>
+        <!-- ROOT OUTLINE: frontend/src -->
+        <mxCell id="f_root" value="&lt;b&gt;«root»  frontend/src&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#7e22ce;strokeWidth=2;dashed=1;dashPattern=8 4;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="65" width="1614" height="1055" as="geometry" />
+        </mxCell>
+        <!-- ========================= APP/ PACKAGE ========================= -->
+        <mxCell id="f_app" value="app/" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#f3e8ff;strokeColor=#9333ea;fontColor=#4a1a6f;rounded=1;arcSize=3;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="50" y="100" width="360" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="f_app_guards" value="&lt;b&gt;guards/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;PrivateRoute.tsx&lt;/i&gt;&lt;br/&gt;&lt;i&gt;RoleGuard.tsx&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_app">
+          <mxGeometry x="15" y="38" width="155" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f_app_layouts" value="&lt;b&gt;layouts/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;MainLayout.tsx&lt;/i&gt;&lt;br/&gt;&lt;i&gt;AuthLayout.tsx&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_app">
+          <mxGeometry x="190" y="38" width="155" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f_app_providers" value="&lt;b&gt;provider/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AuthProvider.tsx&lt;/i&gt;&lt;br/&gt;&lt;i&gt;ThemeProvider.tsx&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_app">
+          <mxGeometry x="15" y="120" width="155" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f_app_routers" value="&lt;b&gt;routers/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;AppRouter.tsx&lt;/i&gt;&lt;br/&gt;&lt;i&gt;App.tsx&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_app">
+          <mxGeometry x="190" y="120" width="155" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f_app_bottom" value="&lt;b&gt;styles/&lt;/b&gt;  globals.css, theme vars&lt;br/&gt;&lt;b&gt;assets/&lt;/b&gt;  images, icons, fonts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=left;verticalAlign=top;fontSize=9;spacingTop=6;spacingLeft=8;" vertex="1" parent="f_app">
+          <mxGeometry x="15" y="205" width="330" height="55" as="geometry" />
+        </mxCell>
+        <!-- ========================= FEATURES/ PACKAGE ========================= -->
+        <mxCell id="f_features" value="features/" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#f3e8ff;strokeColor=#9333ea;fontColor=#4a1a6f;rounded=1;arcSize=3;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="430" y="100" width="610" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="f_booking" value="&lt;b&gt;booking/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;pages/ | components/ | hooks/&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="15" y="38" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_patient_fe" value="&lt;b&gt;patient/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;pages/ | components/ | hooks/&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="210" y="38" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_doctor_fe" value="&lt;b&gt;doctor/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;pages/ | components/ | hooks/&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="415" y="38" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_billing_fe" value="&lt;b&gt;billing/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;pages/ | components/ | hooks/&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="15" y="115" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_dashboard_fe" value="&lt;b&gt;dashboard/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;pages/ | components/ | hooks/&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="210" y="115" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_auth_fe" value="&lt;b&gt;auth/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Login.tsx, Register.tsx&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_features">
+          <mxGeometry x="415" y="115" width="180" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="f_features_note" value="&lt;i&gt;Each feature: pages/ · components/ · hooks/ · types/&lt;/i&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontColor=#4a1a6f;" vertex="1" parent="f_features">
+          <mxGeometry x="15" y="195" width="580" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="f_features_note2" value="⚠  Feature modules mirror Backend module names — naming consistency [R5]" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=9;fontColor=#7e22ce;fontStyle=2;" vertex="1" parent="f_features">
+          <mxGeometry x="15" y="225" width="580" height="22" as="geometry" />
+        </mxCell>
+        <!-- ========================= SHARED/ PACKAGE ========================= -->
+        <mxCell id="f_shared" value="shared/" style="swimlane;fontStyle=1;align=center;startSize=28;fillColor=#f3e8ff;strokeColor=#9333ea;fontColor=#4a1a6f;rounded=1;arcSize=3;fontSize=12;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="100" width="544" height="390" as="geometry" />
+        </mxCell>
+        <mxCell id="f_comp" value="&lt;b&gt;components/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Button, Modal, Table, DataGrid&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="15" y="38" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f_hooks" value="&lt;b&gt;hooks/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;useAuth, useFetch, useDebounce&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="270" y="38" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f_services" value="&lt;b&gt;services/&lt;/b&gt;  ← Axios HTTP Client (JWT Bearer)&lt;br/&gt;&lt;i&gt;authService.ts, bookingService.ts&lt;/i&gt;&lt;br/&gt;&lt;i&gt;patientService.ts, billingService.ts&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="15" y="110" width="515" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="f_utils" value="&lt;b&gt;utils/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;formatDate, validators&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="15" y="195" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f_hoc" value="&lt;b&gt;hoc/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;withAuth, withLoading&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="187" y="195" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="f_types" value="&lt;b&gt;types/&lt;/b&gt;&lt;br/&gt;&lt;i&gt;api.types.ts, common.types.ts&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;align=center;verticalAlign=top;fontSize=9;spacingTop=4;" vertex="1" parent="f_shared">
+          <mxGeometry x="360" y="195" width="170" height="60" as="geometry" />
+        </mxCell>
+        <!-- ========================= FRONTEND DEPENDENCY ARROWS ========================= -->
+        <!-- features → shared <<use>> -->
+        <mxCell id="f_dep_feat_shared" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#9333ea;fontColor=#9333ea;fontSize=9;fontStyle=2;exitX=1;exitY=0.4;exitDx=0;exitDy=0;entryX=0;entryY=0.4;entryDx=0;entryDy=0;" edge="1" source="f_features" target="f_shared" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- features → app <<use>> -->
+        <mxCell id="f_dep_feat_app" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;exitX=0;exitY=0.4;exitDx=0;exitDy=0;entryX=1;entryY=0.4;entryDx=0;entryDy=0;" edge="1" source="f_features" target="f_app" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- app → shared <<use>> (routed below packages) -->
+        <mxCell id="f_dep_app_shared" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#555555;fontColor=#555555;fontSize=9;fontStyle=2;" edge="1" source="f_app" target="f_shared" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="520" />
+              <mxPoint x="1332" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <!-- ========================= FRONTEND LEGEND ========================= -->
+        <mxCell id="f_legend_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#aaaaaa;" vertex="1" parent="1">
+          <mxGeometry x="50" y="545" width="560" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="f_legend_title" value="&lt;b&gt;Chú giải (Legend)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="68" y="555" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="f_leg1" value="app/ · features/" style="swimlane;fontStyle=1;align=center;startSize=22;fillColor=#f3e8ff;strokeColor=#9333ea;fontColor=#4a1a6f;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="68" y="590" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="f_leg1t" value="Package tính năng (app config, feature modules)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="223" y="603" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="f_leg2" value="shared/" style="swimlane;fontStyle=1;align=center;startSize=22;fillColor=#f3e8ff;strokeColor=#9333ea;fontColor=#4a1a6f;fontSize=9;dashed=1;dashPattern=8 4;" vertex="1" parent="1">
+          <mxGeometry x="68" y="648" width="145" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="f_leg2t" value="Shared: components, hooks, services, utils, types" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="223" y="661" width="370" height="22" as="geometry" />
+        </mxCell>
+        <mxCell id="f_leg_arr" value="&lt;&lt;use&gt;&gt;" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;endArrow=open;endFill=0;strokeColor=#9333ea;fontColor=#9333ea;fontSize=9;fontStyle=2;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="68" y="720" as="sourcePoint" />
+            <mxPoint x="213" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f_leg_arrt" value="→ Dependency (mũi tên đứt nét = UML «use»)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="223" y="709" width="370" height="22" as="geometry" />
+        </mxCell>
+        <!-- ========================= FRONTEND RULES ========================= -->
+        <mxCell id="f_rules" value="&lt;b&gt;Frontend Package Rules (HLD §1.2.2  |  ADR-001 §3.3):&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;[R5]  features/ mirror backend module names (booking ↔ appointment, doctor ↔ auth...) — naming consistency.&lt;br/&gt;[R6]  features/ phụ thuộc vào shared/ (components, hooks, services, utils).&lt;br/&gt;[R7]  shared/services/ là lớp giao tiếp &lt;b&gt;duy nhất&lt;/b&gt; với Backend REST API — qua Axios interceptors + JWT Bearer token.&lt;br/&gt;[R8]  Không feature module nào được gọi API trực tiếp — phải thông qua &lt;b&gt;shared/services/&lt;/b&gt;." style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;spacingLeft=14;spacingTop=12;spacingBottom=10;" vertex="1" parent="1">
+          <mxGeometry x="640" y="545" width="994" height="240" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
