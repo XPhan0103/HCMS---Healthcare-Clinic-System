@@ -1,81 +1,40 @@
-# Layer 1: System & Business Context (HCMS)
+Chào bạn, ý tưởng làm một ứng dụng như Quizlet (Flashcards, Spaced Repetition, Quiz) kết hợp với các công nghệ AI SOTA hiện nay là một hướng đi cực kỳ "xịn" cho đồ án. Thay vì chỉ là những tấm thẻ tĩnh, bạn có thể biến nó thành một hệ thống học tập thông minh.
 
-This layer defines the high-level vision, personas, and business goals of the Healthcare Clinic Management System.
+Dưới đây là các công nghệ và API có sẵn bạn có thể tích hợp ngay để tạo ra sự khác biệt:
 
-## 1. Project Personas & Stakeholders
+1. Công nghệ tạo nội dung tự động (AI Content Generation)
+Đây là tính năng "đáng tiền" nhất. Thay vì bắt người dùng tự nhập từng từ, AI sẽ làm việc đó.
 
-### Project Personas (The Core Team)
-- **Senior BA / PM:** 
-  - **Philosophy:** Omotenashi (total dedication to user experience) & Monozukuri (precision in engineering).
-  - **Approach:** MECE (Mutually Exclusive, Collectively Exhaustive) thinking. 
-  - **Guardrail:** Protective "gatekeeper" of the **Project Oath** to prevent scope creep.
+Gemini 1.5 Flash / GPT-4o mini: * Ứng dụng: Người dùng chỉ cần chụp ảnh trang sách hoặc copy một đoạn văn bản, AI sẽ tự động chiết xuất ra danh sách các thuật ngữ (Term) và định nghĩa (Definition).
 
-### Stakeholder Personas (The Users)
-- **BS. Minh (Lead Doctor / Sponsor):** 
-  - **Pain Points:** Paper fatigue, manual prescription writing.
-  - **Needs:** 100% digital EMR, medical autocomplete, real-time history lookup.
-- **Chị Lan (Receptionist / Power User):** 
-  - **Pain Points:** Phone call overload, billing errors, manual scheduling.
-  - **Needs:** Self-service portal for parents, 1-click checkout, visual paid/unpaid status.
-- **Chị Vy (Parents / Final Users):** 
-  - **Pain Points:** Long wait times, lost medical booklets, friction in booking.
-  - **Needs:** Mobile-first self-service, transparent record access, easy rescheduling.
+Kỹ thuật: Dùng OCR (như Google Vision API) để đọc ảnh, sau đó đẩy Text vào LLM để định dạng về JSON.
 
-## 2. Vision and Scope
+Dịch thuật (Translation API): * Ứng dụng: Tự động gợi ý nghĩa tiếng Việt khi người dùng nhập từ tiếng Anh/Nhật.
 
-### Business Context
-- **Domain:** Pediatric Private Clinic.
-- **Operational Model:** High focus on efficiency and digital-first interaction.
-- **Scale:** 1-2 Doctors, 1 Receptionist, 10-20 patients/day.
-- **Timeline:** 4-6 weeks MVP (Go-live: 15/06/2026).
+Công nghệ: Google Translate API hoặc dùng chính LLM để dịch theo ngữ cảnh.
 
-### Business Goals
-1. **Administrative Efficiency:** Target 0% manual phone booking for repeat visits through the Self-Service Portal.
-2. **Clinical Accuracy:** 100% digital trace for every symptom, diagnosis, and prescription.
-3. **Financial Transparency:** Real-time billing status visibility with absolute zero manual invoice calculation.
+2. Công nghệ Ghi nhớ thông minh (Spaced Repetition System - SRS)
+Quizlet nổi tiếng nhờ thuật toán giúp người dùng nhớ lâu.
 
-### Project Oath (The Immutable Guardrails)
-To meet the 1-month deadline, the following constraints are strictly enforced:
-- **Strict Entity Lock:** The system architecture is built around EXACTLY 5 entities: `PATIENT`, `APPOINTMENT`, `VISIT`, `PRESCRIPTION`, `BILLING`. 
-- **No Bloatware:** Any request involving Insurance Integration, Advanced Pharmacy Inventory, or Multi-branch scaling is **automatically rejected** for MVP.
+Thuật toán SuperMemo-2 (SM-2) hoặc FSRS: * Ứng dụng: Đây là các thuật toán mã nguồn mở (có sẵn thư viện Java/JavaScript). Nó sẽ tính toán dựa trên độ khó bạn đánh giá để biết khi nào nên cho bạn học lại thẻ đó (sau 1 ngày, 3 ngày, hay 7 ngày).
 
-## 3. Detailed Workflows
+Tích hợp: Bạn code trực tiếp thuật toán này vào Backend (Spring Boot) để quản lý lịch học trong Database.
 
-### WF-01: Self-Service Booking Online
-- **Objective:** Empower parents to book slots without calling.
-- **Sequence:**
-```mermaid
-sequenceDiagram
-    autonumber
-    participant P as Parent (Mobile)
-    participant S as HCMS System
-    participant R as Receptionist
-    P->>S: View Available Slots (Filtered by Doctor)
-    P->>S: Provide Patient Demographics (New/Existing)
-    S->>S: Validate Data (BR-01, BR-02)
-    S->>S: Create PENDING Appointment
-    S->>R: Notify Receptionist Dashboard
-    R->>S: Approve/Confirm Appointment
-    S->>P: Send Confirmation (SMS/Email)
-```
+3. Công nghệ Âm thanh (Text-to-Speech - TTS)
+Giúp người dùng học cách phát âm ngay trên thẻ.
 
-### WF-02: Clinical Consultation (EMR Workflow)
-- **Objective:** Eliminate paper medical records.
-- **Steps:**
-  1. **History Lookup:** Doctor opens `PATIENT` record, views all previous `VISIT` and `PRESCRIPTION` history.
-  2. **Vitals/Symptoms:** Entry of clinical symptoms into the `VISIT` entity.
-  3. **Diagnosis:** Doctor types diagnosis using **Autocomplete Suggester**.
-  4. **Prescription:** Electronic entry of medicine line items (`PRESCRIPTION`).
+Google Cloud TTS / Azure TTS: * Ứng dụng: Tự động tạo file âm thanh cho mỗi Flashcard.
 
-### WF-03: 1-Click Checkout
-- **Objective:** Fast, error-free financial processing.
-- **Logic:**
-  - Upon Doctor completing WF-02, the system **auto-generates** a `BILLING` record.
-  - Total = (Visit Fee) + SUM(Prescription Items).
-  - Receptionist performs "1-Click" to mark status as **PAID**.
+Ưu điểm: Có gói miễn phí lớn, hỗ trợ cực nhiều ngôn ngữ (Anh, Nhật, Hàn, Việt...). Giọng nói rất tự nhiên.
 
-## 4. BA & Design Rules
-- **Problem Solving:** Always identify the "Pain Point" before proposing a feature.
-- **Zero Ambiguity:** Use Tiếng Việt for business descriptions and English for system keywords.
-- **MECE Analysis:** When documenting a logic flow, ensure there are no "Logical Dead Ends."
-- **UX Requirement:** Minimize clicks. If a task takes >3 clicks, the design must be simplified.
+OpenAI TTS: Giọng nói cực kỳ biểu cảm, phù hợp nếu bạn muốn app có cảm giác "cao cấp".
+
+4. Công nghệ Tìm kiếm và Gợi ý (Vector Search)
+Pinecone / Milvus (Vector Database):
+
+Ứng dụng: Khi người dùng tạo một bộ thẻ mới, hệ thống sẽ gợi ý các bộ thẻ tương tự từ cộng đồng (giống tính năng "Related Sets" của Quizlet).
+
+Kỹ thuật: Dùng Embedding Model (của OpenAI hoặc Google) để biến các bộ thẻ thành vector và so sánh độ tương đồng.
+
+5. Công nghệ Game hóa (Gamification)
+LottieFiles: Tích hợp các animation nhỏ, mượt mà khi người dùng trả lời đúng/sai hoặc hoàn thành mục tiêu ngày để tăng cảm giác hưng phấn (giống Duolingo).

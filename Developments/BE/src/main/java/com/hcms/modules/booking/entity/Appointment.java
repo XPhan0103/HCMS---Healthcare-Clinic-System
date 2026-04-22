@@ -22,14 +22,27 @@ public class Appointment extends BaseEntity {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    @Column(name = "slot_time", nullable = false)
-    private LocalDateTime slotTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private com.hcms.modules.auth.entity.User doctor;
+
+    @Column(name = "appointment_date", nullable = false)
+    private java.time.LocalDate appointmentDate;
+
+    @Column(name = "time_slot", nullable = false, length = 100)
+    private String timeSlot;
+
+    @Column(name = "cancellation_reason", length = 255)
+    private String cancellationReason;
+
+    @Column(name = "notes", columnDefinition = "TEXT")
+    private String notes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AppointmentStatus status = AppointmentStatus.PENDING;
 
     public enum AppointmentStatus {
-        PENDING, CONFIRMED, COMPLETED, CANCELLED
+        PENDING, CONFIRMED, CANCELLED, CHECKED_IN, IN_PROGRESS, COMPLETED
     }
 }

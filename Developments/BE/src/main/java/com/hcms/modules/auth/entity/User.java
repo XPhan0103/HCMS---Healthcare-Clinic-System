@@ -15,20 +15,31 @@ import lombok.Setter;
 @Setter
 public class User extends BaseEntity {
 
-    @Column(name = "username", nullable = false, unique = true, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "username", nullable = false, unique = true, length = 100)
     private String username;
 
-    @Column(name = "password", nullable = false, columnDefinition = "NVARCHAR(255)")
+    @Column(name = "email", nullable = false, unique = true, length = 255)
+    private String email;
+
+    @Column(name = "password_hash", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "email", nullable = false, unique = true, columnDefinition = "NVARCHAR(255)")
-    private String email;
+    @Column(name = "full_name", nullable = false, length = 100)
+    private String fullName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserStatus status = UserStatus.ACTIVE;
+
     public enum Role {
-        ADMIN, DOCTOR, RECEPTIONIST, PARENT
+        ADMIN, DOCTOR, RECEPTIONIST, CLINIC_MANAGER
+    }
+
+    public enum UserStatus {
+        ACTIVE, INACTIVE, SUSPENDED
     }
 }

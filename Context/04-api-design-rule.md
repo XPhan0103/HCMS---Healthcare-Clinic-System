@@ -1,92 +1,79 @@
-# Layer 4: API Design Rules (HCMS)
+# API Detailed Design Context for AI Onboarding
 
-This document defines the strict standards for REST API communication, data formatting, and error handling for the Healthcare Clinic Management System.
+<api_design_rules>
+    <rule id="global-route-prefix">
+        <title>Global Route Prefix</title>
+        <description>All API endpoints must fall under a unified versioned base path.</description>
+        <requirement>Prefix all routes with `/api/v1/`</requirement>
+    </rule>
 
-## 1. Routing & Versioning
+    <rule id="path-url-convention">
+        <title>Path URL Convention</title>
+        <description>URL paths must be clean, readable, and standardized.</description>
+        <requirement>Use strictly `kebab-case` for all resource names and path segments (e.g., `/api/v1/appointment-schedules`).</requirement>
+    </rule>
 
-- **Global Prefix:** All endpoints MUST be prefixed with `/api/v1/`.
-- **Naming:** strictly use `kebab-case` for resource segments.
-  - Good: `/api/v1/appointment-slots`
-  - Bad: `/api/v1/appointmentSlots`, `/api/v1/appointment_slots`
-- **Method Usage:**
-  - `GET`: Retrieve data. No side effects.
-  - `POST`: Create new resources.
-  - `PUT`: Update existing resources (full replace).
-  - `PATCH`: Partial update.
-  - `DELETE`: Logical or physical removal.
+    <rule id="response-format">
+        <title>Standardized Response Format</title>
+        <description>All API responses (success and error) must be consistently wrapped in a standard JSON envelope.</description>
+        <requirement>
+            The response object must contain exactly the following properties:
+            - `code` (integer): The HTTP status code or a specific business logic code.
+            - `message` (string): A human-readable description of the result.
+            - `data` (object/array/null): The actual payload or empty object/array on failure.
+        </requirement>
+    </rule>
 
-## 2. Standardized Response Envelope
+    <rule id="authentication">
+        <title>Endpoint Authentication</title>
+        <description>System endpoints are secured and require authorization.</description>
+        <requirement>Apply JWT Bearer Authentication to all secured endpoints. Always append the security scheme in the endpoint specification.</requirement>
+    </rule>
 
-Every single API response MUST follow this JSON structure:
+    <rule id="sensitive-data-protection">
+        <title>Sensitive Data Protection</title>
+        <description>Data privacy must be strictly enforced at the API boundary.</description>
+        <requirement>Never return sensitive fields like `password`, credentials, or confidential internal flags in response schemas.</requirement>
+    </rule>
+</api_design_rules>
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `code` | Integer | HTTP Status or Custom Business Code |
-| `message` | String | Description of the result (in Tiếng Việt for UI display or English for Debugging) |
-| `data` | Object | The payload (can be `null` or `[]`) |
+<visual_format_example>
+The following is an example of how the API endpoints should be documented according to the rules above using OpenAPI YAML format:
 
-### Example Success (200 OK)
-```json
-{
-  "code": 200,
-  "message": "Cập nhật thông tin thành công",
-  "data": {
-    "id": 123,
-    "fullName": "Nguyễn Văn A"
-  }
-}
+```yaml
+  /api/v1/auth/login:
+    post:
+      summary: "User Login"
+      description: "Authenticates a user and returns a token along with basic user details."
+      security:
+        - bearerAuth: [] # AI will learn to append this to all locked routes
+      responses:
+        '200':
+          description: "Successful authentication"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code: 
+                    type: integer
+                    example: 200
+                  message: 
+                    type: string
+                    example: "Login successful"
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: "johndoe@example.com"
+                      fullName:
+                        type: string
+                        example: "John Doe"
+                      roles:
+                        type: array
+                        items:
+                          type: string
+                        example: ["ROLE_USER", "ROLE_DOCTOR"]
 ```
-
-## 3. Pagination & Filtering
-
-For list endpoints (e.g., `/api/v1/patients`), use the following Query Parameters:
-
-- **Pagination:** `page` (start at 0) and `size` (default 20).
-- **Sorting:** `sort=fieldName,asc` or `sort=fieldName,desc`.
-- **Filtering:** Use field-specific parameters (e.g., `?fullName=Nguyễn`).
-
-### Response for Paginated Data
-```json
-{
-  "code": 200,
-  "message": "Thành công",
-  "data": {
-    "content": [...],
-    "totalPages": 5,
-    "totalElements": 100,
-    "size": 20,
-    "number": 0 
-  }
-}
-```
-
-## 4. Error Codes & Handling
-
-When a request fails, the `code` field should reflect the error category, and the `data` field should provide validation details if applicable.
-
-| HTTP Code | Business Code | Description |
-|-----------|---------------|-------------|
-| 400 | `BAD_REQUEST` | Validation failed (e.g., missing phone). |
-| 401 | `UNAUTHORIZED` | Invalid or expired JWT token. |
-| 403 | `FORBIDDEN` | User does not have the required Role. |
-| 404 | `NOT_FOUND` | Resource (Patient/Visit) does not exist. |
-| 409 | `CONFLICT` | Slot already taken (Race condition - MSG01). |
-
-### Validation Error Example (400)
-```json
-{
-  "code": 400,
-  "message": "Dữ liệu nhập vào không hợp lệ",
-  "data": {
-    "fullName": "Tên không được để trống",
-    "phoneNumber": "Định dạng số điện thoại sai"
-  }
-}
-```
-
-## 5. Security & Headers
-
-- **Authentication:** `Authorization: Bearer <JWT_TOKEN>`
-- **Content-Type:** Always `application/json; charset=utf-8`.
-- **CORS:** Allowed only for the authorized Frontend domain (defined in `application.yml`).
-- **Privacy:** Never expose internal IDs (if not sequence-based), passwords, or stack traces in the response `message`.
+</visual_format_example>

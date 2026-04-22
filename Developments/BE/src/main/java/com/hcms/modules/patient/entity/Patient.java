@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @SQLRestriction("is_deleted = false")
 public class Patient extends BaseEntity {
 

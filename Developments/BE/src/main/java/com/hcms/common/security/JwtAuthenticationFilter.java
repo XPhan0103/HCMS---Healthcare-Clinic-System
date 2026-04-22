@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception ex) {
-            log.error("Could not set user authentication in security context", ex);
+            log.warn("Authentication skipped: JWT token is missing, invalid or expired. Error: {}", ex.getMessage());
         }
 
         filterChain.doFilter(request, response);

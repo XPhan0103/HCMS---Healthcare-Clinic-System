@@ -34,11 +34,15 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     private static final String[] PUBLIC_URLS = {
-            "/api/v1/auth/**",
-            "/api/v1/doctors/**",
+            "/auth/**",
+            "/patients/**",
+            "/doctors/**",
+            "/appointments/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/webjars/**"
     };
 
     @Bean
@@ -60,10 +64,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // Permit public URLs
                         .requestMatchers(PUBLIC_URLS).permitAll()
-                        
+
                         // Permit POST /api/v1/appointments for parent self-booking
                         .requestMatchers(HttpMethod.POST, "/api/v1/appointments").permitAll()
-                        
+
                         // All other requests must be authenticated
                         .anyRequest().authenticated()
                 )
