@@ -1,0 +1,33 @@
+Issue ID,Issue Type,Summary,Description,Priority,Component,Status,Parent ID
+1,Epic,Self-Service Booking Portal,"Booking appointments, capturing demographics, and receiving confirmations.",High,Parents Portal,To Do,
+2,Story,UC-01 Book Appointment Online,"As a Parent, I want to book an appointment online by selecting a doctor and time slot.",High,Parents Portal,To Do,1
+3,Story,UC-02 Provide Patient Demographics,"As a Parent, I want to provide patient demographics (Name, DOB, Symptoms) during booking.",High,Parents Portal,To Do,1
+4,Story,UC-03 Receive Appointment Confirmation,"As a Parent, I want to receive an appointment confirmation via SMS/Email.",Medium,Parents Portal,To Do,1
+5,Epic,Patient EMR Portal,Parent dashboard to view clinical notes and past medical records.,Medium,Parents Portal,To Do,
+6,Story,UC-04 View Clinical Notes & Prescriptions,"As a Parent, I want to view clinical notes and prescriptions issued by the doctor after a visit.",Medium,Parents Portal,To Do,5
+7,Epic,Appointment Management,"Receptionist dashboard for monitoring, confirming, and registering appointments.",High,Receptionist Portal,To Do,
+8,Story,UC-05 View Appointment Dashboard,"As a Receptionist, I want to view the daily appointment pipeline and monitor statuses.",High,Receptionist Portal,To Do,7
+9,Story,UC-06 Confirm Appointment,"As a Receptionist, I want to manually confirm online bookings.",High,Receptionist Portal,To Do,7
+10,Story,UC-07 Register Walk-in Appointment,"As a Receptionist, I want to rapidly register an appointment for walk-in patients.",High,Receptionist Portal,To Do,7
+11,Epic,Billing & Payment,Invoice generation and payment status updates.,High,Receptionist Portal,To Do,
+12,Story,UC-08 View Billing Invoice,"As a Receptionist, I want to view generated invoices post-consultation.",High,Receptionist Portal,To Do,11
+13,Story,UC-09 Update Payment Status (1-Click Paid),"As a Receptionist, I want to update the payment status using a 1-Click Paid action.",High,Receptionist Portal,To Do,11
+14,Epic,Doctor Portal & EMR Management,"Real-time queue, patient medical history, and clinical consultation tools.",High,Doctor Portal,To Do,
+15,Story,UC-10 View Patient Queue,"As a Doctor, I want to view the real-time queue of waiting patients.",High,Doctor Portal,To Do,14
+16,Story,UC-11 Access Patient Medical History,"As a Doctor, I want to securely access patient medical history.",High,Doctor Portal,To Do,14
+17,Story,UC-12 Record Clinical Consultation,"As a Doctor, I want to record detailed notes during clinical consultations.",High,Doctor Portal,To Do,14
+18,Story,UC-13 Issue Electronic Prescription,"As a Doctor, I want to immediately issue electronic prescriptions utilizing autocomplete.",High,Doctor Portal,To Do,14
+19,Story,UC-14 Manage Patient Profile,"As a Doctor, I want to update master records and demographic information.",High,Doctor Portal,To Do,14
+20,Task,Implement Twilio SMS API,Integrate Twilio SMS API for appointment confirmations.,Medium,Infrastructure,To Do,
+21,Task,Implement SMTP Email,Setup SMTP for email notifications.,Medium,Infrastructure,To Do,
+22,Task,Database Design (MySQL 8.0),"Design the core 5 entities (Patient, Appointment, Visit, Prescription, Billing) in MySQL.",High,Infrastructure,To Do,
+23,Task,Responsive React Web UI,Build responsive Web UI for clinic staff and Parents.,High,Frontend,To Do,
+24,Epic,Authentication & Access Control,"System login, OTP, and Role-based access control.",High,Security,To Do,
+25,Story,UC-15 Parent Login & Authentication,"As a Parent, I want to login using my phone number (OTP) to access my portal.",High,Security,To Do,24
+26,Story,UC-16 Staff Login & Authorization,"As a Clinic Staff, I want to login securely and see functionalities based on my role.",High,Security,To Do,24
+27,Epic,Master Data Management,"Manage doctors schedule, services, and pricing config.",High,System Admin,To Do,
+28,Story,UC-17 Manage Doctor Availability,"As an Admin, I want to configure doctor schedules and time slots for online booking.",High,System Admin,To Do,27
+29,Story,UC-18 Manage Services & Pricing,"As an Admin, I want to configure the catalog of services and their prices.",Medium,System Admin,To Do,27
+30,Task,Finalize UI/UX Design Models,Design Figma interactive prototype for all web portals.,High,Design,To Do,
+31,Task,Setup CI/CD Pipeline,Setup GitHub Actions and Deployment pipelines.,Medium,DevOps,To Do,
+32,Task,System UAT Testing,Conduct User Acceptance Testing before final launch.,High,QA,To Do,

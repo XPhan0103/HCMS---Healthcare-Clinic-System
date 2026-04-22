@@ -1,0 +1,24 @@
+Issue Type,Summary,Description,Priority,Component,Status
+Epic,Self-Service Booking Portal,"Booking appointments, capturing demographics, and receiving confirmations.",High,Parents Portal,To Do
+Story,UC-01 Book Appointment Online,"As a Parent, I want to book an appointment online by selecting a doctor and time slot.",High,Parents Portal,To Do
+Story,UC-02 Provide Patient Demographics,"As a Parent, I want to provide patient demographics (Name, DOB, Symptoms) during booking.",High,Parents Portal,To Do
+Story,UC-03 Receive Appointment Confirmation,"As a Parent, I want to receive an appointment confirmation via SMS/Email.",Medium,Parents Portal,To Do
+Epic,Patient EMR Portal,"Parent dashboard to view clinical notes and past medical records.",Medium,Parents Portal,To Do
+Story,UC-04 View Clinical Notes & Prescriptions,"As a Parent, I want to view clinical notes and prescriptions issued by the doctor after a visit.",Medium,Parents Portal,To Do
+Epic,Appointment Management,"Receptionist dashboard for monitoring, confirming, and registering appointments.",High,Receptionist Portal,To Do
+Story,UC-05 View Appointment Dashboard,"As a Receptionist, I want to view the daily appointment pipeline and monitor statuses.",High,Receptionist Portal,To Do
+Story,UC-06 Confirm Appointment,"As a Receptionist, I want to manually confirm online bookings.",High,Receptionist Portal,To Do
+Story,UC-07 Register Walk-in Appointment,"As a Receptionist, I want to rapidly register an appointment for walk-in patients.",High,Receptionist Portal,To Do
+Epic,Billing & Payment,"Invoice generation and payment status updates.",High,Receptionist Portal,To Do
+Story,UC-08 View Billing Invoice,"As a Receptionist, I want to view generated invoices post-consultation.",High,Receptionist Portal,To Do
+Story,UC-09 Update Payment Status (1-Click Paid),"As a Receptionist, I want to update the payment status using a 1-Click Paid action.",High,Receptionist Portal,To Do
+Epic,Doctor Portal & EMR Management,"Real-time queue, patient medical history, and clinical consultation tools.",High,Doctor Portal,To Do
+Story,UC-10 View Patient Queue,"As a Doctor, I want to view the real-time queue of waiting patients.",High,Doctor Portal,To Do
+Story,UC-11 Access Patient Medical History,"As a Doctor, I want to securely access patient medical history.",High,Doctor Portal,To Do
+Story,UC-12 Record Clinical Consultation,"As a Doctor, I want to record detailed notes during clinical consultations.",High,Doctor Portal,To Do
+Story,UC-13 Issue Electronic Prescription,"As a Doctor, I want to immediately issue electronic prescriptions utilizing autocomplete.",High,Doctor Portal,To Do
+Story,UC-14 Manage Patient Profile,"As a Doctor, I want to update master records and demographic information.",High,Doctor Portal,To Do
+Task,Implement Twilio SMS API,"Integrate Twilio SMS API for appointment confirmations.",Medium,Infrastructure,To Do
+Task,Implement SMTP Email,"Setup SMTP for email notifications.",Medium,Infrastructure,To Do
+Task,Database Design (MySQL 8.0),"Design the core 5 entities (Patient, Appointment, Visit, Prescription, Billing) in MySQL.",High,Infrastructure,To Do
+Task,Responsive React Web UI,"Build responsive Web UI for clinic staff and Parents.",High,Frontend,To Do
