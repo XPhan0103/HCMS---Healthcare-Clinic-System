@@ -120,6 +120,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Handle AccessDeniedException (403) from Spring Security.
+     */
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
+        log.warn("Access denied: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.error(403, "Access denied: " + ex.getMessage()));
+    }
+
+    /**
      * Catch-all for any other unhandled exceptions (500).
      */
     @ExceptionHandler(Exception.class)

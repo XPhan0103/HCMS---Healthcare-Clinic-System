@@ -38,4 +38,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             @org.springframework.data.repository.query.Param("date") LocalDate date,
             @org.springframework.data.repository.query.Param("status") Appointment.AppointmentStatus status,
             @org.springframework.data.repository.query.Param("doctorId") UUID doctorId);
+
+    /**
+     * Find all appointments within a specific date range.
+     */
+    List<Appointment> findByAppointmentDateBetweenOrderByAppointmentDateAscTimeSlotAsc(LocalDate startDate, LocalDate endDate);
 }

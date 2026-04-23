@@ -2,8 +2,8 @@ package com.hcms.modules.booking.service;
 
 import com.hcms.common.exception.BusinessException;
 import com.hcms.common.exception.ResourceNotFoundException;
-import com.hcms.modules.auth.entity.User;
-import com.hcms.modules.auth.repository.UserRepository;
+import com.hcms.modules.doctor.entity.Doctor;
+import com.hcms.modules.doctor.repository.DoctorRepository;
 import com.hcms.modules.booking.dto.AppointmentResponse;
 import com.hcms.modules.booking.dto.AppointmentStatusUpdateRequest;
 import com.hcms.modules.booking.dto.BookAppointmentRequest;
@@ -30,7 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
-    private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
     
     // Using PatientService logic for UC-02
     private final PatientService patientService;
@@ -43,12 +43,8 @@ public class AppointmentServiceImpl implements AppointmentService {
                 request.getDoctorId(), request.getAppointmentDate(), request.getTimeSlot());
 
         // 1. Verify Doctor exists
-        User doctor = userRepository.findById(request.getDoctorId())
+        Doctor doctor = doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", request.getDoctorId().toString()));
-
-        if (doctor.getRole() != User.Role.DOCTOR) {
-            throw new IllegalArgumentException("Requested ID does not belong to a doctor");
-        }
 
         // 2. Business Rule BR-01: Check Slot Availability
         boolean isSlotTaken = appointmentRepository.existsByDoctorIdAndAppointmentDateAndTimeSlotAndStatusNot(
@@ -96,7 +92,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         log.info("Processing walk-in registration for doctor: {}", request.getDoctorId());
 
         // 1. Verify Doctor
-        User doctor = userRepository.findById(request.getDoctorId())
+        Doctor doctor = doctorRepository.findById(request.getDoctorId())
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", request.getDoctorId().toString()));
 
         // 2. UC-07: Use existing patient management (lookup by phone)
@@ -159,5 +155,15 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setStatus(request.getStatus());
         Appointment updated = appointmentRepository.save(appointment);
         return appointmentMapper.toResponse(updated);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AppointmentResponse> getAppointmentsInRange(java.time.LocalDate startDate, java.time.LocalDate endDate) {
+        log.info("Fetching appointments between {} and {}", startDate, endDate);
+        return appointmentRepository.findByAppointmentDateBetweenOrderByAppointmentDateAscTimeSlotAsc(startDate, endDate)
+                .stream()
+                .map(appointmentMapper::toResponse)
+                .collect(java.util.stream.Collectors.toList());
     }
 }

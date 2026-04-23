@@ -19,4 +19,6 @@ public interface AppointmentService {
     List<AppointmentResponse> getTodayAppointments(LocalDate date, UUID doctorId, AppointmentStatus status);
 
     AppointmentResponse updateAppointmentStatus(UUID appointmentId, AppointmentStatusUpdateRequest request);
+    
+    List<AppointmentResponse> getAppointmentsInRange(LocalDate startDate, LocalDate endDate);
 }

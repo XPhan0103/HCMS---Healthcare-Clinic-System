@@ -39,10 +39,10 @@ public class PatientServiceImpl implements PatientService {
     @Transactional(readOnly = true)
     public PatientResponse getPatientById(UUID id) {
         log.debug("Fetching patient by id: {}", id);
-        
+
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Patient", "id", id.toString()));
-                
+
         return patientMapper.toResponse(patient);
     }
 

@@ -1,6 +1,7 @@
 package com.hcms.modules.patient.controller;
 
 import com.hcms.common.api.ApiResponse;
+import com.hcms.modules.patient.dto.PatientCreateRequest;
 import com.hcms.modules.patient.dto.PatientResponse;
 import com.hcms.modules.patient.dto.PatientUpdateRequest;
 import com.hcms.modules.patient.service.PatientService;
@@ -25,6 +26,15 @@ public class PatientController {
 
     private final PatientService patientService;
 
+    @Operation(summary = "Create New Patient", description = "Allow Receptionist to create or while Parent register the appointment, create new patient ")
+    @PostMapping("/create")
+    // @PreAuthorize("hasRole('DOCTOR')") // TODO: Re-enable when Auth module is implemented
+    public ResponseEntity<ApiResponse<PatientResponse>> createPatientProfile(
+            @Valid @RequestBody PatientCreateRequest request) {
+        PatientResponse createPatient = patientService.createPatient(request);
+        return ResponseEntity.ok(ApiResponse.success(createPatient));
+    }
+
     @Operation(summary = "Search Patient by Phone Number", description = "Allows Receptionist to search for an existing patient")
     @GetMapping("/search")
     // @PreAuthorize("hasAnyRole('RECEPTIONIST', 'DOCTOR', 'ADMIN')") // TODO: Re-enable when Auth module is implemented
@@ -37,7 +47,7 @@ public class PatientController {
 
     @Operation(summary = "Get Patient Profile", description = "Returns full patient profile for Doctor's EMR view")
     @GetMapping("/{patientId}")
-    // @PreAuthorize("hasAnyRole('DOCTOR', 'RECEPTIONIST')") // TODO: Re-enable when Auth module is implemented
+//    @PreAuthorize("hasAnyRole('DOCTOR', 'RECEPTIONIST')") // TODO: Re-enable when Auth module is implemented
     public ResponseEntity<ApiResponse<PatientResponse>> getPatientById(
             @PathVariable UUID patientId) {
         log.info("REST request to get patient by ID: {}", patientId);
@@ -57,4 +67,6 @@ public class PatientController {
     }
 
     // Note: GET /api/v1/patients/{patientId}/medical-history will be implemented in the EMR/Visit vertical slice.
+
+
 }

@@ -2,5 +2,7 @@
 <project version="4">
   <component name="DataSourcePerFileMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V5__create_remaining_tables_and_sample_data.sql" value="f6724f3f-65be-4baf-866a-12b6a0711c8f" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V6__create_doctor_table.sql" value="f6724f3f-65be-4baf-866a-12b6a0711c8f" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/db/migration/V7__seed_additional_sample_data.sql" value="f6724f3f-65be-4baf-866a-12b6a0711c8f" />
   </component>
 </project>
