@@ -42,6 +42,14 @@ public class Visit extends BaseEntity {
     @OneToMany(mappedBy = "visit", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prescription> prescriptions = new ArrayList<>();
 
-    @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "visit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Billing billing;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private VisitStatus status = VisitStatus.IN_PROGRESS;
+
+    public enum VisitStatus {
+        IN_PROGRESS, COMPLETED
+    }
 }

@@ -1,10 +1,9 @@
-package com.hcms.modules.auth.service;
+package com.hcms.modules.doctor.service;
 
 import com.hcms.common.exception.ResourceNotFoundException;
-import com.hcms.modules.auth.dto.DoctorResponse;
-import com.hcms.modules.auth.entity.User;
-import com.hcms.modules.auth.mapper.DoctorMapper;
-import com.hcms.modules.auth.repository.UserRepository;
+import com.hcms.modules.doctor.dto.DoctorResponse;
+import com.hcms.modules.doctor.mapper.DoctorMapper;
+import com.hcms.modules.doctor.repository.DoctorRepository;
 import com.hcms.modules.booking.dto.AvailableSlot;
 import com.hcms.modules.booking.entity.Appointment;
 import com.hcms.modules.booking.repository.AppointmentRepository;
@@ -23,14 +22,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
-    private final UserRepository userRepository;
+    private final DoctorRepository doctorRepository;
     private final DoctorMapper doctorMapper;
     private final AppointmentRepository appointmentRepository;
 
     @Override
     public List<DoctorResponse> listActiveDoctors() {
-        return userRepository.findAllByRoleAndStatus(User.Role.DOCTOR, User.UserStatus.ACTIVE)
-                .stream()
+        log.info("Fetching all active doctors from DoctorRepository");
+        // We assume all doctors in the doctor table are active for now, 
+        // or we could filter by user status if needed.
+        return doctorRepository.findAll().stream()
+                .filter(doctor -> !doctor.isDeleted())
                 .map(doctorMapper::toDoctorResponse)
                 .collect(Collectors.toList());
     }
@@ -40,21 +42,18 @@ public class DoctorServiceImpl implements DoctorService {
         log.info("Fetching available slots for doctor: {} on date: {}", doctorId, fromDate);
 
         // Verify doctor exists
-        User doctor = userRepository.findById(doctorId)
+        doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new ResourceNotFoundException("Doctor", "id", doctorId.toString()));
 
-        if (doctor.getRole() != User.Role.DOCTOR) {
-            throw new IllegalArgumentException("User is not a doctor");
-        }
-
         // Fetch all non-cancelled appointments for this date
+        // Note: appointmentRepository needs to be updated to search by doctor_id (the Doctor entity ID)
         List<Appointment> bookedAppointments = appointmentRepository.findByDoctorIdAndAppointmentDateAndStatusNot(
                 doctorId, fromDate, Appointment.AppointmentStatus.CANCELLED);
 
         // Create a list of booked times to exclusion
         List<String> bookedTimes = bookedAppointments.stream()
                 .map(Appointment::getTimeSlot)
-                .collect(Collectors.toList());
+                .toList();
 
         List<AvailableSlot> availableSlots = new ArrayList<>();
         

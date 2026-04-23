@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>TS_Patient_001 - createPatient</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; color: #333; }
+        h1 { color: #2c3e50; font-size: 24px; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        h2 { color: #7f8c8d; font-size: 18px; margin-top: -5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; }
+        th, td { border: 1px solid #bdc3c7; padding: 10px; font-size: 13px; text-align: center; }
+        .header-label { background-color: #f2f2f2; font-weight: bold; text-align: left; width: 15%; }
+        .data-value { text-align: left; }
+        .stat-header { background-color: #ecf0f1; font-weight: bold; }
+        .group-header { background-color: #dfe6e9; font-weight: bold; font-style: italic; text-align: left; }
+        .tc-id { background-color: #2c3e50; color: white; font-weight: bold; }
+        .pending { color: #f39c12; font-weight: bold; }
+        .mark-o { font-weight: bold; color: #27ae60; font-size: 16px; }
+        .requirement-row td { text-align: left; background-color: #fff; }
+    </style>
+</head>
+<body>
+
+    <h1>Test Suite: TS_Patient_001</h1>
+    <h2>Method: createPatient()</h2>
+
+    <table>
+        <tr>
+            <td class="header-label">Code Module</td>
+            <td class="data-value" colspan="3">Patient</td>
+            <td class="header-label">Method</td>
+            <td class="data-value" colspan="2">createPatient</td>
+        </tr>
+        <tr>
+            <td class="header-label">Created By</td>
+            <td class="data-value" colspan="3">SeniorQA</td>
+            <td class="header-label">Executed By</td>
+            <td class="data-value" colspan="2">SeniorQA</td>
+        </tr>
+        <tr class="requirement-row">
+            <td class="header-label">Test requirement</td>
+            <td colspan="6">Kiểm tra logic tạo mới bệnh nhi (UC-02) và các ràng buộc dữ liệu (BR-01). Đảm bảo tính toàn vẹn của thực thể PATIENT.</td>
+        </tr>
+        <tr>
+            <td class="stat-header">Passed</td>
+            <td class="stat-header">Failed</td>
+            <td class="stat-header">Untested</td>
+            <td class="stat-header">N/A/B</td>
+            <td class="stat-header" colspan="3">Total Test Cases</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>5</td>
+            <td>0</td>
+            <td colspan="3">5</td>
+        </tr>
+
+        <!-- Decision Table -->
+        <tr>
+            <td class="stat-header" rowspan="2">Condition</td>
+            <td class="stat-header" rowspan="2">Precondition</td>
+            <td class="tc-id">UTCID01</td>
+            <td class="tc-id">UTCID02</td>
+            <td class="tc-id">UTCID03</td>
+            <td class="tc-id">UTCID04</td>
+            <td class="tc-id">UTCID05</td>
+        </tr>
+        <tr>
+            <!-- TC IDs repeated or empty for sub-header -->
+            <td>TC 1</td><td>TC 2</td><td>TC 3</td><td>TC 4</td><td>TC 5</td>
+        </tr>
+
+        <tr>
+            <td class="group-header" colspan="7">Input Data</td>
+        </tr>
+        <tr>
+            <td rowspan="3">fullName</td>
+            <td class="data-value">Valid (Nguyen Van A)</td>
+            <td class="mark-o">O</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="data-value">Min Length (An)</td>
+            <td></td>
+            <td class="mark-o">O</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="data-value">Empty ("")</td>
+            <td></td>
+            <td></td>
+            <td class="mark-o">O</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td rowspan="2">dob</td>
+            <td class="data-value">Valid Past Date</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td></td>
+            <td class="mark-o">O</td>
+        </tr>
+        <tr>
+            <td class="data-value">Future Date (2099)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="mark-o">O</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td rowspan="2">parentPhone</td>
+            <td class="data-value">Valid (10 digits)</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="data-value">Invalid (9 digits)</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="mark-o">O</td>
+        </tr>
+
+        <tr>
+            <td class="group-header" colspan="7">Confirm | Return</td>
+        </tr>
+        <tr>
+            <td>Confirm</td>
+            <td class="data-value">201 Created + Response</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Confirm</td>
+            <td class="data-value">400 Validation Error</td>
+            <td></td>
+            <td></td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+            <td class="mark-o">O</td>
+        </tr>
+
+        <tr>
+            <td class="stat-header" colspan="2">Result</td>
+            <td class="pending">PENDING</td>
+            <td class="pending">PENDING</td>
+            <td class="pending">PENDING</td>
+            <td class="pending">PENDING</td>
+            <td class="pending">PENDING</td>
+        </tr>
+    </table>
+
+</body>
+</html>

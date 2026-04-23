@@ -67,4 +67,14 @@ public class AppointmentController {
         AppointmentResponse response = appointmentService.updateAppointmentStatus(id, request);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
+
+    @Operation(summary = "Get All Appointments in Date Range")
+    @GetMapping("/range")
+    public ResponseEntity<ApiResponse<List<AppointmentResponse>>> getInRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        log.info("REST request to get appointments between {} and {}", startDate, endDate);
+        List<AppointmentResponse> response = appointmentService.getAppointmentsInRange(startDate, endDate);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
 }

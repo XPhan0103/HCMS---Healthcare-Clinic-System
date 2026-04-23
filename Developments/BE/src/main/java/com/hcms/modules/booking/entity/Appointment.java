@@ -1,6 +1,7 @@
 package com.hcms.modules.booking.entity;
 
 import com.hcms.common.entity.BaseEntity;
+import com.hcms.modules.doctor.entity.Doctor;
 import com.hcms.modules.patient.entity.Patient;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Appointment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false)
-    private com.hcms.modules.auth.entity.User doctor;
+    private Doctor doctor;
 
     @Column(name = "appointment_date", nullable = false)
     private java.time.LocalDate appointmentDate;

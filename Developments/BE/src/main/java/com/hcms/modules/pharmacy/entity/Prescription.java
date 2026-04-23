@@ -26,6 +26,6 @@ public class Prescription extends BaseEntity {
     @Column(name = "dosage_instruction", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String dosageInstruction;
 
-    @Column(name = "duration_days")
-    private Integer durationDays;
+    @Column(name = "duration", nullable = false)
+    private String duration;
 }

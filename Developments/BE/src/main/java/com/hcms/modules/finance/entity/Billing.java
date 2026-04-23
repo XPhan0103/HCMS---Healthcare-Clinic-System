@@ -22,8 +22,14 @@ public class Billing extends BaseEntity {
     @JoinColumn(name = "visit_id", nullable = false)
     private Visit visit;
 
+    @Column(name = "consultation_fee", nullable = false, precision = 10, scale = 2)
+    private BigDecimal consultationFee;
+
     @Column(name = "total_amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
+
+    @Column(name = "billing_date", nullable = false)
+    private java.time.LocalDateTime billingDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_status", nullable = false)

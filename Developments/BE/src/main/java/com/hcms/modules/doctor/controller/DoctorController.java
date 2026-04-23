@@ -1,8 +1,8 @@
-package com.hcms.modules.auth.controller;
+package com.hcms.modules.doctor.controller;
 
 import com.hcms.common.api.ApiResponse;
-import com.hcms.modules.auth.dto.DoctorResponse;
-import com.hcms.modules.auth.service.DoctorService;
+import com.hcms.modules.doctor.dto.DoctorResponse;
+import com.hcms.modules.doctor.service.DoctorService;
 import com.hcms.modules.booking.dto.AvailableSlot;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
