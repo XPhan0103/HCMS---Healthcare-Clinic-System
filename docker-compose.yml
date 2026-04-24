@@ -1,0 +1,74 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: hcms-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - hcms-network
+
+  hcms-backend:
+    # In CI/CD, we use the image from the registry
+    # But for local dev, we can keep the build context
+    image: ghcr.io/${GITHUB_REPOSITORY}-backend:latest
+    build:
+      context: ./Developments/BE
+      dockerfile: Dockerfile
+    container_name: hcms-backend
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&charset=utf8mb4
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      SPRING_FLYWAY_ENABLED: ${FLYWAY_ENABLED}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/api/v1/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - hcms-network
+
+  hcms-frontend:
+    image: ghcr.io/${GITHUB_REPOSITORY}-frontend:latest
+    build:
+      context: ./Developments/FE/FE_2
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    container_name: hcms-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - hcms-backend
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - hcms-network
+
+networks:
+  hcms-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

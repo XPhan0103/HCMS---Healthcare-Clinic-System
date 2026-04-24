@@ -38,8 +38,7 @@ export default function DoctorEMR() {
           const history = res.data.data.map((v: any) => ({
             id: v.id,
             date: v.visitDate ? new Date(v.visitDate).toLocaleDateString() : '',
-            diagnosis: v.diagnosis,
-            doctor: v.doctorName
+            diagnosis: v.diagnosis || 'Chưa chẩn đoán'
           }));
           setPastVisits(history);
         })
@@ -141,7 +140,6 @@ export default function DoctorEMR() {
                   <p className="font-bold text-lg text-slate-900 mb-1">{v.diagnosis}</p>
                   <p className="text-sm text-slate-500 flex items-center gap-2">
                     <span className="bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-xs">{v.date}</span>
-                    <span>by {v.doctor}</span>
                   </p>
                 </div>
                 <Button variant="outline" size="sm">

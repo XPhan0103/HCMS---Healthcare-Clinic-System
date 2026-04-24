@@ -5,32 +5,27 @@ import type { PageResponse } from '@/shared/types/api.types';
 
 interface PatientState {
   patients: Patient[];
-  pageData: PageResponse<Patient> | null;
   loading: boolean;
   error: string | null;
   
   // Actions
-  fetchPatients: (page?: number, size?: number) => Promise<void>;
+  fetchPatients: (phone?: string) => Promise<void>;
   createPatient: (data: PatientRequest) => Promise<void>;
 }
 
 // Cấu hình Zustand Centralized Store cho Patient Context
 export const usePatientStore = create<PatientState>((set) => ({
   patients: [],
-  pageData: null,
   loading: false,
   error: null,
 
-  fetchPatients: async (page = 0, size = 20) => {
+  fetchPatients: async (phone = "") => {
     set({ loading: true, error: null });
     try {
-      // Do Interceptor Unwrap đã triệt tiêu lớp response.data, 
-      // result trả về lúc này 100% khớp với model Generic.
-      const data = await patientService.getAll(page, size);
+      const data = await patientService.search(phone);
       
       set({ 
-        patients: data.content, 
-        pageData: data,
+        patients: data, 
         loading: false 
       });
     } catch (err: any) {

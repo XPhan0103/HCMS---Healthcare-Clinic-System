@@ -43,31 +43,47 @@ export default function AppointmentDashboard() {
     }
   };
 
+  const handleCheckIn = async (id: string) => {
+    try {
+      await api.patch(`/appointments/${id}/status`, { status: 'CHECKED_IN' });
+      fetchAppointments();
+    } catch (err) {
+      console.error(err);
+      // Optimistic update for fallback
+      setAppointments(appointments.map(a => a.id === id ? { ...a, status: 'CHECKED_IN' } : a));
+    }
+  };
+
+  // { header: 'Time', accessor: (row: any) => new Date(row.timeSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+
   const columns = [
-    { header: 'Time', accessor: (row: any) => new Date(row.slotDateTime).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) },
+    { header: 'Time', accessor: 'timeSlot' },
     { header: 'Patient Name', accessor: 'patientName' },
     { header: 'Doctor', accessor: 'doctorName' },
-    { header: 'Status', accessor: (row: any) => (
-      <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-        row.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
-        row.status === 'CONFIRMED' ? 'bg-blue-100 text-blue-700' :
-        row.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
-        'bg-slate-100 text-slate-700'
-      }`}>
-        {row.status}
-      </span>
-    )},
-    { header: 'Action', accessor: (row: any) => (
-      row.status === 'PENDING' ? (
-        <Button size="sm" onClick={() => handleConfirm(row.id)} className="bg-blue-600 hover:bg-blue-700 h-8 px-3 text-xs">
-          Confirm
-        </Button>
-      ) : row.status === 'CONFIRMED' ? (
-        <Button size="sm" variant="outline" className="h-8 px-3 text-xs" onClick={() => {/* Check-in logic */}}>
-          Check In
-        </Button>
-      ) : null
-    )}
+    {
+      header: 'Status', accessor: (row: any) => (
+        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${row.status === 'PENDING' ? 'bg-amber-100 text-amber-700' :
+          row.status === 'CONFIRMED' ? 'bg-blue-100 text-blue-700' :
+            row.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
+              'bg-slate-100 text-slate-700'
+          }`}>
+          {row.status}
+        </span>
+      )
+    },
+    {
+      header: 'Action', accessor: (row: any) => (
+        row.status === 'PENDING' ? (
+          <Button size="sm" onClick={() => handleConfirm(row.id)} className="bg-blue-600 hover:bg-blue-700 h-8 px-3 text-xs">
+            Confirm
+          </Button>
+        ) : row.status === 'CONFIRMED' ? (
+          <Button size="sm" variant="outline" className="h-8 px-3 text-xs" onClick={() => { handleCheckIn(row.id) }}>
+            Check In
+          </Button>
+        ) : null
+      )
+    }
   ];
 
   return (

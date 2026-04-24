@@ -81,7 +81,7 @@ export const PatientListBoard: React.FC = () => {
           <div className="space-y-2.5 mt-5 text-sm text-gray-600 pt-4 border-t border-gray-50">
             <div className="flex items-center gap-3">
               <Phone className="w-4 h-4 text-gray-400" />
-              <span className="font-medium text-gray-800">{p.phoneNumber || 'Chưa có thông tin'}</span>
+              <span className="font-medium text-gray-800">{p.parentPhoneNumber || 'Chưa có thông tin'}</span>
             </div>
             <div className="flex items-center gap-3">
               <Calendar className="w-4 h-4 text-gray-400" />
