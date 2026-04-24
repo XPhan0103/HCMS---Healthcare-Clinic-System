@@ -3,18 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { Calendar, Clock, FileText, ArrowRight, User } from 'lucide-react';
 import { Button } from '../../../shared/components/Button';
 import api from '../../../shared/services/api';
+import { useAuthStore } from '../../../app/store/authStore';
+import { patientService } from '../../patient/services/patient.service';
 
 const ParentDashboard = () => {
   const navigate = useNavigate();
+  const { patientId } = useAuthStore();
+  console.log(patientId);
+
   const [upcomingAppointments, setUpcomingAppointments] = useState<any[]>([]);
+  const [patient, setPatient] = useState<any>(null);
+  const [pastVisits, setPastVisits] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    // Fetch today's appointments as an example
-    const today = new Date().toISOString().split('T')[0];
-    api.get(`/appointments/today?date=${today}`)
-      .then(res => {
-        const mapped = res.data.data.map((a: any) => ({
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetch today's appointments
+        const today = new Date().toISOString().split('T')[0];
+        const apptRes = await api.get(`/appointments/today?date=${today}`);
+        const mapped = apptRes.data.data.map((a: any) => ({
           id: a.id,
           doctorName: a.doctorName,
           date: a.appointmentDate,
@@ -22,20 +32,42 @@ const ParentDashboard = () => {
           status: a.status
         }));
         setUpcomingAppointments(mapped);
-      })
-      .catch(err => {
+      } catch (err) {
         console.error('Failed to fetch appointments:', err);
-        // Fallback mock
-        setUpcomingAppointments([
-          { id: 1, doctorName: 'BS. Minh', date: '2026-06-01', time: '09:00', status: 'CONFIRMED' }
-        ]);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-  
-  const pastVisits = [
-    { id: 101, doctorName: 'BS. An', date: '2025-12-10', diagnosis: 'Viêm họng' }
-  ];
+      }
+
+      if (patientId) {
+        try {
+          // patientService.search returns a Promise, we must await it to get the object (array of patients)
+          const patients = await patientService.search(patientId);
+
+          if (patients && Array.isArray(patients) && patients.length > 0) {
+            const currentPatient = patients[0];
+            setPatient(currentPatient);
+
+            try {
+              // Fetch Patient History
+              const histRes = await api.get(`/clinical/patients/${currentPatient.id}/history`);
+              const history = histRes.data.data.map((v: any) => ({
+                id: v.id,
+                date: v.visitDate ? new Date(v.visitDate).toLocaleDateString() : '',
+                diagnosis: v.diagnosis || 'Chưa chẩn đoán'
+              }));
+              setPastVisits(history);
+            } catch (err) {
+              console.error('Failed to fetch history:', err);
+            }
+          }
+        } catch (err) {
+          console.error('Failed to search patient:', err);
+        }
+      }
+
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [patientId]);
 
   return (
     <div className="space-y-6">
@@ -56,7 +88,7 @@ const ParentDashboard = () => {
           <h2 className="text-lg font-bold text-slate-800 mb-5 flex items-center gap-2 relative z-10">
             <div className="p-2 bg-emerald-100 rounded-xl text-emerald-600"><Clock size={20} /></div> Upcoming Appointments
           </h2>
-          
+
           {upcomingAppointments.length > 0 ? (
             <div className="space-y-4 relative z-10">
               {upcomingAppointments.map((appt) => (
@@ -72,7 +104,7 @@ const ParentDashboard = () => {
               ))}
             </div>
           ) : (
-            <p className="text-slate-500 text-sm">No upcoming appointments.</p>
+            <p className="text-slate-500 text-sm relative z-10">No upcoming appointments.</p>
           )}
         </div>
 
@@ -82,8 +114,14 @@ const ParentDashboard = () => {
             <User className="text-green-600" size={20} /> Patient Information
           </h2>
           <div className="p-4 rounded-lg bg-green-50/50 border border-green-100">
-            <p className="text-slate-700"><strong>Name:</strong> Nguyễn Bảo An</p>
-            <p className="text-slate-700"><strong>DOB:</strong> 2020-03-15</p>
+            {patient ? (
+              <>
+                <p className="text-slate-700"><strong>Name:</strong> {patient.fullName}</p>
+                <p className="text-slate-700"><strong>DOB:</strong> {patient.dateOfBirth}</p>
+              </>
+            ) : (
+              <p className="text-slate-500 italic">Loading patient info...</p>
+            )}
             <p className="text-slate-700 mt-2">Make sure to keep the profile updated.</p>
           </div>
         </div>
@@ -95,7 +133,7 @@ const ParentDashboard = () => {
           <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
             <FileText className="text-green-600" size={20} /> Recent Visit History
           </h2>
-          <button 
+          <button
             onClick={() => navigate('/parent/records')}
             className="text-sm font-medium text-green-600 hover:text-green-700 flex items-center gap-1"
           >
@@ -104,17 +142,21 @@ const ParentDashboard = () => {
         </div>
 
         <div className="divide-y divide-slate-100">
-          {pastVisits.map((visit) => (
-            <div key={visit.id} className="py-4 flex justify-between items-center">
-              <div>
-                <p className="font-medium text-slate-900">{visit.diagnosis}</p>
-                <p className="text-sm text-slate-500">{visit.date} • {visit.doctorName}</p>
+          {pastVisits.length > 0 ? (
+            pastVisits.map((visit) => (
+              <div key={visit.id} className="py-4 flex justify-between items-center">
+                <div>
+                  <p className="font-medium text-slate-900">{visit.diagnosis}</p>
+                  <p className="text-sm text-slate-500">{visit.date}</p>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => navigate('/parent/records')}>
+                  View Notes
+                </Button>
               </div>
-              <Button variant="outline" size="sm" onClick={() => navigate('/parent/records')}>
-                View Notes
-              </Button>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="py-4 text-slate-500 text-sm">No recent visits found.</p>
+          )}
         </div>
       </div>
     </div>

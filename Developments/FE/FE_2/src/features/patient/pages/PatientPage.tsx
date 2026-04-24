@@ -4,25 +4,27 @@ import { usePatientStore } from "../store/usePatientStore";
 import { PatientFilterBar } from "../components/PatientFilterBar";
 import { PatientListBoard } from "../components/PatientListBoard";
 import { useToast } from "@/shared/components/ToastProvider";
+import { useAuthStore } from "../../../app/store/authStore";
 
 export const PatientPage: React.FC = () => {
   // Chỉ gọi Action Method (fetchPatients) để trigger state update. Data được tự bind ở component con.
   const { fetchPatients } = usePatientStore();
   const { toast } = useToast();
+  const { patientId } = useAuthStore(); // patientId lưu số điện thoại parent
   
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // Gọi API trên mount
-    fetchPatients(0, 20).catch(() => {
+    // Gọi API trên mount bằng sđt của parent
+    fetchPatients(patientId || "").catch(() => {
       // Vì ListBoard đã hiện giao diện error, toast ở đây chỉ như 1 thông báo phụ thêm
       // toast("Hệ thống gián đoạn khi tải dữ liệu", "error");
     });
-  }, [fetchPatients]);
+  }, [fetchPatients, patientId]);
 
   const handleSearch = (val: string) => {
     setSearchTerm(val);
-    // TODO: Gắn debounce và truyền searchTerm vào tham số fetch api nếu Backend support
+    fetchPatients(val).catch(() => {});
   };
 
   const handleOpenCreateModal = () => {

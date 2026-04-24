@@ -5,24 +5,23 @@ import type { Patient, PatientRequest } from '../types/patient.types';
 const PREFIX = '/patients';
 
 export const patientService = {
-  // 1. Fetch Danh sách phân trang
-  // Triệt để dùng Generic <PageResponse<Patient>> để Axios infer (suy luận) đúng data type
-  getAll: (page = 0, size = 20) => {
-    return apiClient.get<unknown, PageResponse<Patient>>(`${PREFIX}?page=${page}&size=${size}`);
+  // 1. Fetch Danh sách -> Đổi thành Search theo số điện thoại vì backend chỉ có /search
+  search: (phone: string) => {
+    return apiClient.get<unknown, Patient[]>(`${PREFIX}/search?phone=${phone}`);
   },
-  
+
   // 2. Lấy thông tin Chi tiết Bệnh nhi
-  getById: (id: number) => {
+  getById: (id: string | number) => {
     return apiClient.get<unknown, Patient>(`${PREFIX}/${id}`);
   },
-  
+
   // 3. Tạo mới Profile
   create: (data: PatientRequest) => {
-    return apiClient.post<unknown, Patient>(PREFIX, data);
+    return apiClient.post<unknown, Patient>(`${PREFIX}/create`, data);
   },
-  
+
   // 4. Cập nhật Profile
-  update: (id: number, data: PatientRequest) => {
-    return apiClient.put<unknown, Patient>(`${PREFIX}/${id}`, data);
+  update: (id: string | number, data: PatientRequest) => {
+    return apiClient.patch<unknown, Patient>(`${PREFIX}/${id}`, data);
   }
 };
