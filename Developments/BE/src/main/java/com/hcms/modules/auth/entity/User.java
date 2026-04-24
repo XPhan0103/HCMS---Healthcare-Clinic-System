@@ -42,7 +42,7 @@ public class User extends BaseEntity implements UserDetails {
     private UserStatus status = UserStatus.ACTIVE;
 
     public enum Role {
-        ADMIN, DOCTOR, RECEPTIONIST, CLINIC_MANAGER
+        ADMIN, DOCTOR, RECEPTIONIST, CLINIC_MANAGER, PARENT
     }
 
     public enum UserStatus {

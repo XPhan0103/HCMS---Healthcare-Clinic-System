@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
   <diagram id="ERD_HCMS" name="HCMS Logical ERD">
-    <mxGraphModel dx="1410" dy="825" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+    <mxGraphModel dx="1410" dy="859" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8,7 +8,7 @@
           <mxGeometry x="325" y="12" width="400" height="40" as="geometry" />
         </mxCell>
         <mxCell id="tbl_patient" value="PATIENT" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="75" y="100" width="220" height="182" as="geometry" />
+          <mxGeometry x="74" y="89" width="220" height="182" as="geometry" />
         </mxCell>
         <mxCell id="pat_pk" value="PK   patient_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_patient" vertex="1">
           <mxGeometry y="26" width="220" height="26" as="geometry" />
@@ -29,7 +29,7 @@
           <mxGeometry y="156" width="220" height="26" as="geometry" />
         </mxCell>
         <mxCell id="tbl_appointment" value="APPOINTMENT" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
-          <mxGeometry x="75" y="420" width="220" height="182" as="geometry" />
+          <mxGeometry x="76" y="344" width="220" height="182" as="geometry" />
         </mxCell>
         <mxCell id="app_pk" value="PK   appointment_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_appointment" vertex="1">
           <mxGeometry y="26" width="220" height="26" as="geometry" />
@@ -37,7 +37,7 @@
         <mxCell id="app_fk" value="FK   patient_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=2;fontColor=#1A1A1A" parent="tbl_appointment" vertex="1">
           <mxGeometry y="52" width="220" height="26" as="geometry" />
         </mxCell>
-        <mxCell id="app_v1" value="       doctor_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_appointment" vertex="1">
+        <mxCell id="app_v1" value="FK   doctor_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_appointment" vertex="1">
           <mxGeometry y="78" width="220" height="26" as="geometry" />
         </mxCell>
         <mxCell id="app_v2" value="       appointment_date" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_appointment" vertex="1">
@@ -49,8 +49,35 @@
         <mxCell id="app_v4" value="       status" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_appointment" vertex="1">
           <mxGeometry y="156" width="220" height="26" as="geometry" />
         </mxCell>
+        <mxCell id="tbl_doctor" value="DOCTOR" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#f2f2f2;strokeColor=#666666;" parent="1" vertex="1">
+          <mxGeometry x="76" y="623" width="220" height="182" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_pk" value="PK   doctor_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="26" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_fk" value="FK   user_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=2;fontColor=#1A1A1A" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="52" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_v1" value="       specialty" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="78" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_v2" value="       license_number" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="104" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_v3" value="       biography" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="130" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="doc_v4" value="       consultation_fee" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;" parent="tbl_doctor" vertex="1">
+          <mxGeometry y="156" width="220" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_doc_app" value="1 : N" style="endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" source="tbl_doctor" target="app_v4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_doc_app_label" value="assigned to" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="rel_doc_app" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-0.5" relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="tbl_visit" value="VISIT" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
-          <mxGeometry x="415" y="87" width="220" height="208" as="geometry" />
+          <mxGeometry x="415" y="76" width="220" height="208" as="geometry" />
         </mxCell>
         <mxCell id="vis_pk" value="PK   visit_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_visit" vertex="1">
           <mxGeometry y="26" width="220" height="26" as="geometry" />
@@ -74,7 +101,7 @@
           <mxGeometry y="182" width="220" height="26" as="geometry" />
         </mxCell>
         <mxCell id="tbl_presc" value="PRESCRIPTION" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
-          <mxGeometry x="805" y="113" width="220" height="156" as="geometry" />
+          <mxGeometry x="807" y="91" width="220" height="156" as="geometry" />
         </mxCell>
         <mxCell id="pre_pk" value="PK   prescription_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_presc" vertex="1">
           <mxGeometry y="26" width="220" height="26" as="geometry" />
@@ -92,7 +119,7 @@
           <mxGeometry y="130" width="220" height="26" as="geometry" />
         </mxCell>
         <mxCell id="tbl_billing" value="BILLING" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;align=center;fontSize=14;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
-          <mxGeometry x="585" y="433" width="220" height="182" as="geometry" />
+          <mxGeometry x="585" y="348" width="220" height="182" as="geometry" />
         </mxCell>
         <mxCell id="bil_pk" value="PK   billing_id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;fontStyle=1;" parent="tbl_billing" vertex="1">
           <mxGeometry y="26" width="220" height="26" as="geometry" />
@@ -131,7 +158,7 @@
         <mxCell id="rel_app_vis" value="1 : 1" style="endArrow=ERmandOne;endFill=0;startArrow=ERone;startFill=0;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=2;edgeStyle=orthogonalEdgeStyle;" parent="1" source="tbl_appointment" target="tbl_visit" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="525" y="511" />
+              <mxPoint x="525" y="435" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -158,7 +185,7 @@
         </mxCell>
         <mxCell id="rel_vis_bil_label" value="generates" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="rel_vis_bil" vertex="1" connectable="0">
           <mxGeometry x="-0.4" relative="1" as="geometry">
-            <mxPoint x="82" y="20" as="offset" />
+            <mxPoint x="47" y="69" as="offset" />
           </mxGeometry>
         </mxCell>
       </root>
