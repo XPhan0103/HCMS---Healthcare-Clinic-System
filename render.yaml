@@ -1,27 +1,5 @@
 services:
-  # 1. Database Service (MySQL)
-  - type: web
-    name: hcms-db
-    env: docker
-    dockerContext: ./Developments/BE
-    dockerfilePath: ../../mysql.Dockerfile # We'll create this to run MySQL as a web service
-    plan: starter
-    region: singapore
-    envVars:
-      - key: MYSQL_DATABASE
-        value: hcms
-      - key: MYSQL_ROOT_PASSWORD
-        generateValue: true
-      - key: MYSQL_USER
-        value: hcms_user
-      - key: MYSQL_PASSWORD
-        generateValue: true
-    disk:
-      name: mysql-data
-      mountPath: /var/lib/mysql
-      sizeGB: 1
-
-  # 2. Backend Service (Spring Boot)
+  # 1. Backend Service (Spring Boot)
   - type: web
     name: hcms-backend
     env: docker
@@ -35,21 +13,15 @@ services:
       - key: SPRING_FLYWAY_ENABLED
         value: "true"
       - key: JWT_SECRET
-        generateValue: true
+        sync: false # Should be set in Render Dashboard or generateValue: true
       - key: DB_USERNAME
-        fromService:
-          name: hcms-db
-          type: web
-          property: envVar:MYSQL_USER
+        value: avnadmin
       - key: DB_PASSWORD
-        fromService:
-          name: hcms-db
-          type: web
-          property: envVar:MYSQL_PASSWORD
+        sync: false # Set this in Render Dashboard for security
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:mysql://hcms-db:3306/hcms?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&charset=utf8mb4
+        value: jdbc:mysql://keria-5104-nguyendangkhoa5104-e33c.h.aivencloud.com:23984/defaultdb?useSSL=true&serverTimezone=UTC
 
-  # 3. Frontend Service (React)
+  # 2. Frontend Service (React)
   - type: web
     name: hcms-frontend
     env: docker
