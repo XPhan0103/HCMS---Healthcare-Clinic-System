@@ -120,7 +120,10 @@ CREATE INDEX `idx_billings_payment_status` ON `billings`(`payment_status`);
 INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `full_name`, `role`, `status`) VALUES
 ('11111111-1111-1111-1111-111111111111', 'admin', 'admin@hcms.clinic', '123456', 'System Administrator', 'ADMIN', 'ACTIVE'),
 ('22222222-2222-2222-2222-222222222222', 'dr.minh', 'minh.doctor@hcms.clinic', '123456', 'BS. Minh', 'DOCTOR', 'ACTIVE'),
-('33333333-3333-3333-3333-333333333333', 'recep.lan', 'lan.rec@hcms.clinic', '123456', 'Receptionist Lan', 'RECEPTIONIST', 'ACTIVE');
+('33333333-3333-3333-3333-333333333333', 'recep.lan', 'lan.rec@hcms.clinic', '123456', 'Receptionist Lan', 'RECEPTIONIST', 'ACTIVE'),
+('11111111-1111-1111-1111-111111111112', '0909123456', 'parent1@gmail.com', '123456', 'Parent', 'PARENT', 'ACTIVE'),
+('22222222-2222-2222-2222-222222222223', '0988765432', 'parent2@gmail.com', '123456', 'Parent', 'PARENT', 'ACTIVE'),
+('33333333-3333-3333-3333-333333333334', '0922769999', 'nguyendangkhoa5104@gmail.com', '123456', 'Parent', 'PARENT', 'ACTIVE');
 
 -- Seed Patients
 INSERT INTO `patients` (`id`, `full_name`, `date_of_birth`, `gender`, `parent_phone_number`, `parent_email`, `address`, `height_cm`, `weight_kg`, `blood_type`, `allergies`, `chronic_conditions`, `vaccination_notes`) VALUES

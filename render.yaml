@@ -12,14 +12,16 @@ services:
         value: prod
       - key: SPRING_FLYWAY_ENABLED
         value: "true"
+      - key: HIBERNATE_DDL_AUTO
+        value: "none"
       - key: JWT_SECRET
         sync: false # Should be set in Render Dashboard or generateValue: true
       - key: DB_USERNAME
         value: avnadmin
       - key: DB_PASSWORD
         sync: false # Set this in Render Dashboard for security
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:mysql://keria-5104-nguyendangkhoa5104-e33c.h.aivencloud.com:23984/defaultdb?useSSL=true&serverTimezone=UTC
+      - key: DB_URL
+        value: jdbc:mysql://mysql-1a4b8591-nguyendangkhoa5104-e33c.c.aivencloud.com:23979/defaultdb?useSSL=true&serverTimezone=UTC
 
   # 2. Frontend Service (React)
   - type: web
