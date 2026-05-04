@@ -23,3 +23,18 @@ Thumbs.db
 
 # Log files
 *.log
+
+# Node / Frontend
+node_modules/
+**/node_modules/
+
+# Vite cache
+.vite/
+**/.vite/
+
+# Build output
+dist/
+**/dist/
+
+# FE env (nếu muốn ignore, bỏ comment dòng dưới)
+# Developments/FE/FE_2/.env
