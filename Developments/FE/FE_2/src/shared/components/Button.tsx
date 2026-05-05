@@ -9,11 +9,17 @@ export function cn(...inputs: ClassValue[]) {
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+  size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
 }
 
-export const Button = ({ variant = 'primary', isLoading, className, children, ...props }: ButtonProps) => {
-  const baseStyles = "relative inline-flex items-center justify-center rounded-xl px-5 py-2.5 font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-95 overflow-hidden group";
+export const Button = ({ variant = 'primary', size = 'md', isLoading, className, children, ...props }: ButtonProps) => {
+  const sizeStyles = {
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-5 py-2.5',
+    lg: 'px-7 py-3 text-lg',
+  };
+  const baseStyles = "relative inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-95 overflow-hidden group";
   
   const variants = {
     primary: "bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-500 hover:to-indigo-500 shadow-md shadow-blue-500/20 hover:shadow-blue-500/40 focus:ring-blue-500",
@@ -24,7 +30,7 @@ export const Button = ({ variant = 'primary', isLoading, className, children, ..
   };
 
   return (
-    <button className={cn(baseStyles, variants[variant], className)} disabled={isLoading || props.disabled} {...props}>
+    <button className={cn(baseStyles, sizeStyles[size], variants[variant], className)} disabled={isLoading || props.disabled} {...props}>
       {/* Shine effect overlay for primary and danger buttons */}
       {(variant === 'primary' || variant === 'danger') && (
         <div className="absolute inset-0 -translate-x-full bg-white/20 group-hover:animate-[shimmer_1.5s_infinite] transform skew-x-12" />

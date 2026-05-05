@@ -45,11 +45,7 @@ export default function Consultation() {
       // Create Visit
       const res = await api.post('/clinical/visits', {
         appointmentId,
-        patientId: 'placeholder', // Ideally we pass patientId from router, but let's assume BE infers from appointment if not we will fetch it. Actually the BE requires patientId.
-        // We will just put a mock UUID for patientId here to satisfy the payload, or we can parse from URL if passed.
-        // Wait, the doctor clicks "Start" from the EMR page where we had patientId. Let's see if we can get it from URL.
-        // I will use window.location or assume we add patientId to the endpoint or state.
-        patientId: window.location.pathname.split('/')[3] || '123e4567-e89b-12d3-a456-426614174000', // Mock UUID if missing
+        patientId: window.location.pathname.split('/')[3] || '123e4567-e89b-12d3-a456-426614174000',
         symptoms: visit.symptoms,
         diagnosis: visit.diagnosis,
         clinicalNotes: `Vitals: ${visit.vitalSigns}\nAftercare: ${visit.aftercareInstructions}`
